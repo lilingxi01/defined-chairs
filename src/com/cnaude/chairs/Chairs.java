@@ -2,19 +2,16 @@ package com.cnaude.chairs;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import net.minecraft.server.v1_6_R2.Packet40EntityMetadata;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_6_R2.entity.CraftPlayer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.permissions.Permission;
@@ -38,7 +35,7 @@ public class Chairs extends JavaPlugin {
     private File pluginFolder;
     private File configFile;    
     public byte sitByte;
-    public HashMap<String, Location> sit = new HashMap<String, Location>();
+    public HashMap<String, Entity> sit = new HashMap<String, Entity>();
     public static final String PLUGIN_NAME = "Chairs";
     public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
     static final Logger log = Logger.getLogger("Minecraft");
@@ -222,86 +219,6 @@ public class Chairs extends JavaPlugin {
         pm.addPermission(new Permission("chairs.self","Allow player to self disable or enable sitting.",pd));
     } 
     
-    private PacketContainer getSitPacket(Player p) {
-        PacketContainer fakeSit = protocolManager.createPacket(40); 
-        fakeSit.getSpecificModifier(int.class).write(0, p.getEntityId());
-        WrappedDataWatcher watcher = new WrappedDataWatcher();
-        watcher.setObject(0, sitByte);           
-        fakeSit.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());
-        return fakeSit;
-    }
-    
-    private PacketContainer getStandPacket(Player p) {
-        PacketContainer fakeSit = protocolManager.createPacket(40);   
-        fakeSit.getSpecificModifier(int.class).write(0, p.getEntityId());
-        WrappedDataWatcher watcher = new WrappedDataWatcher();
-        watcher.setObject(0, (byte)0);                
-        fakeSit.getWatchableCollectionModifier().write(0, watcher.getWatchableObjects());         
-        return fakeSit;
-    }
-    
-    // Send sit packet to all online players that are on same world and can see player
-    public void sendSit(Player p) {              
-        if (protocolManager != null) {
-            sendPacketToPlayers(getSitPacket(p),p);
-        } else {            
-            sendPacketToPlayers(new Packet40EntityMetadata(p.getPlayer().getEntityId(), new ChairWatcher(sitByte), true),p);                        
-        }
-    }                   
-    
-    private void sendPacketToPlayers(PacketContainer pc, Player p) {
-        for (Player onlinePlayer : getServer().getOnlinePlayers()) {
-            if (onlinePlayer.canSee(p)) {
-                if (onlinePlayer.getWorld().equals(p.getWorld())) {
-                    try {         
-                        protocolManager.sendServerPacket(onlinePlayer, pc);                                    
-                    } catch (Exception ex) {
-                        // Nothing here
-                    }
-                }
-            }
-        }
-    }
-    
-    private void sendPacketToPlayers(Packet40EntityMetadata packet, Player p) {
-        for (Player onlinePlayer : getServer().getOnlinePlayers()) {
-            if (onlinePlayer.canSee(p)) {
-                if (onlinePlayer.getWorld().equals(p.getWorld())) {
-                    try {         
-                        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
-                    } catch (Exception ex) {
-                        // Nothing here
-                    }
-                }
-            }
-        }
-    }
-    
-    public void sendSit() {
-        for (String s : sit.keySet()) {            
-            Player p = getServer().getPlayer(s);
-            if (p != null) {
-                sendSit(p);
-            }
-        }
-    }
-    
-    // Send stand packet to all online players
-    public void sendStand(Player p) {
-        if (sit.containsKey(p.getName())) {
-            if (notifyplayer && !msgStanding.isEmpty()) {                
-                p.sendMessage(msgStanding);
-            }
-            sit.remove(p.getName());
-        }   
-        if (protocolManager != null) {
-            sendPacketToPlayers(getStandPacket(p),p);
-        } else {
-            Packet40EntityMetadata packet = new Packet40EntityMetadata(p.getPlayer().getEntityId(), new ChairWatcher((byte)0), false);
-            sendPacketToPlayers(packet,p);
-        }
-    }
-    
     public void logInfo(String _message) {
         log.log(Level.INFO, String.format("%s %s", LOG_HEADER, _message));
     }
@@ -313,5 +230,6 @@ public class Chairs extends JavaPlugin {
     public static Chairs get() {
         return instance;
     }
+    
         
 }
