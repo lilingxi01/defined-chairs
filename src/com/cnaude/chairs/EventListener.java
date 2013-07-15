@@ -11,7 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.material.Directional;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
@@ -39,8 +40,53 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
+    public void onVehicleExitEvent(VehicleExitEvent event) {
+        Entity e = event.getVehicle().getPassenger();
+        if (e instanceof Player) {
+            Player player = (Player) e;
+            if (plugin.sit.containsKey(player.getName())) {
+                unSit(player);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerMoveEvent(PlayerMoveEvent event) {
+        if (event.getFrom().distance(event.getTo()) > 0) {
+            Player player = event.getPlayer();
+            if (plugin.sit.containsKey(player.getName())) {
+                if (plugin.sit.get(player.getName()).getLocation().distance(player.getLocation()) > 0.5) {
+                    unSit(player);
+                }
+            }
+        }
+    }
+
+    private void unSit(Player player) {
+        plugin.sit.get(player.getName()).remove();
+        plugin.sit.remove(player.getName());
+        if (plugin.notifyplayer && !plugin.msgStanding.isEmpty()) {
+            player.sendMessage(plugin.msgStanding);
+        }
+    }
+
+    private boolean isSitting(Player player) {
+        if (player.isInsideVehicle()) {
+            if (plugin.sit.containsKey(player.getName())) {
+                return true;
+            }
+        } else if (plugin.sit.containsKey(player.getName())) {
+            unSit(player);
+        }
+        return false;
+    }
+
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+        if (isSitting(player)) {
+            return;
+        }
         if (event.getPlayer().getItemInHand().getType().isBlock()
                 && (event.getPlayer().getItemInHand().getTypeId() != 0)
                 && plugin.ignoreIfBlockInHand) {
@@ -136,23 +182,6 @@ public class EventListener implements Listener {
                     return;
                 }
 
-                // Check if player is sitting.
-                if (plugin.sit.containsKey(player.getName())) {
-                    if (plugin.sit.containsKey(player.getName())) {
-                        // Eject from arrow
-                        plugin.sit.get(player.getName()).eject();
-                        // Remove arrow
-                        plugin.sit.get(player.getName()).remove();
-                    }
-                    plugin.sit.remove(player.getName());
-                    event.setCancelled(true);
-                    if (plugin.notifyplayer && !plugin.msgStanding.isEmpty()) {
-                        player.sendMessage(plugin.msgStanding);
-                    }
-
-                    return;
-                }
-
                 // Check for distance distance between player and chair.
                 if (plugin.distance > 0 && player.getLocation().distance(block.getLocation().add(0.5, 0, 0.5)) > plugin.distance) {
                     return;
@@ -222,48 +251,40 @@ public class EventListener implements Listener {
                         }
                     }
 
-                    Location chairLoc = event.getClickedBlock().getLocation().add(0.5, 0, 0.5);
+                    Location plocation = block.getLocation().clone();
+                    plocation.add(0.5D, (sh - 0.5D), 0.5D);
 
                     // Rotate the player's view to the descending side of the block.
                     if (plugin.autoRotate && stairs != null) {
-                        BlockFace direction = ((Directional) event.getClickedBlock().getState().getData()).getFacing();
-
-                        double dx = direction.getModX();
-                        double dy = direction.getModY();
-                        double dz = direction.getModZ();
-
-                        if (dx != 0) {
-                            if (dx < 0) {
-                                chairLoc.setYaw((float) (1.5 * Math.PI));
-                            } else {
-                                chairLoc.setYaw((float) (0.5 * Math.PI));
-                            }
-                            chairLoc.setYaw((float) (chairLoc.getYaw() - Math.atan(dz / dx)));
-                        } else if (dz < 0) {
-                            chairLoc.setYaw((float) Math.PI);
+                        switch (stairs.getDescendingDirection()) {
+                            case NORTH:
+                                plocation.setYaw(180);
+                                break;
+                            case EAST:
+                                plocation.setYaw(-90);
+                                break;
+                            case SOUTH:
+                                plocation.setYaw(0);
+                                break;
+                            case WEST:
+                                plocation.setYaw(90);
                         }
-
-                        double dxz = Math.sqrt(Math.pow(dx, 2) + Math.pow(dz, 2));
-
-                        chairLoc.setPitch((float) -Math.atan(dy / dxz));
-
-                        chairLoc.setYaw(-chairLoc.getYaw() * 180f / (float) Math.PI);
-                        chairLoc.setPitch(chairLoc.getPitch() * 180f / (float) Math.PI);
+                        player.teleport(plocation);
                     } else {
-                        chairLoc.setPitch(player.getPlayer().getLocation().getPitch());
-                        chairLoc.setYaw(player.getPlayer().getLocation().getYaw());         
+                        plocation.setYaw(player.getLocation().getYaw());
                     }
-                            //player.setSneaking(true);
+
                     if (plugin.notifyplayer && !plugin.msgSitting.isEmpty()) {
                         player.sendMessage(plugin.msgSitting);
                     }
-                    
-                    player.getPlayer().teleport(chairLoc);
-                    Entity ar = block.getWorld().spawnArrow(getBlockCentre(block).subtract(0, 0.5, 0), new Vector(0, 0, 0), 0, 0); 
-                    player.setSneaking(false);                    
-                    ar.setPassenger(player);
-                    ar.setTicksLived(1);
-                    plugin.sit.put(player.getName(), ar);                    
+
+                    player.getPlayer().teleport(plocation);
+                    Entity arrow = block.getWorld().spawnArrow(getBlockCentre(block).subtract(0, 0.5, 0), new Vector(0, 0, 0), 0, 0);
+
+                    arrow.setPassenger(player);
+                    player.setSneaking(false);
+                    arrow.setTicksLived(1);
+                    plugin.sit.put(player.getName(), arrow);
                     event.setCancelled(true);
                 }
             }

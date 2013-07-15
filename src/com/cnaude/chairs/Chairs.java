@@ -1,7 +1,5 @@
 package com.cnaude.chairs;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +40,6 @@ public class Chairs extends JavaPlugin {
     public PluginManager pm;
     public static ChairsIgnoreList ignoreList; 
     public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled;
-    private ProtocolManager protocolManager;
 
     @Override
     public void onEnable() {
@@ -61,12 +58,6 @@ public class Chairs extends JavaPlugin {
         if (sitEffectsEnabled) {
             logInfo("Enabling sitting effects.");
             chairEffects = new ChairEffects(this);
-        }
-        if (isProtocolLibLoaded()) {
-            logInfo("ProtocolLib detected.");
-            protocolManager = ProtocolLibrary.getProtocolManager();
-        } else {
-            logInfo("ProtocolLib not detected. Using NMS code methods instead.");
         }
     }
 
