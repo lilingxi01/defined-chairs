@@ -1,7 +1,5 @@
 package com.cnaude.chairs;
 
-import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.comphenix.protocol.Packets;
@@ -65,16 +63,6 @@ public class PacketListener {
         	}
     	}
     }
-    
-    
-    private Location getTeleportLoc(Player player)
-    {
-    	Block sittingon = pluginInstance.sitblockbr.get(player.getName());
-    	sittingon.getLocation();
-    	player.getLocation().getYaw();
-    	Location to = player.getLineOfSight(null, 5).get(0).getLocation();
-    	return to;
-    }
-    
+        
 
 }

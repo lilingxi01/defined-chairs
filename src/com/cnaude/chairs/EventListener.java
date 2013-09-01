@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
@@ -60,6 +61,17 @@ public class EventListener implements Listener {
         if (plugin.notifyplayer && !plugin.msgStanding.isEmpty()) {
             player.sendMessage(plugin.msgStanding);
         }
+    }
+    
+    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
+    public void onPlayerQuit(PlayerQuitEvent event)
+    {
+    	Player player = event.getPlayer();
+    	if (plugin.sit.containsKey(player.getName()))
+    	{
+			player.eject();
+			unSit(player);
+    	}
     }
     
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
