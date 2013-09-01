@@ -265,6 +265,7 @@ public class EventListener implements Listener {
                         player.sendMessage(plugin.msgSitting);
                     }
 
+                    plugin.sitstopteleportloc.put(player.getName(), player.getLocation());
                     player.teleport(plocation);
                     Entity arrow = block.getWorld().spawnArrow(getBlockCentre(block).subtract(0, 0.5, 0), new Vector(0, 0, 0), 0, 0);
                     arrow.setPassenger(player);

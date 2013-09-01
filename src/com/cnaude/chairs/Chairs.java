@@ -117,9 +117,20 @@ public class Chairs extends JavaPlugin {
     protected HashMap<Block, String> sitblock = new HashMap<Block, String>();
     protected HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
     protected HashMap<String, Location> sitstopteleportloc = new HashMap<String, Location>();
-    protected void ejectPlayer(Player player)
+    protected void ejectPlayer(final Player player)
     {
     	player.eject();
+    	final Location tploc = sitstopteleportloc.get(player.getName());
+    	System.out.println(tploc);
+    	if (tploc != null)
+    	{
+    		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
+    			public void run()
+    			{
+    	    		player.teleport(tploc);
+    			}
+    		},1);
+    	}
     	unSit(player);
     }
     protected void unSit(Player player) {
