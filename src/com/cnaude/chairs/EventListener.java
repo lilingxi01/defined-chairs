@@ -48,20 +48,11 @@ public class EventListener implements Listener {
                 return true;
             }
         } else if (plugin.sit.containsKey(player.getName())) {
-            unSit(player);
+        	plugin.unSit(player);
         }
         return false;
     }
     
-    private void unSit(Player player) {
-    	plugin.sit.get(player.getName()).remove();
-    	plugin.sitblock.remove(plugin.sitblockbr.get(player.getName()));
-    	plugin.sitblockbr.remove(player.getName());
-    	plugin.sit.remove(player.getName());
-        if (plugin.notifyplayer && !plugin.msgStanding.isEmpty()) {
-            player.sendMessage(plugin.msgStanding);
-        }
-    }
     
     @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
     public void onPlayerQuit(PlayerQuitEvent event)
@@ -70,7 +61,7 @@ public class EventListener implements Listener {
     	if (plugin.sit.containsKey(player.getName()))
     	{
 			player.eject();
-			unSit(player);
+			plugin.unSit(player);
     	}
     }
     
@@ -83,7 +74,7 @@ public class EventListener implements Listener {
     		String playername = plugin.sitblock.get(b);
     		Player player = Bukkit.getPlayerExact(playername);
 			player.eject();
-			unSit(player);
+			plugin.unSit(player);
     	}
     }
 

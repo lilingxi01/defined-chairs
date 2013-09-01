@@ -42,7 +42,7 @@ public class PacketListener {
 							if (pluginInstance.sit.containsKey(player.getName()))
 							{
 								player.eject();
-								unSit(player);
+								pluginInstance.unSit(player);
 							}
 						}
 					}
@@ -51,18 +51,7 @@ public class PacketListener {
 	}
 	
 	
-    private void unSit(Player player) {
-    	if (pluginInstance.sit.containsKey(player.getName()))
-    	{
-    		pluginInstance.sit.get(player.getName()).remove();
-    		pluginInstance.sitblock.remove(pluginInstance.sitblockbr.get(player.getName()));
-    		pluginInstance.sitblockbr.remove(player.getName());
-    		pluginInstance.sit.remove(player.getName());
-    		if (pluginInstance.notifyplayer && !pluginInstance.msgStanding.isEmpty()) {
-            	player.sendMessage(pluginInstance.msgStanding);
-        	}
-    	}
-    }
+
         
 
 }

@@ -39,9 +39,6 @@ public class Chairs extends JavaPlugin {
     public int sitEffectInterval;
     private File pluginFolder;
     private File configFile;    
-    public HashMap<String, Entity> sit = new HashMap<String, Entity>();
-    public HashMap<Block, String> sitblock = new HashMap<Block, String>();
-    public HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
     public static final String PLUGIN_NAME = "Chairs";
     public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
     static final Logger log = Bukkit.getLogger();
@@ -116,8 +113,20 @@ public class Chairs extends JavaPlugin {
         }
     }
     
-    public boolean isProtocolLibLoaded() {
-        return (getServer().getPluginManager().getPlugin("ProtocolLib") != null);
+    public HashMap<String, Entity> sit = new HashMap<String, Entity>();
+    public HashMap<Block, String> sitblock = new HashMap<Block, String>();
+    public HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
+    protected void unSit(Player player) {
+    	if (sit.containsKey(player.getName()))
+    	{
+    		sit.get(player.getName()).remove();
+    		sitblock.remove(sitblockbr.get(player.getName()));
+    		sitblockbr.remove(player.getName());
+    		sit.remove(player.getName());
+    		if (notifyplayer && !msgStanding.isEmpty()) {
+            	player.sendMessage(msgStanding);
+        	}
+    	}
     }
 
     public void loadConfig() {
