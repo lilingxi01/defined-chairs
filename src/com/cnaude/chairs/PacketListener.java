@@ -17,6 +17,7 @@ public class PacketListener {
 		this.pm = pm;
 		this.pluginInstance = plugin;
 		playerDismountListener();
+		falledPlayerDismountListener();
 	}
 	
 	
@@ -49,6 +50,31 @@ public class PacketListener {
 		}).syncStart();
 	}
 	
+	
+	private void falledPlayerDismountListener()
+	{
+		pm.getAsynchronousManager().registerAsyncHandler(
+				new PacketAdapter(PacketAdapter
+						.params(pluginInstance, Packets.Client.ENTITY_ACTION)
+						.clientSide()
+						.listenerPriority(ListenerPriority.HIGHEST)
+						.optionIntercept()
+		)
+		{
+				@Override
+				public void onPacketReceiving(final PacketEvent e) 
+				{
+					if (!e.isCancelled())
+					{
+						Player player = e.getPlayer();
+						if (pluginInstance.sit.containsKey(player.getName()))
+						{
+							pluginInstance.ejectPlayer(player);
+						}
+					}
+				}
+		}).syncStart();
+	}
 	
 
         
