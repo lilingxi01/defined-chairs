@@ -1,15 +1,19 @@
 package com.cnaude.chairs;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_6_R2.entity.CraftArrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
@@ -51,10 +55,31 @@ public class EventListener implements Listener {
     
     private void unSit(Player player) {
     	plugin.sit.get(player.getName()).remove();
+    	plugin.sitblock.remove(plugin.sitblockbr.get(player.getName()));
+    	plugin.sitblockbr.remove(player.getName());
     	plugin.sit.remove(player.getName());
         if (plugin.notifyplayer && !plugin.msgStanding.isEmpty()) {
             player.sendMessage(plugin.msgStanding);
         }
+    }
+    
+    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
+    public void onBlockBreak(BlockBreakEvent event)
+    {
+    	Block b = event.getBlock();
+    	if (plugin.sitblock.containsKey(b))
+    	{
+    		String playername = plugin.sitblock.get(b);
+    		Player player = Bukkit.getPlayerExact(playername);
+			final Entity arrow = plugin.sit.get(playername);
+			net.minecraft.server.v1_6_R2.EntityArrow nmsarrow = ((CraftArrow) arrow).getHandle();
+			nmsarrow.motX = 0;
+			nmsarrow.motY = 0;
+			nmsarrow.motZ = 0;
+			nmsarrow.boundingBox.b = -1;
+			player.eject();
+			unSit(player);
+    	}
     }
 
     @EventHandler
@@ -209,14 +234,13 @@ public class EventListener implements Listener {
                 // Sit-down process.
                     if (plugin.seatOccupiedCheck) {
                         if (!plugin.sit.isEmpty()) {
-                            for (String s : plugin.sit.keySet()) {
-                                if (plugin.sit.get(s).equals(block.getLocation())) {
-                                    if (!plugin.msgOccupied.isEmpty()) {
-                                        player.sendMessage(plugin.msgOccupied.replaceAll("%PLAYER%", s));
-                                    }
-                                    return;
-                                }
-                            }
+                        	if (plugin.sitblock.containsKey(block))
+                        	{
+                        		if (!plugin.msgOccupied.isEmpty()) {
+                        			player.sendMessage(plugin.msgOccupied.replaceAll("%PLAYER%", plugin.sitblock.get(block)));
+                        		}
+                        		return;
+                        	}
                         }
                     }
 
@@ -249,12 +273,14 @@ public class EventListener implements Listener {
                         player.sendMessage(plugin.msgSitting);
                     }
 
-                    player.getPlayer().teleport(plocation);
+                    player.teleport(plocation);
                     Entity arrow = block.getWorld().spawnArrow(getBlockCentre(block).subtract(0, 0.5, 0), new Vector(0, 0, 0), 0, 0);
                     arrow.setPassenger(player);
                     player.setSneaking(false);
                     arrow.setTicksLived(1);
                     plugin.sit.put(player.getName(), arrow);
+                    plugin.sitblock.put(block, player.getName());
+                    plugin.sitblockbr.put(player.getName(), block);
                     event.setCancelled(true);
             }
         }

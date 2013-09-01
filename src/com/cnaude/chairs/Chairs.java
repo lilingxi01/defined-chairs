@@ -11,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -39,6 +40,8 @@ public class Chairs extends JavaPlugin {
     private File pluginFolder;
     private File configFile;    
     public HashMap<String, Entity> sit = new HashMap<String, Entity>();
+    public HashMap<Block, String> sitblock = new HashMap<Block, String>();
+    public HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
     public static final String PLUGIN_NAME = "Chairs";
     public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
     static final Logger log = Bukkit.getLogger();
