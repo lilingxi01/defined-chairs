@@ -60,8 +60,7 @@ public class EventListener implements Listener {
     	Player player = event.getPlayer();
     	if (plugin.sit.containsKey(player.getName()))
     	{
-			player.eject();
-			plugin.unSit(player);
+    		plugin.ejectPlayer(player);
     	}
     }
     
@@ -71,10 +70,8 @@ public class EventListener implements Listener {
     	Block b = event.getBlock();
     	if (plugin.sitblock.containsKey(b))
     	{
-    		String playername = plugin.sitblock.get(b);
-    		Player player = Bukkit.getPlayerExact(playername);
-			player.eject();
-			plugin.unSit(player);
+    		Player player = Bukkit.getPlayerExact(plugin.sitblock.get(b));
+    		plugin.ejectPlayer(player);
     	}
     }
 

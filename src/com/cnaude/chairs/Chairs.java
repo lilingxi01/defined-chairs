@@ -113,15 +113,22 @@ public class Chairs extends JavaPlugin {
         }
     }
     
-    public HashMap<String, Entity> sit = new HashMap<String, Entity>();
-    public HashMap<Block, String> sitblock = new HashMap<Block, String>();
-    public HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
+    protected HashMap<String, Entity> sit = new HashMap<String, Entity>();
+    protected HashMap<Block, String> sitblock = new HashMap<Block, String>();
+    protected HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
+    protected HashMap<String, Location> sitstopteleportloc = new HashMap<String, Location>();
+    protected void ejectPlayer(Player player)
+    {
+    	player.eject();
+    	unSit(player);
+    }
     protected void unSit(Player player) {
     	if (sit.containsKey(player.getName()))
     	{
     		sit.get(player.getName()).remove();
     		sitblock.remove(sitblockbr.get(player.getName()));
     		sitblockbr.remove(player.getName());
+    		sitstopteleportloc.remove(player.getName());
     		sit.remove(player.getName());
     		if (notifyplayer && !msgStanding.isEmpty()) {
             	player.sendMessage(msgStanding);

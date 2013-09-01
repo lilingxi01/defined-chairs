@@ -41,8 +41,7 @@ public class PacketListener {
 							//just eject player if he is sitting on chair
 							if (pluginInstance.sit.containsKey(player.getName()))
 							{
-								player.eject();
-								pluginInstance.unSit(player);
+								pluginInstance.ejectPlayer(player);
 							}
 						}
 					}
