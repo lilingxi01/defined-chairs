@@ -1,7 +1,5 @@
 package com.cnaude.chairs;
 
-import java.util.HashSet;
-
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftArrow;
 import org.bukkit.entity.Entity;
@@ -40,15 +38,14 @@ public class PacketListener {
 					System.out.println("Checking packet");
 					if (!e.isCancelled())
 					{
-						System.out.println(e.getPacket().getBooleans().getValues().get(1));
 						final String playername = e.getPlayer().getName();
 						if (e.getPacket().getBooleans().getValues().get(1))
 						{
+							e.getAsyncMarker().incrementProcessingDelay();
 							Bukkit.getScheduler().scheduleSyncDelayedTask(pluginInstance, new Runnable()
 							{
 								public void run()
 								{
-									System.out.println("Doing magic");
 									Entity arrow = pluginInstance.sit.get(playername);
 									if (arrow != null)
 									{
@@ -56,19 +53,13 @@ public class PacketListener {
 										nmsarrow.motX = 0;
 										nmsarrow.motY = 0;
 										nmsarrow.motZ = 0;
-										nmsarrow.boundingBox.b = 0.1;
+										nmsarrow.boundingBox.b = -1;
 									}
+									pm.getAsynchronousManager().signalPacketTransmission(e);
 								}
 							});
-							e.getAsyncMarker().incrementProcessingDelay();
-							  
-							Bukkit.getScheduler().scheduleSyncDelayedTask(pluginInstance, new Runnable() 
-							{
-								public void run() {
-									pm.getAsynchronousManager().signalPacketTransmission(e);
-								 }
-							}, 2);
 						}
+							  
 					}
 				}
 		}).start();
