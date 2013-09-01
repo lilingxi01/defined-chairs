@@ -67,6 +67,7 @@ public class Chairs extends JavaPlugin {
         }
         protocolManager = ProtocolLibrary.getProtocolManager();
         new PacketListener(protocolManager, this);
+
     }
 
     @Override
@@ -121,7 +122,6 @@ public class Chairs extends JavaPlugin {
     {
     	player.eject();
     	final Location tploc = sitstopteleportloc.get(player.getName());
-    	System.out.println(tploc);
     	if (tploc != null)
     	{
     		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
@@ -146,6 +146,7 @@ public class Chairs extends JavaPlugin {
         	}
     	}
     }
+
 
     public void loadConfig() {
         autoRotate = getConfig().getBoolean("auto-rotate");
