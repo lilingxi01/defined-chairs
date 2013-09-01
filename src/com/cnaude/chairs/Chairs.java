@@ -2,6 +2,7 @@ package com.cnaude.chairs;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,7 +26,6 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 
 public class Chairs extends JavaPlugin {
-    private static Chairs instance = null;
     public static ChairEffects chairEffects;
     public List<ChairBlock> allowedBlocks;
     public List<Material> validSigns;
@@ -49,8 +49,7 @@ public class Chairs extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        instance = this;
-        ignoreList = new ChairsIgnoreList();
+        ignoreList = new ChairsIgnoreList(this);
         ignoreList.load();
         pm = this.getServer().getPluginManager();
         pluginFolder = getDataFolder();
@@ -67,7 +66,6 @@ public class Chairs extends JavaPlugin {
         }
         protocolManager = ProtocolLibrary.getProtocolManager();
         new PacketListener(protocolManager, this);
-
     }
 
     @Override
@@ -87,7 +85,6 @@ public class Chairs extends JavaPlugin {
             chairEffects.cancel();     
         }
         HandlerList.unregisterAll(this);
-        instance = null;
     }
     
     public void restartEffectsTask() {
@@ -257,9 +254,6 @@ public class Chairs extends JavaPlugin {
         log.log(Level.SEVERE, String.format("%s %s", LOG_HEADER, _message));
     }
     
-    public static Chairs get() {
-        return instance;
-    }
     
         
 }
