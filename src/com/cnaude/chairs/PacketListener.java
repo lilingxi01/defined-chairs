@@ -1,10 +1,7 @@
 package com.cnaude.chairs;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_6_R2.entity.CraftArrow;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.comphenix.protocol.Packets;
@@ -43,28 +40,13 @@ public class PacketListener {
 						final Player player = e.getPlayer();
 						if (e.getPacket().getBooleans().getValues().get(1))
 						{
-							//hacks to avoid nope error
-							final Entity arrow = pluginInstance.sit.get(player.getName());
-							if (arrow != null)
+							//just eject player if he is sitting on chair
+							if (pluginInstance.sit.containsKey(player.getName()))
 							{
-								net.minecraft.server.v1_6_R2.EntityArrow nmsarrow = ((CraftArrow) arrow).getHandle();
-								nmsarrow.motX = 0;
-								nmsarrow.motY = 0;
-								nmsarrow.motZ = 0;
-								nmsarrow.boundingBox.b = -1;
+								player.eject();
+								unSit(player);
 							}
-							//teleport player to correct location
-							
-							//unsit player
-							Bukkit.getScheduler().scheduleSyncDelayedTask(pluginInstance, new Runnable()
-							{
-								public void run()
-								{
-									unSit(player);
-								}
-							},1);
 						}
-							  
 					}
 				}
 		}).syncStart();
