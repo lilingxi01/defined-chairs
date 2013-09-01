@@ -3,6 +3,7 @@ package com.cnaude.chairs;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftArrow;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import com.comphenix.protocol.Packets;
 import com.comphenix.protocol.ProtocolManager;
@@ -37,31 +38,42 @@ public class PacketListener {
 				{
 					if (!e.isCancelled())
 					{
-						final String playername = e.getPlayer().getName();
+						final Player player = e.getPlayer();
 						if (e.getPacket().getBooleans().getValues().get(1))
 						{
-							e.getAsyncMarker().incrementProcessingDelay();
+							final Entity arrow = pluginInstance.sit.get(player.getName());
+							if (arrow != null)
+							{
+								net.minecraft.server.v1_6_R2.EntityArrow nmsarrow = ((CraftArrow) arrow).getHandle();
+								nmsarrow.motX = 0;
+								nmsarrow.motY = 0;
+								nmsarrow.motZ = 0;
+								nmsarrow.boundingBox.b = -1;
+							}
 							Bukkit.getScheduler().scheduleSyncDelayedTask(pluginInstance, new Runnable()
 							{
 								public void run()
 								{
-									Entity arrow = pluginInstance.sit.get(playername);
-									if (arrow != null)
-									{
-										net.minecraft.server.v1_6_R2.EntityArrow nmsarrow = ((CraftArrow) arrow).getHandle();
-										nmsarrow.motX = 0;
-										nmsarrow.motY = 0;
-										nmsarrow.motZ = 0;
-										nmsarrow.boundingBox.b = -1;
-									}
-									pm.getAsynchronousManager().signalPacketTransmission(e);
+									unSit(player);
 								}
-							});
+							},1);
 						}
 							  
 					}
 				}
-		}).start();
+		}).syncStart();
 	}
+	
+	
+    private void unSit(Player player) {
+    	if (pluginInstance.sit.containsKey(player.getName()))
+    	{
+    		pluginInstance.sit.get(player.getName()).remove();
+    		pluginInstance.sit.remove(player.getName());
+    		if (pluginInstance.notifyplayer && !pluginInstance.msgStanding.isEmpty()) {
+            	player.sendMessage(pluginInstance.msgStanding);
+        	}
+    	}
+    }
 
 }

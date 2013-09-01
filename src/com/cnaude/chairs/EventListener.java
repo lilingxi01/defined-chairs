@@ -11,8 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
@@ -39,36 +37,6 @@ public class EventListener implements Listener {
         return false;
     }
 
-    @EventHandler
-    public void onVehicleExitEvent(VehicleExitEvent event) {
-        Entity e = event.getVehicle().getPassenger();
-        if (e instanceof Player) {
-            Player player = (Player) e;
-            if (plugin.sit.containsKey(player.getName())) {
-                unSit(player);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlayerMoveEvent(PlayerMoveEvent event) {
-        if (event.getFrom().distance(event.getTo()) > 0) {
-            Player player = event.getPlayer();
-            if (plugin.sit.containsKey(player.getName())) {
-                if (plugin.sit.get(player.getName()).getLocation().distance(player.getLocation()) > 0.5) {
-                    unSit(player);
-                }
-            }
-        }
-    }
-
-    private void unSit(Player player) {
-        plugin.sit.get(player.getName()).remove();
-        plugin.sit.remove(player.getName());
-        if (plugin.notifyplayer && !plugin.msgStanding.isEmpty()) {
-            player.sendMessage(plugin.msgStanding);
-        }
-    }
 
     private boolean isSitting(Player player) {
         if (player.isInsideVehicle()) {
@@ -79,6 +47,14 @@ public class EventListener implements Listener {
             unSit(player);
         }
         return false;
+    }
+    
+    private void unSit(Player player) {
+    	plugin.sit.get(player.getName()).remove();
+    	plugin.sit.remove(player.getName());
+        if (plugin.notifyplayer && !plugin.msgStanding.isEmpty()) {
+            player.sendMessage(plugin.msgStanding);
+        }
     }
 
     @EventHandler
