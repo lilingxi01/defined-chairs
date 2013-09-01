@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,7 +28,7 @@ public class Chairs extends JavaPlugin {
     public static ChairEffects chairEffects;
     public List<ChairBlock> allowedBlocks;
     public List<Material> validSigns;
-    public boolean sneaking, autoRotate, signCheck, permissions, notifyplayer, opsOverridePerms;
+    public boolean autoRotate, signCheck, permissions, notifyplayer, opsOverridePerms;
     public boolean invertedStairCheck, seatOccupiedCheck, invertedStepCheck, perItemPerms, ignoreIfBlockInHand;
     public boolean sitEffectsEnabled;
     public double sittingHeight, sittingHeightAdj, distance;
@@ -40,7 +41,7 @@ public class Chairs extends JavaPlugin {
     public HashMap<String, Entity> sit = new HashMap<String, Entity>();
     public static final String PLUGIN_NAME = "Chairs";
     public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
-    static final Logger log = Logger.getLogger("Minecraft");
+    static final Logger log = Bukkit.getLogger();
     public PluginManager pm;
     public static ChairsIgnoreList ignoreList; 
     public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled;
@@ -118,7 +119,6 @@ public class Chairs extends JavaPlugin {
 
     public void loadConfig() {
         autoRotate = getConfig().getBoolean("auto-rotate");
-        sneaking = getConfig().getBoolean("sneaking");
         signCheck = getConfig().getBoolean("sign-check");
         sittingHeight = getConfig().getDouble("sitting-height");
         sittingHeightAdj = getConfig().getDouble("sitting-height-adj");
