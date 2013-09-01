@@ -35,7 +35,6 @@ public class PacketListener {
 				@Override
 				public void onPacketReceiving(final PacketEvent e) 
 				{
-					System.out.println("Checking packet");
 					if (!e.isCancelled())
 					{
 						final String playername = e.getPlayer().getName();
