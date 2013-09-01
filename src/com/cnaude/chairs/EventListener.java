@@ -5,7 +5,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.craftbukkit.v1_6_R2.entity.CraftArrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
@@ -71,12 +70,6 @@ public class EventListener implements Listener {
     	{
     		String playername = plugin.sitblock.get(b);
     		Player player = Bukkit.getPlayerExact(playername);
-			final Entity arrow = plugin.sit.get(playername);
-			net.minecraft.server.v1_6_R2.EntityArrow nmsarrow = ((CraftArrow) arrow).getHandle();
-			nmsarrow.motX = 0;
-			nmsarrow.motY = 0;
-			nmsarrow.motZ = 0;
-			nmsarrow.boundingBox.b = -1;
 			player.eject();
 			unSit(player);
     	}
