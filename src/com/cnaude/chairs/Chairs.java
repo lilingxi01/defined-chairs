@@ -3,6 +3,7 @@ package com.cnaude.chairs;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,9 +39,7 @@ public class Chairs extends JavaPlugin {
     public int sitEffectInterval;
     private File pluginFolder;
     private File configFile;    
-    public static final String PLUGIN_NAME = "Chairs";
-    public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
-    static final Logger log = Bukkit.getLogger();
+    private Logger log;
     public PluginManager pm;
     public static ChairsIgnoreList ignoreList; 
     public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled;
@@ -48,6 +47,7 @@ public class Chairs extends JavaPlugin {
 
     @Override
     public void onEnable() {
+    	log = this.getLogger();
         ignoreList = new ChairsIgnoreList(this);
         ignoreList.load();
         pm = this.getServer().getPluginManager();
@@ -71,11 +71,8 @@ public class Chairs extends JavaPlugin {
     public void onDisable() {
     	protocolManager.removePacketListeners(this);
     	protocolManager = null;
-        for (String pName : sit.keySet()) {
-            Player player = getServer().getPlayer(pName);
-            Location loc = player.getLocation().clone();
-            loc.setY(loc.getY() + 1);
-            player.teleport(loc, PlayerTeleportEvent.TeleportCause.PLUGIN);
+        for (String pName : new HashSet<String>(sit.keySet())) {
+        	ejectPlayerOnDisable(Bukkit.getPlayerExact(pName));
         }
         if (ignoreList != null) {
             ignoreList.save();
@@ -84,6 +81,7 @@ public class Chairs extends JavaPlugin {
             chairEffects.cancel();     
         }
         HandlerList.unregisterAll(this);
+        log = null;
     }
     
     public void restartEffectsTask() {
@@ -141,6 +139,15 @@ public class Chairs extends JavaPlugin {
             	player.sendMessage(msgStanding);
         	}
     	}
+    }
+    private void ejectPlayerOnDisable(Player player)
+    {
+    	player.eject();
+		sit.get(player.getName()).remove();
+		sitblock.remove(sitblockbr.get(player.getName()));
+		sitblockbr.remove(player.getName());
+		sitstopteleportloc.remove(player.getName());
+		sit.remove(player.getName());
     }
 
 
@@ -246,11 +253,11 @@ public class Chairs extends JavaPlugin {
     } 
     
     public void logInfo(String _message) {
-        log.log(Level.INFO, String.format("%s %s", LOG_HEADER, _message));
+        log.log(Level.INFO, _message);
     }
 
     public void logError(String _message) {
-        log.log(Level.SEVERE, String.format("%s %s", LOG_HEADER, _message));
+        log.log(Level.SEVERE, _message);
     }
     
     
