@@ -260,7 +260,6 @@ public class EventListener implements Listener {
 						default:
 							;
                         }
-                        player.teleport(plocation);
                     } else {
                         plocation.setYaw(player.getLocation().getYaw());
                     }
