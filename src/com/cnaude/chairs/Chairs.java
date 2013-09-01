@@ -6,16 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 
 public class Chairs extends JavaPlugin {
     private static Chairs instance = null;
@@ -32,7 +37,6 @@ public class Chairs extends JavaPlugin {
     public int sitEffectInterval;
     private File pluginFolder;
     private File configFile;    
-    public byte sitByte;
     public HashMap<String, Entity> sit = new HashMap<String, Entity>();
     public static final String PLUGIN_NAME = "Chairs";
     public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
@@ -40,6 +44,7 @@ public class Chairs extends JavaPlugin {
     public PluginManager pm;
     public static ChairsIgnoreList ignoreList; 
     public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled;
+    private ProtocolManager protocolManager;
 
     @Override
     public void onEnable() {
@@ -59,16 +64,19 @@ public class Chairs extends JavaPlugin {
             logInfo("Enabling sitting effects.");
             chairEffects = new ChairEffects(this);
         }
+        protocolManager = ProtocolLibrary.getProtocolManager();
+        new PacketListener(protocolManager, this);
     }
 
     @Override
     public void onDisable() {
+    	protocolManager.removePacketListeners(this);
+    	protocolManager = null;
         for (String pName : sit.keySet()) {
             Player player = getServer().getPlayer(pName);
             Location loc = player.getLocation().clone();
             loc.setY(loc.getY() + 1);
             player.teleport(loc, PlayerTeleportEvent.TeleportCause.PLUGIN);
-            
         }
         if (ignoreList != null) {
             ignoreList.save();
@@ -76,6 +84,8 @@ public class Chairs extends JavaPlugin {
         if (chairEffects != null) {
             chairEffects.cancel();     
         }
+        HandlerList.unregisterAll(this);
+        instance = null;
     }
     
     public void restartEffectsTask() {
@@ -106,9 +116,7 @@ public class Chairs extends JavaPlugin {
         return (getServer().getPluginManager().getPlugin("ProtocolLib") != null);
     }
 
-    public void loadConfig() {     
-        sitByte = Byte.parseByte(getConfig().getString("packet"));
-        logInfo("Sitting packet byte: " + sitByte);
+    public void loadConfig() {
         autoRotate = getConfig().getBoolean("auto-rotate");
         sneaking = getConfig().getBoolean("sneaking");
         signCheck = getConfig().getBoolean("sign-check");

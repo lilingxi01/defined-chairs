@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.craftbukkit.v1_6_R2.entity.CraftArrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
@@ -134,8 +135,6 @@ public class EventListener implements Listener {
             }
 
             for (ChairBlock cb : plugin.allowedBlocks) {
-                //plugin.logInfo("Comparing: (" + cb.getMat().name() + " ? " + block.getType().name() + ") ("
-                //        + cb.getDamage() + " ? " + block.getData() + ")");
                 if (cb.getMat().toString().contains("STAIRS")) {
                     if (cb.getMat().equals(block.getType())) {
                         blockOkay = true;
@@ -157,16 +156,12 @@ public class EventListener implements Listener {
 
                 if (block.getState().getData() instanceof Stairs) {
                     stairs = (Stairs) block.getState().getData();
-                    //plugin.logInfo("STAIR");
                 } else if (block.getState().getData() instanceof Step) {
                     step = (Step) block.getState().getData();
-                    //plugin.logInfo("STEP");
                 } else if (block.getState().getData() instanceof WoodenStep) {
                     wStep = (WoodenStep) block.getState().getData();
-                    //plugin.logInfo("WOODEN_STEP");
                 } else {
                     sh += plugin.sittingHeightAdj;
-                    //plugin.logInfo("OTHER");
                 }
 
                 int chairwidth = 1;
@@ -202,7 +197,7 @@ public class EventListener implements Listener {
                         return;
                     }
                 }
-
+                
                 // Check for signs.
                 if (plugin.signCheck == true && stairs != null) {
                     boolean sign1 = false;
@@ -235,9 +230,8 @@ public class EventListener implements Listener {
                         return;
                     }
                 }
-
+                
                 // Sit-down process.
-                if (!plugin.sneaking || (plugin.sneaking && event.getPlayer().isSneaking())) {
                     if (plugin.seatOccupiedCheck) {
                         if (!plugin.sit.isEmpty()) {
                             for (String s : plugin.sit.keySet()) {
@@ -268,6 +262,8 @@ public class EventListener implements Listener {
                                 break;
                             case WEST:
                                 plocation.setYaw(90);
+						default:
+							;
                         }
                         player.teleport(plocation);
                     } else {
@@ -280,13 +276,11 @@ public class EventListener implements Listener {
 
                     player.getPlayer().teleport(plocation);
                     Entity arrow = block.getWorld().spawnArrow(getBlockCentre(block).subtract(0, 0.5, 0), new Vector(0, 0, 0), 0, 0);
-
                     arrow.setPassenger(player);
                     player.setSneaking(false);
                     arrow.setTicksLived(1);
                     plugin.sit.put(player.getName(), arrow);
                     event.setCancelled(true);
-                }
             }
         }
     }
