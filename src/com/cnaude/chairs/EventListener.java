@@ -282,8 +282,22 @@ public class EventListener implements Listener {
                 plugin.sit.put(player.getName(), arrow);
                 plugin.sitblock.put(block, player.getName());
                 plugin.sitblockbr.put(player.getName(), block);
+                startReSitTask(player);
                 sit = true;
         }
+    }
+    
+    protected void startReSitTask(final Player player)
+    {
+    	int task = 
+    	Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
+    	{
+    		public void run()
+    		{
+    			plugin.reSitPlayer(player);
+    		}    	
+    	},1150,1150);
+    	plugin.sittask.put(player.getName(), task);
     }
     
 

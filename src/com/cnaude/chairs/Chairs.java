@@ -20,6 +20,7 @@ import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
@@ -111,6 +112,16 @@ public class Chairs extends JavaPlugin {
     protected HashMap<Block, String> sitblock = new HashMap<Block, String>();
     protected HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
     protected HashMap<String, Location> sitstopteleportloc = new HashMap<String, Location>();
+    protected HashMap<String, Integer> sittask = new HashMap<String, Integer>();
+    protected void reSitPlayer(final Player player)
+    {
+    	player.eject();
+		sit.get(player.getName()).remove();
+		Block block = sitblockbr.get(player.getName());
+        Entity arrow = block.getWorld().spawnArrow(block.getLocation().add(0.5, 0, 0.5), new Vector(0, 0, 0), 0, 0);
+        arrow.setPassenger(player);
+        sit.put(player.getName(), arrow);
+    }
     protected void ejectPlayer(final Player player)
     {
     	player.eject();
@@ -126,6 +137,11 @@ public class Chairs extends JavaPlugin {
     	}
     	unSit(player);
     }
+    private void ejectPlayerOnDisable(Player player)
+    {
+    	player.eject();
+    	unSit(player);
+    }
     protected void unSit(Player player) {
     	if (sit.containsKey(player.getName()))
     	{
@@ -134,19 +150,12 @@ public class Chairs extends JavaPlugin {
     		sitblockbr.remove(player.getName());
     		sitstopteleportloc.remove(player.getName());
     		sit.remove(player.getName());
+    		Bukkit.getScheduler().cancelTask(sittask.get(player.getName()));
+    		sittask.remove(player.getName());
     		if (notifyplayer && !msgStanding.isEmpty()) {
             	player.sendMessage(msgStanding);
         	}
     	}
-    }
-    private void ejectPlayerOnDisable(Player player)
-    {
-    	player.eject();
-		sit.get(player.getName()).remove();
-		sitblock.remove(sitblockbr.get(player.getName()));
-		sitblockbr.remove(player.getName());
-		sitstopteleportloc.remove(player.getName());
-		sit.remove(player.getName());
     }
 
 
