@@ -44,12 +44,12 @@ public class EventListener implements Listener {
 
 
     private boolean isSitting(Player player) {
-        if (player.isInsideVehicle()) {
-            if (plugin.sit.containsKey(player.getName())) {
-                return true;
+        if (plugin.sit.containsKey(player.getName())) {
+        	if (player.isInsideVehicle()) {
+        		return true;
+            } else {
+            	plugin.unSit(player);
             }
-        } else if (plugin.sit.containsKey(player.getName())) {
-        	plugin.unSit(player);
         }
         return false;
     }
