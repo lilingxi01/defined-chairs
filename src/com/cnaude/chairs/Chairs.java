@@ -127,7 +127,7 @@ public class Chairs extends JavaPlugin {
 			{
 				prevarrow.remove();
 			}
-		},40);
+		},200);
     }
     protected void ejectPlayer(final Player player)
     {

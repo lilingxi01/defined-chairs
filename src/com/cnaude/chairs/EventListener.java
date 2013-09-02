@@ -54,7 +54,7 @@ public class EventListener implements Listener {
     }
     
     
-    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
+    @EventHandler(priority=EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event)
     {
     	Player player = event.getPlayer();
@@ -296,7 +296,7 @@ public class EventListener implements Listener {
     		{
     			plugin.reSitPlayer(player);
     		}    	
-    	},1150,1150);
+    	},1000,1000);
     	plugin.sittask.put(player.getName(), task);
     }
     
