@@ -70,7 +70,7 @@ public class Chairs extends JavaPlugin {
 
     @Override
     public void onDisable() {
-    	protocolManager.removePacketListeners(this);
+    	protocolManager.getAsynchronousManager().unregisterAsyncHandlers(this);
     	protocolManager = null;
         for (String pName : new HashSet<String>(sit.keySet())) {
         	ejectPlayerOnDisable(Bukkit.getPlayerExact(pName));
