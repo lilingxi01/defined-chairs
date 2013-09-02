@@ -297,10 +297,8 @@ public class EventListener implements Listener {
 
                 plugin.sitstopteleportloc.put(player.getName(), player.getLocation());
                 player.teleport(plocation);
-                Entity arrow = block.getWorld().spawnArrow(getBlockCentre(block).subtract(0, 0.5, 0), new Vector(0, 0, 0), 0, 0);
+                Entity arrow = block.getWorld().spawnArrow(block.getLocation().add(0.5, 0 , 0.5), new Vector(0, 0, 0), 0, 0);
                 arrow.setPassenger(player);
-                player.setSneaking(false);
-                arrow.setTicksLived(1);
                 plugin.sit.put(player.getName(), arrow);
                 plugin.sitblock.put(block, player.getName());
                 plugin.sitblockbr.put(player.getName(), block);
@@ -320,12 +318,6 @@ public class EventListener implements Listener {
     		}    	
     	},1000,1000);
     	plugin.sittask.put(player.getName(), task);
-    }
-    
-
-    // https://github.com/sk89q/craftbook/blob/master/src/main/java/com/sk89q/craftbook/util/BlockUtil.java
-    public static Location getBlockCentre(Block block) {
-        return block.getLocation().add(0.5, 0.5, 0.5);
     }
 
     private int getChairWidth(Block block, BlockFace face) {
