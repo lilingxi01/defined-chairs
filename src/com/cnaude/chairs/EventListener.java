@@ -105,7 +105,7 @@ public class EventListener implements Listener {
         	if (sitAllowed(player, block))
         	{
         		Location sitLocation = getSitLocation(block, player.getLocation().getYaw());
-            	sitPlayer(player, block, sitLocation);
+            	sitPlayer(player, sitLocation);
             	event.setCancelled(true);
         	}
         }
@@ -308,11 +308,12 @@ public class EventListener implements Listener {
     }
     
     
-    private void sitPlayer(Player player, Block block, Location sitlocation)
+    private void sitPlayer(Player player, Location sitlocation)
     {
         if (plugin.notifyplayer && !plugin.msgSitting.isEmpty()) {
             player.sendMessage(plugin.msgSitting);
         }
+        Block block = sitlocation.getBlock();
         plugin.sitstopteleportloc.put(player.getName(), player.getLocation());
         player.teleport(sitlocation);
         player.setSneaking(false);
