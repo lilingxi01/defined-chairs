@@ -244,20 +244,17 @@ public class EventListener implements Listener {
                 }
             }
             
-            // Sit-down process.
-                if (plugin.seatOccupiedCheck) {
-                    if (!plugin.sit.isEmpty()) {
-                    	if (plugin.sitblock.containsKey(block))
-                    	{
-                    		if (!plugin.msgOccupied.isEmpty()) {
-                    			player.sendMessage(plugin.msgOccupied.replaceAll("%PLAYER%", plugin.sitblock.get(block)));
-                    		}
-                    		return false;
-                    	}
-                    }
-                }
+            //Sit occupied check
+            if (plugin.sitblock.containsKey(block))
+            {
+            	if (!plugin.msgOccupied.isEmpty()) {
+            		player.sendMessage(plugin.msgOccupied.replaceAll("%PLAYER%", plugin.sitblock.get(block)));
+            	}
+                return false;
+            }
         }
 		return true;
+		
     }
     
     private Location getSitLocation(Block block, Float playerYaw)
