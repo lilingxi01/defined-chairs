@@ -163,11 +163,16 @@ public class EventListener implements Listener {
                 continue;
             }
         }
-        if (blockOkay
-                || (player.hasPermission("chairs.sit." + block.getTypeId() + ":" + block.getData()) && plugin.perItemPerms)
-                || (player.hasPermission("chairs.sit." + block.getType().toString() + ":" + block.getData()) && plugin.perItemPerms)
-                || (player.hasPermission("chairs.sit." + block.getTypeId()) && plugin.perItemPerms)
-                || (player.hasPermission("chairs.sit." + block.getType().toString()) && plugin.perItemPerms)) {
+        if (blockOkay ||
+        		(plugin.perItemPerms &&
+        				(
+        						player.hasPermission("chairs.sit." + block.getTypeId() + ":" + block.getData()) || 
+        						player.hasPermission("chairs.sit." + block.getType().toString() + ":" + block.getData()) ||
+        						player.hasPermission("chairs.sit." + block.getTypeId()) ||
+        						player.hasPermission("chairs.sit." + block.getType().toString())
+        				)
+        		)
+        	) {
 
             if (block.getState().getData() instanceof Stairs) {
                 stairs = (Stairs) block.getState().getData();
