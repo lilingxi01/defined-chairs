@@ -45,12 +45,25 @@ public class EventListener implements Listener {
     	Location loc = player.getLocation();
     	if (Double.isNaN(loc.getY()))
     	{
-    		loc = player.getBedSpawnLocation();
-    		if (loc == null)
+    		Location teleportloc = null;
+    		//corect y, there should be a valid chair somewhere up
+    		Location temploc = loc.clone();
+    		for (int i = 1 ; i<loc.getWorld().getMaxHeight(); i++)
     		{
-    			loc = player.getWorld().getSpawnLocation();
+    			temploc.setY(i);
+    			if (sitAllowed(player, temploc.getBlock()))
+    			{
+    				//maybe this is a chair we are looking for
+    				teleportloc = temploc.clone();
+    				break;
+    			}
     		}
-			player.teleport(loc);
+    		//if we didn't find the chair just teleport player to world spawn
+    		if (teleportloc == null)
+    		{
+    			teleportloc = player.getWorld().getSpawnLocation();
+    		}
+			player.teleport(teleportloc);
     	}
     }
     
@@ -305,6 +318,7 @@ public class EventListener implements Listener {
         }
         plugin.sitstopteleportloc.put(player.getName(), player.getLocation());
         player.teleport(sitlocation);
+        player.setSneaking(false);
         Entity arrow = block.getWorld().spawnArrow(block.getLocation().add(0.5, 0 , 0.5), new Vector(0, 0, 0), 0, 0);
         arrow.setPassenger(player);
         plugin.sit.put(player.getName(), arrow);
@@ -324,9 +338,8 @@ public class EventListener implements Listener {
     	},1000,1000);
     	plugin.sittask.put(player.getName(), task);
     }
- 
-
-    public boolean isValidChair(Block block) {
+    
+    private boolean isValidChair(Block block) {
         for (ChairBlock cb : plugin.allowedBlocks) {
             if (cb.getMat().equals(block.getType())) {
                 return true;
@@ -334,7 +347,6 @@ public class EventListener implements Listener {
         }
         return false;
     }
-
 
     private boolean isSitting(Player player) {
         if (plugin.sit.containsKey(player.getName())) {
