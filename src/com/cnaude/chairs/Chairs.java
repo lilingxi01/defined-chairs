@@ -144,6 +144,7 @@ public class Chairs extends JavaPlugin {
     			public void run()
     			{
     	    		player.teleport(tploc);
+    	    		player.setSneaking(false);
     			}
     		},1);
     	}
@@ -164,7 +165,6 @@ public class Chairs extends JavaPlugin {
     		sit.remove(player.getName());
     		Bukkit.getScheduler().cancelTask(sittask.get(player.getName()));
     		sittask.remove(player.getName());
-    		player.setSneaking(false);
     		if (notifyplayer && !msgStanding.isEmpty()) {
             	player.sendMessage(msgStanding);
         	}
