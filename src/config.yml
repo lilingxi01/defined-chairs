@@ -31,7 +31,6 @@ valid-signs:
   - WALL_SIGN
   - SIGN_POST
   - ITEM_FRAME
-authme-loginlocation-correction: false
 auto-rotate: true
 max-chair-width: 3
 sign-check: false
