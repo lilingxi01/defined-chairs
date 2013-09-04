@@ -235,9 +235,10 @@ public class EventListener implements Listener {
             	}
                 return false;
             }
+    		return true;
         }
-		return true;
-		
+        
+        return false;
     }
     
     private Location getSitLocation(Block block, Float playerYaw)
