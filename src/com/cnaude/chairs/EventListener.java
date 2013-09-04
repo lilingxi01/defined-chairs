@@ -35,35 +35,12 @@ public class EventListener implements Listener {
     
     @EventHandler(priority=EventPriority.LOWEST,ignoreCancelled=true)
     public void onJoin(PlayerJoinEvent e)
-    {
-    	if (!plugin.authmelogincorrection)
-    	{
-    		return;
-    	}
-    	
+    {    	
     	Player player = e.getPlayer();
-    	Location loc = player.getLocation();
-    	if (Double.isNaN(loc.getY()))
+    	Location loc = plugin.getPlayerSitstoploc(player.getName());
+    	if (loc != null)
     	{
-    		Location teleportloc = null;
-    		//corect y, there should be a valid chair somewhere up
-    		Location temploc = loc.clone();
-    		for (int i = 1 ; i<loc.getWorld().getMaxHeight(); i++)
-    		{
-    			temploc.setY(i);
-    			if (sitAllowed(player, temploc.getBlock()))
-    			{
-    				//maybe this is a chair we are looking for
-    				teleportloc = temploc.clone();
-    				break;
-    			}
-    		}
-    		//if we didn't find the chair just teleport player to world spawn
-    		if (teleportloc == null)
-    		{
-    			teleportloc = player.getWorld().getSpawnLocation();
-    		}
-			player.teleport(teleportloc);
+    		player.teleport(loc);
     	}
     }
     
@@ -73,6 +50,7 @@ public class EventListener implements Listener {
     	Player player = event.getPlayer();
     	if (plugin.sit.containsKey(player.getName()))
     	{
+    		plugin.savePlayerSitstoploc(player.getName());
     		plugin.ejectPlayer(player);
     	}
     }
