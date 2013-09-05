@@ -69,6 +69,21 @@ public class Chairs extends JavaPlugin {
         }
         protocolManager = ProtocolLibrary.getProtocolManager();
         new PacketListener(protocolManager, this);
+        for (final Player player : Bukkit.getOnlinePlayers())
+        {
+        	final Location loc = getPlayerSitstoploc(player.getName());
+        	if (loc != null) 
+        	{
+        		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+        		{
+        			public void run()
+        			{
+                		player.teleport(loc);
+        	    		player.setSneaking(false);
+        			}
+        		},1);
+        	}
+        }
     }
 
     @Override
