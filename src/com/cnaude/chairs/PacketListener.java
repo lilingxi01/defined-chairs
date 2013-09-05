@@ -64,6 +64,7 @@ public class PacketListener {
 				{
 					if (!e.isCancelled())
 					{
+						//eject player if he is in chair and tryes to sneak (it is impossible unless arrow will disappear in client due to server lags)
 						Player player = e.getPlayer();
 						if (pluginInstance.sit.containsKey(player.getName()))
 						{
