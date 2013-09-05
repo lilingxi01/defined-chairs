@@ -261,6 +261,8 @@ public class EventListener implements Listener {
         Stairs stairs = null;
         if (block.getState().getData() instanceof Stairs) {
             stairs = (Stairs) block.getState().getData();
+        } else if (block.getState().getData() instanceof Step) {
+        } else if (block.getState().getData() instanceof WoodenStep) {
         } else {
             sh += plugin.sittingHeightAdj;
         }
