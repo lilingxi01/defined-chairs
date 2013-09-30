@@ -32,7 +32,7 @@ public class Chairs extends JavaPlugin {
     public List<ChairBlock> allowedBlocks;
     public List<Material> validSigns;
     public boolean autoRotate, signCheck, notifyplayer;
-    public boolean invertedStairCheck, invertedStepCheck, perItemPerms, ignoreIfBlockInHand;
+    public boolean invertedStairCheck, invertedStepCheck, ignoreIfBlockInHand;
     public boolean sitEffectsEnabled;
     public double sittingHeight, sittingHeightAdj, distance;
     public int maxChairWidth;
@@ -225,7 +225,6 @@ public class Chairs extends JavaPlugin {
         notifyplayer = getConfig().getBoolean("notify-player");
         invertedStairCheck = getConfig().getBoolean("upside-down-check");
         invertedStepCheck = getConfig().getBoolean("upper-step-check");
-        perItemPerms = getConfig().getBoolean("per-item-perms");
         ignoreIfBlockInHand = getConfig().getBoolean("ignore-if-block-in-hand");
         
         sitEffectsEnabled = getConfig().getBoolean("sit-effects.enabled", false);

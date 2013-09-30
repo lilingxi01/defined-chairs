@@ -37,12 +37,9 @@ sign-check: false
 distance: 2
 sitting-height: 0.7
 sitting-height-adj: 1.0
-permissions: true
 notify-player: true
 upside-down-check: true
 upper-step-check: true
-per-item-perms: true
-ops-override-perms: false
 ignore-if-block-in-hand: false
 sit-effects:
   enabled: false

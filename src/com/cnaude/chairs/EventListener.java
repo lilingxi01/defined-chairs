@@ -116,14 +116,12 @@ public class EventListener implements Listener {
             }
         }
         if (blockOkay ||
-        		(plugin.perItemPerms &&
-        				(
+        			(
         						player.hasPermission("chairs.sit." + block.getTypeId() + ":" + block.getData()) || 
         						player.hasPermission("chairs.sit." + block.getType().toString() + ":" + block.getData()) ||
         						player.hasPermission("chairs.sit." + block.getTypeId()) ||
         						player.hasPermission("chairs.sit." + block.getType().toString())
-        				)
-        		)
+        			)
         	) {
 
             if (block.getState().getData() instanceof Stairs) {
