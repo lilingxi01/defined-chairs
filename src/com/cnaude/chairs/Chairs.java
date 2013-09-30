@@ -136,7 +136,7 @@ public class Chairs extends JavaPlugin {
     	player.eject();
     	final Entity prevarrow = sit.get(player.getName());
 		Block block = sitblockbr.get(player.getName());
-		final Entity arrow = block.getWorld().spawnArrow(block.getLocation().add(0.5, 0, 0.5), new Vector(0, 0, 0), 0, 0);
+		final Entity arrow = block.getWorld().spawnArrow(block.getLocation().add(0.5, 0, 0.5), new Vector(0, 0.01, 0), 0, 0);
 		arrow.setPassenger(player);
 		sit.put(player.getName(), arrow);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
