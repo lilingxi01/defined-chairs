@@ -147,7 +147,7 @@ public class Chairs extends JavaPlugin {
 			}
 		},100);
     }
-    protected void ejectPlayer(final Player player)
+    protected void unSitPlayer(final Player player)
     {
     	player.eject();
     	final Location tploc = sitstopteleportloc.get(player.getName());
@@ -161,14 +161,14 @@ public class Chairs extends JavaPlugin {
     			}
     		},1);
     	}
-    	unSit(player);
+    	clearSitInfo(player);
     }
     private void ejectPlayerOnDisable(Player player)
     {
     	player.eject();
-    	unSit(player);
+    	clearSitInfo(player);
     }
-    protected void unSit(Player player) {
+    protected void clearSitInfo(Player player) {
     	if (sit.containsKey(player.getName()))
     	{
     		sit.get(player.getName()).remove();
