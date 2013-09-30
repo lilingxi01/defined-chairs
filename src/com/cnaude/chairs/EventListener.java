@@ -63,7 +63,7 @@ public class EventListener implements Listener {
     		plugin.unSitPlayer(player);
     	}
     }
-    
+
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -79,9 +79,9 @@ public class EventListener implements Listener {
         	Block block = event.getClickedBlock();
         	if (sitAllowed(player, block))
         	{
+            	event.setCancelled(true);
         		Location sitLocation = getSitLocation(block, player.getLocation().getYaw());
             	sitPlayer(player, sitLocation);
-            	event.setCancelled(true);
         	}
         }
     }
@@ -114,15 +114,18 @@ public class EventListener implements Listener {
                 continue;
             }
         }
-        if (blockOkay ||
-        			(
-        						player.hasPermission("chairs.sit." + block.getTypeId() + ":" + block.getData()) || 
-        						player.hasPermission("chairs.sit." + block.getType().toString() + ":" + block.getData()) ||
-        						player.hasPermission("chairs.sit." + block.getTypeId()) ||
-        						player.hasPermission("chairs.sit." + block.getType().toString())
-        			)
-        	) {
+        if (    
+        		player.hasPermission("chairs.sit." + block.getTypeId() + ":" + block.getData()) || 
+				player.hasPermission("chairs.sit." + block.getType().toString() + ":" + block.getData()) ||
+				player.hasPermission("chairs.sit." + block.getTypeId()) ||
+				player.hasPermission("chairs.sit." + block.getType().toString())
+		) {
+        	blockOkay = true;
+        }
+        if (blockOkay) {
 
+        	System.out.println("block is okay");
+        	
             if (block.getState().getData() instanceof Stairs) {
                 stairs = (Stairs) block.getState().getData();
             } else if (block.getState().getData() instanceof Step) {
