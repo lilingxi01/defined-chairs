@@ -20,8 +20,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -33,7 +31,7 @@ public class Chairs extends JavaPlugin {
     public static ChairEffects chairEffects;
     public List<ChairBlock> allowedBlocks;
     public List<Material> validSigns;
-    public boolean autoRotate, signCheck, permissions, notifyplayer, opsOverridePerms;
+    public boolean autoRotate, signCheck, notifyplayer;
     public boolean invertedStairCheck, invertedStepCheck, perItemPerms, ignoreIfBlockInHand;
     public boolean sitEffectsEnabled;
     public double sittingHeight, sittingHeightAdj, distance;
@@ -224,12 +222,10 @@ public class Chairs extends JavaPlugin {
         sittingHeightAdj = getConfig().getDouble("sitting-height-adj");
         distance = getConfig().getDouble("distance");
         maxChairWidth = getConfig().getInt("max-chair-width");
-        permissions = getConfig().getBoolean("permissions");
         notifyplayer = getConfig().getBoolean("notify-player");
         invertedStairCheck = getConfig().getBoolean("upside-down-check");
         invertedStepCheck = getConfig().getBoolean("upper-step-check");
         perItemPerms = getConfig().getBoolean("per-item-perms");
-        opsOverridePerms = getConfig().getBoolean("ops-override-perms");
         ignoreIfBlockInHand = getConfig().getBoolean("ignore-if-block-in-hand");
         
         sitEffectsEnabled = getConfig().getBoolean("sit-effects.enabled", false);
@@ -305,16 +301,6 @@ public class Chairs extends JavaPlugin {
                 pm.removePermission(s);
             }
         }
-        PermissionDefault pd;
-        if (opsOverridePerms) {
-            pd = PermissionDefault.OP;
-        } else {
-            pd = PermissionDefault.FALSE;
-        }
-        
-        pm.addPermission(new Permission("chairs.sit","Allow player to sit on a block.",pd));
-        pm.addPermission(new Permission("chairs.reload","Allow player to reload the Chairs configuration.",pd));
-        pm.addPermission(new Permission("chairs.self","Allow player to self disable or enable sitting.",pd));
     } 
     
     public void logInfo(String _message) {

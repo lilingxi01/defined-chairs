@@ -19,8 +19,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
-import org.bukkit.permissions.Permission;
-import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.util.Vector;
 
 public class EventListener implements Listener {
@@ -101,32 +99,8 @@ public class EventListener implements Listener {
             return false;
         }
         // Permissions Check
-        if (plugin.permissions) {
-            if (!player.hasPermission("chairs.sit")) {
+        if (!player.hasPermission("chairs.sit")) {
                 return false;
-            }
-        }
-        if (plugin.perItemPerms) {
-            if (plugin.pm.getPermission("chairs.sit." + block.getTypeId()) == null) {
-                plugin.pm.addPermission(new Permission("chairs.sit." + block.getTypeId(),
-                        "Allow players to sit on a '" + block.getType().name() + "'",
-                        PermissionDefault.FALSE));
-            }
-            if (plugin.pm.getPermission("chairs.sit." + block.getType().toString()) == null) {
-                plugin.pm.addPermission(new Permission("chairs.sit." + block.getType().toString(),
-                        "Allow players to sit on a '" + block.getType().name() + "'",
-                        PermissionDefault.FALSE));
-            }
-            if (plugin.pm.getPermission("chairs.sit." + block.getTypeId() + ":" + block.getData()) == null) {
-                plugin.pm.addPermission(new Permission("chairs.sit." + block.getTypeId() + ":" + block.getData(),
-                        "Allow players to sit on a '" + block.getType().name() + "'",
-                        PermissionDefault.FALSE));
-            }
-            if (plugin.pm.getPermission("chairs.sit." + block.getType().toString() + ":" + block.getData()) == null) {
-                plugin.pm.addPermission(new Permission("chairs.sit." + block.getType().toString() + ":" + block.getData(),
-                        "Allow players to sit on a '" + block.getType().name() + "'",
-                        PermissionDefault.FALSE));
-            }
         }
 
         for (ChairBlock cb : plugin.allowedBlocks) {

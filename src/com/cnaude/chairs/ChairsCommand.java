@@ -45,7 +45,7 @@ public class ChairsCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player p = (Player) sender;
             if (args[0].equalsIgnoreCase("on")) {
-                if (p.hasPermission("chairs.self") || !plugin.permissions) {
+                if (p.hasPermission("chairs.self")) {
                     ignoreList.removePlayer(p.getName());
                     if (!plugin.msgEnabled.isEmpty()) {
                         p.sendMessage(plugin.msgEnabled);
@@ -57,7 +57,7 @@ public class ChairsCommand implements CommandExecutor {
                 }
             }
             if (args[0].equalsIgnoreCase("off")) {
-                if (p.hasPermission("chairs.self") || !plugin.permissions) {
+                if (p.hasPermission("chairs.self")) {
                     ignoreList.addPlayer(p.getName());
                     if (!plugin.msgDisabled.isEmpty()) {
                         p.sendMessage(plugin.msgDisabled);
