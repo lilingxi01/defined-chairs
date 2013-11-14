@@ -123,9 +123,7 @@ public class EventListener implements Listener {
         	blockOkay = true;
         }
         if (blockOkay) {
-
-        	System.out.println("block is okay");
-        	
+       	
             if (block.getState().getData() instanceof Stairs) {
                 stairs = (Stairs) block.getState().getData();
             } else if (block.getState().getData() instanceof Step) {
