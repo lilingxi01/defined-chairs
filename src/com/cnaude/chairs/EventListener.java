@@ -16,7 +16,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
@@ -51,15 +50,6 @@ public class EventListener implements Listener {
     	{
     		plugin.savePlayerSitstoploc(player.getName());
     		plugin.unSitPlayer(player,true);
-    	}
-    }
-    
-    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
-    public void onTeleport(PlayerTeleportEvent e)
-    {
-    	if (plugin.sit.containsKey(e.getPlayer().getName()))
-    	{
-    		plugin.unSitPlayer(e.getPlayer(), true);
     	}
     }
     
