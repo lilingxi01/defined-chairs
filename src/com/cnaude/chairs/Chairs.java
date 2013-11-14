@@ -147,11 +147,11 @@ public class Chairs extends JavaPlugin {
 			}
 		},100);
     }
-    protected void unSitPlayer(final Player player)
+    protected void unSitPlayer(final Player player, boolean ignoretp)
     {
     	player.eject();
     	final Location tploc = sitstopteleportloc.get(player.getName());
-    	if (tploc != null)
+    	if (tploc != null && !ignoretp)
     	{
     		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
     			public void run()
