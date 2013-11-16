@@ -70,9 +70,7 @@ public class EventListener implements Listener {
         if (isSitting(player)) {
             return;
         }
-        if (event.getPlayer().getItemInHand().getType().isBlock()
-                && (event.getPlayer().getItemInHand().getTypeId() != 0)
-                && plugin.ignoreIfBlockInHand) {
+        if (plugin.ignoreIfBlockInHand && event.getPlayer().getItemInHand().getType() != Material.AIR) {
             return;
         }
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
