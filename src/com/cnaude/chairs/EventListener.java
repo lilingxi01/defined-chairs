@@ -205,6 +205,12 @@ public class EventListener implements Listener {
             	}
                 return false;
             }
+            
+            //region allowance check
+            if (!WGHook.isAllowedInRegion(plugin.disabledRegions, block.getLocation()))
+            {
+            	return false;
+            }
     		return true;
         }
         

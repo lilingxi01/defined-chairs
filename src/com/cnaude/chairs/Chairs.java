@@ -28,7 +28,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 
 public class Chairs extends JavaPlugin {
-    public static ChairEffects chairEffects;
+    public ChairEffects chairEffects;
     public List<ChairBlock> allowedBlocks;
     public List<Material> validSigns;
     public boolean autoRotate, signCheck, notifyplayer;
@@ -39,11 +39,12 @@ public class Chairs extends JavaPlugin {
     public int sitMaxHealth;
     public int sitHealthPerInterval;
     public int sitEffectInterval;
+    public HashSet<String> disabledRegions = new HashSet<String>();
     private File pluginFolder;
     private File configFile;    
     private Logger log;
     public PluginManager pm;
-    public static ChairsIgnoreList ignoreList; 
+    public ChairsIgnoreList ignoreList; 
     public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled;
     private ProtocolManager protocolManager;
 
@@ -225,7 +226,9 @@ public class Chairs extends JavaPlugin {
         notifyplayer = getConfig().getBoolean("notify-player");
         invertedStairCheck = getConfig().getBoolean("upside-down-check");
         invertedStepCheck = getConfig().getBoolean("upper-step-check");
-        ignoreIfBlockInHand = getConfig().getBoolean("ignore-if-block-in-hand");
+        ignoreIfBlockInHand = getConfig().getBoolean("ignore-if-item-in-hand");
+        
+        disabledRegions = new HashSet<String>(getConfig().getStringList("disabledRegions"));
         
         sitEffectsEnabled = getConfig().getBoolean("sit-effects.enabled", false);
         sitEffectInterval = getConfig().getInt("sit-effects.interval",20);
@@ -287,17 +290,6 @@ public class Chairs extends JavaPlugin {
             }
             catch (Exception e) {
                 logError(e.getMessage());
-            }
-        }
-        
-        ArrayList<String> perms = new ArrayList<String>();
-        perms.add("chairs.sit");
-        perms.add("chairs.reload");
-        perms.add("chairs.self");
-        perms.add("chairs.sit.health");
-        for (String s : perms) {
-            if (pm.getPermission(s) != null) {
-                pm.removePermission(s);
             }
         }
     } 
