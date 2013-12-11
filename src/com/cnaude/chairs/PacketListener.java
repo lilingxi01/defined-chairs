@@ -2,7 +2,7 @@ package com.cnaude.chairs;
 
 import org.bukkit.entity.Player;
 
-import com.comphenix.protocol.Packets;
+import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
@@ -17,14 +17,13 @@ public class PacketListener {
 		this.pm = pm;
 		this.pluginInstance = plugin;
 		playerDismountListener();
-		falledPlayerDismountListener();
 	}
 	
 	private void playerDismountListener()
 	{
 		pm.getAsynchronousManager().registerAsyncHandler(
 				new PacketAdapter(PacketAdapter
-						.params(pluginInstance, Packets.Client.PLAYER_INPUT)
+						.params(pluginInstance, PacketType.Play.Client.STEER_VEHICLE)
 						.clientSide()
 						.listenerPriority(ListenerPriority.HIGHEST)
 						.optionIntercept()
@@ -43,32 +42,6 @@ public class PacketListener {
 							{
 								pluginInstance.unSitPlayer(player,false);
 							}
-						}
-					}
-				}
-		}).syncStart();
-	}
-	
-	private void falledPlayerDismountListener()
-	{
-		pm.getAsynchronousManager().registerAsyncHandler(
-				new PacketAdapter(PacketAdapter
-						.params(pluginInstance, Packets.Client.ENTITY_ACTION)
-						.clientSide()
-						.listenerPriority(ListenerPriority.HIGHEST)
-						.optionIntercept()
-		)
-		{
-				@Override
-				public void onPacketReceiving(final PacketEvent e) 
-				{
-					if (!e.isCancelled())
-					{
-						//eject player if he is in chair and tryes to sneak (it is impossible unless arrow will disappear in client due to server lags)
-						Player player = e.getPlayer();
-						if (pluginInstance.sit.containsKey(player.getName()))
-						{
-							pluginInstance.unSitPlayer(player,false);
 						}
 					}
 				}
