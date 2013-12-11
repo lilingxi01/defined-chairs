@@ -39,9 +39,8 @@ public class ChairEffects {
                     String pName = p.getName();
                     if (plugin.sit.containsKey(pName)) {
                         if (p.hasPermission("chairs.sit.health")) {
-                            double pHealthPcnt = (double) p.getHealth() / (double) p.getMaxHealth() * 100d;
-                            if ((pHealthPcnt < plugin.sitMaxHealth)
-                                    && (p.getHealth() < p.getMaxHealth())) {
+                            double pHealthPcnt = ((double) p.getHealth()) / (double) p.getMaxHealth() * 100d;
+                            if ((pHealthPcnt < plugin.sitMaxHealth) && (p.getHealth() < p.getMaxHealth())) {
                                 double newHealth = plugin.sitHealthPerInterval + p.getHealth();
                                 if (newHealth > p.getMaxHealth()) {
                                     newHealth = p.getMaxHealth();
