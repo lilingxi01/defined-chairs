@@ -15,6 +15,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
@@ -47,13 +48,23 @@ public class EventListener implements Listener {
     	}
     }
     
-    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
+    @EventHandler(priority=EventPriority.HIGHEST,ignoreCancelled=true)
     public void onBlockBreak(BlockBreakEvent event)
     {
     	Block b = event.getBlock();
     	if (plugin.sitblock.containsKey(b))
     	{
     		Player player = Bukkit.getPlayerExact(plugin.sitblock.get(b));
+    		plugin.unSitPlayer(player,false);
+    	}
+    }
+    
+    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
+    public void onPlayerMove(PlayerMoveEvent event)
+    {
+    	Player player = event.getPlayer();
+    	if (plugin.sit.containsKey(player.getName()))
+    	{
     		plugin.unSitPlayer(player,false);
     	}
     }
