@@ -36,8 +36,6 @@ public class Chairs extends JavaPlugin {
     public int sitHealthPerInterval;
     public int sitEffectInterval;
     public HashSet<String> disabledRegions = new HashSet<String>();
-    private File pluginFolder;
-    private File configFile;    
     private Logger log;
     public PluginManager pm;
     public ChairsIgnoreList ignoreList; 
@@ -51,8 +49,6 @@ public class Chairs extends JavaPlugin {
         ignoreList.load();
         pm = this.getServer().getPluginManager();
         pluginFolder = getDataFolder();
-        configFile = new File(pluginFolder, "config.yml");
-        createConfig();
         getConfig().options().copyDefaults(true);
         saveConfig();
         loadConfig();
@@ -86,24 +82,6 @@ public class Chairs extends JavaPlugin {
     public void restartEffectsTask() {
         if (chairEffects != null) {
             chairEffects.restart();
-        }
-    }
-
-    private void createConfig() {
-        if (!pluginFolder.exists()) {
-            try {
-                pluginFolder.mkdir();
-            } catch (Exception e) {
-                logInfo("ERROR: " + e.getMessage());                
-            }
-        }
-
-        if (!configFile.exists()) {
-            try {
-                configFile.createNewFile();
-            } catch (Exception e) {
-                logInfo("ERROR: " + e.getMessage());
-            }
         }
     }
     
