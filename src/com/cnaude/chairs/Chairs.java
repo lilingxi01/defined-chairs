@@ -210,12 +210,7 @@ public class Chairs extends JavaPlugin {
                 type = s;                
             }
             try {                
-                Material mat;
-                if (type.matches("\\d+")) {
-                    mat = Material.getMaterial(Integer.parseInt(type));
-                } else {
-                    mat = Material.matchMaterial(type);
-                }
+                Material mat = Material.matchMaterial(type);
                 if (mat != null) {                    
                     logInfo("Allowed block: " + mat.toString() + " => " + sh + " => " + d);
                     allowedBlocks.add(new ChairBlock(mat,sh,d));
@@ -231,11 +226,7 @@ public class Chairs extends JavaPlugin {
         validSigns = new ArrayList<Material>();    
         for (String type : getConfig().getStringList("valid-signs")) {            
             try {
-                if (type.matches("\\d+")) {
-                    validSigns.add(Material.getMaterial(Integer.parseInt(type)));
-                } else {
-                    validSigns.add(Material.matchMaterial(type));
-                }
+            	validSigns.add(Material.matchMaterial(type));
             }
             catch (Exception e) {
                 logError(e.getMessage());

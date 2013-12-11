@@ -100,18 +100,12 @@ public class EventListener implements Listener {
                     blockOkay = true;
                     continue;
                 }
-            } else if (cb.getMat().equals(block.getType())
-                    && cb.getDamage() == block.getData()) {
+            } else if (cb.getMat().equals(block.getType())) {
                 blockOkay = true;
                 continue;
             }
         }
-        if (    
-        		player.hasPermission("chairs.sit." + block.getTypeId() + ":" + block.getData()) || 
-				player.hasPermission("chairs.sit." + block.getType().toString() + ":" + block.getData()) ||
-				player.hasPermission("chairs.sit." + block.getTypeId()) ||
-				player.hasPermission("chairs.sit." + block.getType().toString())
-		) {
+        if (player.hasPermission("chairs.sit." + block.getType().toString())) {
         	blockOkay = true;
         }
         if (blockOkay) {
@@ -221,8 +215,7 @@ public class EventListener implements Listener {
                     sh = cb.getSitHeight();
                     continue;
                 }
-            } else if (cb.getMat().equals(block.getType())
-                    && cb.getDamage() == block.getData()) {
+            } else if (cb.getMat().equals(block.getType())) {
                 sh = cb.getSitHeight();
                 continue;
             }
