@@ -34,12 +34,7 @@ public class EventListener implements Listener {
     @EventHandler(priority=EventPriority.LOWEST,ignoreCancelled=true)
     public void onJoin(PlayerJoinEvent e)
     {    	
-    	Player player = e.getPlayer();
-    	Location loc = plugin.getPlayerSitstoploc(player.getName());
-    	if (loc != null)
-    	{
-    		player.teleport(loc);
-    	}
+    	
     }
     
     @EventHandler(priority=EventPriority.LOWEST)
@@ -48,7 +43,6 @@ public class EventListener implements Listener {
     	Player player = event.getPlayer();
     	if (plugin.sit.containsKey(player.getName()))
     	{
-    		plugin.savePlayerSitstoploc(player.getName());
     		plugin.unSitPlayer(player,true);
     	}
     }
