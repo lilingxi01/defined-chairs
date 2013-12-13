@@ -1,5 +1,6 @@
 package com.cnaude.chairs;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,6 +13,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -140,35 +143,36 @@ public class Chairs extends JavaPlugin {
         	}
     	}
     }
-
+    
     public void loadConfig() {
-        autoRotate = getConfig().getBoolean("auto-rotate");
-        signCheck = getConfig().getBoolean("sign-check");
-        sittingHeightAdj = getConfig().getDouble("sitting-height-adj");
-        distance = getConfig().getDouble("distance");
-        maxChairWidth = getConfig().getInt("max-chair-width");
-        notifyplayer = getConfig().getBoolean("notify-player");
-        invertedStairCheck = getConfig().getBoolean("upside-down-check");
-        invertedStepCheck = getConfig().getBoolean("upper-step-check");
-        ignoreIfBlockInHand = getConfig().getBoolean("ignore-if-item-in-hand");
+    	FileConfiguration config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(),"config.yml"));
+        autoRotate = config.getBoolean("auto-rotate");
+        signCheck = config.getBoolean("sign-check");
+        sittingHeightAdj = config.getDouble("sitting-height-adj");
+        distance = config.getDouble("distance");
+        maxChairWidth = config.getInt("max-chair-width");
+        notifyplayer = config.getBoolean("notify-player");
+        invertedStairCheck = config.getBoolean("upside-down-check");
+        invertedStepCheck = config.getBoolean("upper-step-check");
+        ignoreIfBlockInHand = config.getBoolean("ignore-if-item-in-hand");
         
-        disabledRegions = new HashSet<String>(getConfig().getStringList("disabledWGRegions"));
+        disabledRegions = new HashSet<String>(config.getStringList("disabledWGRegions"));
         
-        sitEffectsEnabled = getConfig().getBoolean("sit-effects.enabled", false);
-        sitEffectInterval = getConfig().getInt("sit-effects.interval",20);
-        sitMaxHealth = getConfig().getInt("sit-effects.healing.max-percent",100);
-        sitHealthPerInterval = getConfig().getInt("sit-effects.healing.amount",1);
+        sitEffectsEnabled = config.getBoolean("sit-effects.enabled", false);
+        sitEffectInterval = config.getInt("sit-effects.interval",20);
+        sitMaxHealth = config.getInt("sit-effects.healing.max-percent",100);
+        sitHealthPerInterval = config.getInt("sit-effects.healing.amount",1);
         
-        msgSitting = ChatColor.translateAlternateColorCodes('&',getConfig().getString("messages.sitting"));
-        msgStanding = ChatColor.translateAlternateColorCodes('&',getConfig().getString("messages.standing"));
-        msgOccupied = ChatColor.translateAlternateColorCodes('&',getConfig().getString("messages.occupied"));
-        msgNoPerm = ChatColor.translateAlternateColorCodes('&',getConfig().getString("messages.no-permission"));
-        msgEnabled = ChatColor.translateAlternateColorCodes('&',getConfig().getString("messages.enabled"));
-        msgDisabled = ChatColor.translateAlternateColorCodes('&',getConfig().getString("messages.disabled"));
-        msgReloaded = ChatColor.translateAlternateColorCodes('&',getConfig().getString("messages.reloaded"));
+        msgSitting = ChatColor.translateAlternateColorCodes('&',config.getString("messages.sitting"));
+        msgStanding = ChatColor.translateAlternateColorCodes('&',config.getString("messages.standing"));
+        msgOccupied = ChatColor.translateAlternateColorCodes('&',config.getString("messages.occupied"));
+        msgNoPerm = ChatColor.translateAlternateColorCodes('&',config.getString("messages.no-permission"));
+        msgEnabled = ChatColor.translateAlternateColorCodes('&',config.getString("messages.enabled"));
+        msgDisabled = ChatColor.translateAlternateColorCodes('&',config.getString("messages.disabled"));
+        msgReloaded = ChatColor.translateAlternateColorCodes('&',config.getString("messages.reloaded"));
 
         allowedBlocks = new ArrayList<ChairBlock>();
-        for (String s : getConfig().getStringList("sit-block-settings")) {
+        for (String s : config.getStringList("sit-block-settings")) {
             String type;
             double sh = 0.7;
             String tmp[] = s.split("[:]");
@@ -191,7 +195,7 @@ public class Chairs extends JavaPlugin {
         }
         
         validSigns = new ArrayList<Material>();    
-        for (String type : getConfig().getStringList("valid-signs")) {            
+        for (String type : config.getStringList("valid-signs")) {            
             try {
             	validSigns.add(Material.matchMaterial(type));
             }
