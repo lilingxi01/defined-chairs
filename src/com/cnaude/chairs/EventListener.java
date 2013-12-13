@@ -116,7 +116,10 @@ public class EventListener implements Listener {
                 continue;
             }
         }
-        if (player.hasPermission("chairs.sit." + block.getType().toString())) {
+        if (
+        	!player.hasPermission("chairs.sit.antiopcheck") &&
+        	player.hasPermission("chairs.sit." + block.getType().toString())
+        ) {
         	blockOkay = true;
         }
         if (blockOkay) {
