@@ -171,24 +171,16 @@ public class Chairs extends JavaPlugin {
         for (String s : getConfig().getStringList("allowed-blocks")) {
             String type;
             double sh = 0.7;
-            String d = "0";
-            if (s.contains(":")) {
-                String tmp[] = s.split(":",3);
-                type = tmp[0];                 
-                if (!tmp[1].isEmpty()) {
-                    sh = Double.parseDouble(tmp[1]);
-                }                
-                if (tmp.length == 3) {
-                    d = tmp[2];
-                }
-            } else {
-                type = s;                
+            String tmp[] = s.split("[:]");
+            type = tmp[0];         
+            if (tmp.length == 2) {
+               sh = Double.parseDouble(tmp[1]);
             }
             try {                
                 Material mat = Material.matchMaterial(type);
                 if (mat != null) {                    
-                    logInfo("Allowed block: " + mat.toString() + " => " + sh + " => " + d);
-                    allowedBlocks.add(new ChairBlock(mat,sh,d));
+                    logInfo("Allowed block: " + mat.toString() + " => " + sh);
+                    allowedBlocks.add(new ChairBlock(mat,sh));
                 } else {
                     logError("Invalid block: " + type);
                 }
