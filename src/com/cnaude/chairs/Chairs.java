@@ -48,7 +48,6 @@ public class Chairs extends JavaPlugin {
         ignoreList = new ChairsIgnoreList(this);
         ignoreList.load();
         pm = this.getServer().getPluginManager();
-        pluginFolder = getDataFolder();
         getConfig().options().copyDefaults(true);
         saveConfig();
         loadConfig();
