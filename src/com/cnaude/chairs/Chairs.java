@@ -168,7 +168,7 @@ public class Chairs extends JavaPlugin {
         msgReloaded = ChatColor.translateAlternateColorCodes('&',getConfig().getString("messages.reloaded"));
 
         allowedBlocks = new ArrayList<ChairBlock>();
-        for (String s : getConfig().getStringList("allowed-blocks")) {
+        for (String s : getConfig().getStringList("sit-block-settings")) {
             String type;
             double sh = 0.7;
             String tmp[] = s.split("[:]");
