@@ -152,7 +152,7 @@ public class Chairs extends JavaPlugin {
         invertedStepCheck = getConfig().getBoolean("upper-step-check");
         ignoreIfBlockInHand = getConfig().getBoolean("ignore-if-item-in-hand");
         
-        disabledRegions = new HashSet<String>(getConfig().getStringList("disabledRegions"));
+        disabledRegions = new HashSet<String>(getConfig().getStringList("disabledWGRegions"));
         
         sitEffectsEnabled = getConfig().getBoolean("sit-effects.enabled", false);
         sitEffectInterval = getConfig().getInt("sit-effects.interval",20);

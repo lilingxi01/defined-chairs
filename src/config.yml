@@ -35,7 +35,7 @@ auto-rotate: true
 max-chair-width: 3
 sign-check: false
 distance: 2
-disabledRegions: []
+disabledWGRegions: []
 sitting-height-adj: 1.0
 notify-player: true
 upside-down-check: true
