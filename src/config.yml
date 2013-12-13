@@ -14,16 +14,16 @@
 # ignore-if-item-in-hand: Set this true disable sititng if player is holding an item in hand.
 # ------
 sit-block-settings:
-    - WOOD_STAIRS:0.7
-    - SPRUCE_WOOD_STAIRS:0.7
-    - JUNGLE_WOOD_STAIRS:0.7
-    - BIRCH_WOOD_STAIRS:0.7
-    - SANDSTONE_STAIRS:0.7
-    - COBBLESTONE_STAIRS:0.7
-    - BRICK_STAIRS:0.7
-    - SMOOTH_STAIRS:0.7
-    - NETHER_BRICK_STAIRS:0.7
-    - QUARTZ_STAIRS:0.7
+  - WOOD_STAIRS:0.7
+  - SPRUCE_WOOD_STAIRS:0.7
+  - JUNGLE_WOOD_STAIRS:0.7
+  - BIRCH_WOOD_STAIRS:0.7
+  - SANDSTONE_STAIRS:0.7
+  - COBBLESTONE_STAIRS:0.7
+  - BRICK_STAIRS:0.7
+  - SMOOTH_STAIRS:0.7
+  - NETHER_BRICK_STAIRS:0.7
+  - QUARTZ_STAIRS:0.7
 valid-signs:
   - SIGN
   - WALL_SIGN
