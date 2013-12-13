@@ -16,16 +16,16 @@
 # ignore-if-item-in-hand: Set this true disable sititng if player is holding an item in hand.
 # ------
 allowed-blocks:
-    - WOOD_STAIRS
-    - SPRUCE_WOOD_STAIRS
-    - JUNGLE_WOOD_STAIRS
-    - BIRCH_WOOD_STAIRS
-    - SANDSTONE_STAIRS
-    - COBBLESTONE_STAIRS
-    - BRICK_STAIRS
-    - SMOOTH_STAIRS
-    - NETHER_BRICK_STAIRS
-    - QUARTZ_STAIRS
+    - WOOD_STAIRS:0.7
+    - SPRUCE_WOOD_STAIRS:0.7
+    - JUNGLE_WOOD_STAIRS:0.7
+    - BIRCH_WOOD_STAIRS:0.7
+    - SANDSTONE_STAIRS:0.7
+    - COBBLESTONE_STAIRS:0.7
+    - BRICK_STAIRS:0.7
+    - SMOOTH_STAIRS:0.7
+    - NETHER_BRICK_STAIRS:0.7
+    - QUARTZ_STAIRS:0.7
 valid-signs:
   - SIGN
   - WALL_SIGN
@@ -36,7 +36,6 @@ max-chair-width: 3
 sign-check: false
 distance: 2
 disabledRegions: []
-sitting-height: 0.7
 sitting-height-adj: 1.0
 notify-player: true
 upside-down-check: true

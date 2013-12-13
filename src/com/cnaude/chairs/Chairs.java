@@ -29,7 +29,7 @@ public class Chairs extends JavaPlugin {
     public boolean autoRotate, signCheck, notifyplayer;
     public boolean invertedStairCheck, invertedStepCheck, ignoreIfBlockInHand;
     public boolean sitEffectsEnabled;
-    public double sittingHeight, sittingHeightAdj, distance;
+    public double sittingHeightAdj, distance;
     public int maxChairWidth;
     public int sitMaxHealth;
     public int sitHealthPerInterval;
@@ -144,7 +144,6 @@ public class Chairs extends JavaPlugin {
     public void loadConfig() {
         autoRotate = getConfig().getBoolean("auto-rotate");
         signCheck = getConfig().getBoolean("sign-check");
-        sittingHeight = getConfig().getDouble("sitting-height");
         sittingHeightAdj = getConfig().getDouble("sitting-height-adj");
         distance = getConfig().getDouble("distance");
         maxChairWidth = getConfig().getInt("max-chair-width");
@@ -171,7 +170,7 @@ public class Chairs extends JavaPlugin {
         allowedBlocks = new ArrayList<ChairBlock>();
         for (String s : getConfig().getStringList("allowed-blocks")) {
             String type;
-            double sh = sittingHeight;
+            double sh = 0.7;
             String d = "0";
             if (s.contains(":")) {
                 String tmp[] = s.split(":",3);

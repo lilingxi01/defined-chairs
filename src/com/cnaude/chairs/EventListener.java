@@ -221,7 +221,7 @@ public class EventListener implements Listener {
     
     private Location getSitLocation(Block block, Float playerYaw)
     {
-        double sh = plugin.sittingHeight;
+        double sh = 0.7;
         
         for (ChairBlock cb : plugin.allowedBlocks) {
             if (cb.getMat().toString().contains("STAIRS")) {
