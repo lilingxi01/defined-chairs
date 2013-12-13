@@ -91,6 +91,35 @@ public class Chairs extends JavaPlugin {
     protected HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
     protected HashMap<String, Location> sitstopteleportloc = new HashMap<String, Location>();
     protected HashMap<String, Integer> sittask = new HashMap<String, Integer>();
+    protected void sitPlayer(Player player, Location sitlocation)
+    {
+        if (notifyplayer && !msgSitting.isEmpty()) {
+            player.sendMessage(msgSitting);
+        }
+        Block block = sitlocation.getBlock();
+        sitstopteleportloc.put(player.getName(), player.getLocation());
+        Entity arrow = block.getWorld().spawnArrow(block.getLocation().add(0.5, 0 , 0.5), new Vector(0, 0.1, 0), 0, 0);
+        player.teleport(sitlocation);
+        player.setSneaking(false);
+        arrow.setPassenger(player);
+        sit.put(player.getName(), arrow);
+        sitblock.put(block, player.getName());
+        sitblockbr.put(player.getName(), block);
+        startReSitTask(player);
+        player.teleport(player.getWorld().getSpawnLocation());
+    }
+    protected void startReSitTask(final Player player)
+    {
+    	int task = 
+    	Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
+    	{
+    		public void run()
+    		{
+    			reSitPlayer(player);
+    		}    	
+    	},1000,1000);
+    	sittask.put(player.getName(), task);
+    }
     protected void reSitPlayer(final Player player)
     {
     	player.eject();

@@ -15,12 +15,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
-import org.bukkit.util.Vector;
 
 public class EventListener implements Listener {
 
@@ -58,16 +56,6 @@ public class EventListener implements Listener {
     		plugin.unSitPlayer(player,false);
     	}
     }
-    
-    @EventHandler(priority=EventPriority.MONITOR,ignoreCancelled=true)
-    public void onPlayerMove(PlayerMoveEvent event)
-    {
-    	Player player = event.getPlayer();
-    	if (plugin.sit.containsKey(player.getName()))
-    	{
-    		plugin.unSitPlayer(player,false);
-    	}
-    }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -84,11 +72,10 @@ public class EventListener implements Listener {
         	{
             	event.setCancelled(true);
         		Location sitLocation = getSitLocation(block, player.getLocation().getYaw());
-            	sitPlayer(player, sitLocation);
+            	plugin.sitPlayer(player, sitLocation);
         	}
         }
     }
-
 
     private boolean sitAllowed(Player player, Block block)
     {
@@ -270,35 +257,7 @@ public class EventListener implements Listener {
 		return plocation;
     }
     
-    
-    private void sitPlayer(Player player, Location sitlocation)
-    {
-        if (plugin.notifyplayer && !plugin.msgSitting.isEmpty()) {
-            player.sendMessage(plugin.msgSitting);
-        }
-        Block block = sitlocation.getBlock();
-        plugin.sitstopteleportloc.put(player.getName(), player.getLocation());
-        player.teleport(sitlocation);
-        player.setSneaking(false);
-        Entity arrow = block.getWorld().spawnArrow(block.getLocation().add(0.5, 0 , 0.5), new Vector(0, 0, 0), 0, 0);
-        arrow.setPassenger(player);
-        plugin.sit.put(player.getName(), arrow);
-        plugin.sitblock.put(block, player.getName());
-        plugin.sitblockbr.put(player.getName(), block);
-        startReSitTask(player);
-    }
-    private void startReSitTask(final Player player)
-    {
-    	int task = 
-    	Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
-    	{
-    		public void run()
-    		{
-    			plugin.reSitPlayer(player);
-    		}    	
-    	},1000,1000);
-    	plugin.sittask.put(player.getName(), task);
-    }
+
     
     private boolean isValidChair(Block block) {
         for (ChairBlock cb : plugin.allowedBlocks) {
