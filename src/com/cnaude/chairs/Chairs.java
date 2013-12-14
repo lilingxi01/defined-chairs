@@ -189,7 +189,6 @@ public class Chairs extends JavaPlugin {
     	final Entity arrow = sit.get(player.getName());
 		sit.remove(player.getName());
     	player.eject();
-    	player.eject();
     	arrow.remove();
     	final Location tploc = sitstopteleportloc.get(player.getName());
     	if (tploc != null && !ignoretp) 
