@@ -31,12 +31,6 @@ public class EventListener implements Listener {
         this.ignoreList = ignoreList;
     }
     
-    @EventHandler(priority=EventPriority.LOWEST,ignoreCancelled=true)
-    public void onJoin(PlayerJoinEvent e)
-    {    	
-    	
-    }
-    
     @EventHandler(priority=EventPriority.LOWEST)
     public void onPlayerQuit(PlayerQuitEvent event)
     {
@@ -47,7 +41,7 @@ public class EventListener implements Listener {
     	}
     }
     
-    @EventHandler
+    @EventHandler(priority=EventPriority.LOWEST)
     public void onExitVehicle(VehicleExitEvent e)
     {
     	if (e.getVehicle().getPassenger() instanceof Player)
