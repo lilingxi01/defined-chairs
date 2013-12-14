@@ -92,8 +92,8 @@ public class Chairs extends JavaPlugin {
         if (chairEffects != null) {
             chairEffects.cancel();     
         }
-        HandlerList.unregisterAll(this);
         log = null;
+        vehiclearrowclass = null;
     }
     
     public void restartEffectsTask() {
