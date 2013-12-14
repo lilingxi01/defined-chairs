@@ -237,24 +237,15 @@ public class EventListener implements Listener {
         double sh = 0.7;
         
         for (ChairBlock cb : plugin.allowedBlocks) {
-            if (cb.getMat().toString().contains("STAIRS")) {
-                if (cb.getMat().equals(block.getType())) {
-                    sh = cb.getSitHeight();
-                    continue;
-                }
-            } else if (cb.getMat().equals(block.getType())) {
+        	if (cb.getMat().equals(block.getType())) {
                 sh = cb.getSitHeight();
-                continue;
+                break;
             }
         }
         
         Stairs stairs = null;
         if (block.getState().getData() instanceof Stairs) {
             stairs = (Stairs) block.getState().getData();
-        } else if (block.getState().getData() instanceof Step) {
-        } else if (block.getState().getData() instanceof WoodenStep) {
-        } else {
-            sh += plugin.sittingHeightAdj;
         }
         
         Location plocation = block.getLocation().clone();
