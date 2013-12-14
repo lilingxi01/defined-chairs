@@ -134,7 +134,6 @@ public class Chairs extends JavaPlugin {
 	        sitblock.put(block, player.getName());
 	        sitblockbr.put(player.getName(), block);
 	        startReSitTask(player);
-	        player.teleport(player.getWorld().getSpawnLocation());
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
@@ -155,8 +154,9 @@ public class Chairs extends JavaPlugin {
     protected void reSitPlayer(final Player player)
     {
     	try {
-	    	player.eject();
 	    	final Entity prevarrow = sit.get(player.getName());
+	    	sit.remove(player.getName());
+	    	player.eject();
 			Block block = sitblockbr.get(player.getName());
 	        Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
 	        Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0.1 ,0), 0, 0);
