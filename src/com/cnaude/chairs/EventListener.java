@@ -45,11 +45,17 @@ public class EventListener implements Listener {
     {
     	if (e.getVehicle().getPassenger() instanceof Player)
     	{
-    		Player player = (Player) e.getVehicle().getPassenger();
+    		final Player player = (Player) e.getVehicle().getPassenger();
     		if (plugin.sit.containsKey(player.getName()))
     		{
     			e.setCancelled(true);
-    			plugin.unSitPlayer(player, false);
+    			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+    			{
+    				public void run()
+    				{
+    	    			plugin.unSitPlayer(player, false);
+    				}
+    			});
     		}
     	}
     }
