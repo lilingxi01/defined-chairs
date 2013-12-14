@@ -24,6 +24,7 @@ sit-block-settings:
   - SMOOTH_STAIRS:0.7
   - NETHER_BRICK_STAIRS:0.7
   - QUARTZ_STAIRS:0.7
+  - ACACIA_STAIRS:0.7
 valid-signs:
   - SIGN
   - WALL_SIGN
