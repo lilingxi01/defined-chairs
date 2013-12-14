@@ -6,7 +6,6 @@ authors:
  - spoothie
  - cnaude
  - _Shevchik_
-depend: [ProtocolLib]
 main: com.cnaude.chairs.Chairs
 commands:
     chairs:

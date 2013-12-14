@@ -1,6 +1,9 @@
 package com.cnaude.chairs;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,18 +15,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
-
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
 
 public class Chairs extends JavaPlugin {
     public ChairEffects chairEffects;
@@ -42,11 +44,28 @@ public class Chairs extends JavaPlugin {
     public PluginManager pm;
     public ChairsIgnoreList ignoreList; 
     public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled;
-    private ProtocolManager protocolManager;
+    
+    private Class<?> vehiclearrowclass;
 
     @Override
     public void onEnable() {
     	log = this.getLogger();
+		try {
+	    	World world = getServer().getWorlds().get(0);
+	    	Arrow arrow = world.spawnArrow(new Location(world, 0, 0, 0), new Vector(0, 0, 0), 0, 0);
+	    	String arrowclass = arrow.getClass().getName();
+	    	Method getHandle;
+			getHandle = arrow.getClass().getDeclaredMethod("getHandle");
+	    	getHandle.setAccessible(true);
+	    	Class<?> entityarrow = getHandle.invoke(arrow).getClass();
+	    	Class<?> craftserver = getServer().getClass();
+	    	vehiclearrowclass = new GenVehicleArrowClass().genAndLoadClass(arrowclass, entityarrow, craftserver);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.severe("Failed to generate VehicleArrow class, exiting");
+			getServer().getPluginManager().disablePlugin(this);
+			return;
+		}
         ignoreList = new ChairsIgnoreList(this);
         ignoreList.load();
         pm = this.getServer().getPluginManager();
@@ -59,14 +78,11 @@ public class Chairs extends JavaPlugin {
             logInfo("Enabling sitting effects.");
             chairEffects = new ChairEffects(this);
         }
-        protocolManager = ProtocolLibrary.getProtocolManager();
-        new PacketListener(protocolManager, this);
+        
     }
 
     @Override
     public void onDisable() {
-    	protocolManager.getAsynchronousManager().unregisterAsyncHandlers(this);
-    	protocolManager = null;
         for (String pName : new HashSet<String>(sit.keySet())) {
         	ejectPlayerOnDisable(Bukkit.getPlayerExact(pName));
         }
@@ -93,21 +109,37 @@ public class Chairs extends JavaPlugin {
     protected HashMap<String, Integer> sittask = new HashMap<String, Integer>();
     protected void sitPlayer(Player player, Location sitlocation)
     {
-        if (notifyplayer && !msgSitting.isEmpty()) {
-            player.sendMessage(msgSitting);
-        }
-        Block block = sitlocation.getBlock();
-        sitstopteleportloc.put(player.getName(), player.getLocation());
-        Entity arrow = block.getWorld().spawnArrow(block.getLocation().add(0.5, 0 , 0.5), new Vector(0, 0.1, 0), 0, 0);
-        player.teleport(sitlocation);
-        player.setSneaking(false);
-        arrow.setPassenger(player);
-        sit.put(player.getName(), arrow);
-        sitblock.put(block, player.getName());
-        sitblockbr.put(player.getName(), block);
-        startReSitTask(player);
-        player.teleport(player.getWorld().getSpawnLocation());
+    	try {
+    		if (notifyplayer && !msgSitting.isEmpty()) 
+    		{
+	            player.sendMessage(msgSitting);
+	        }
+	        Block block = sitlocation.getBlock();
+	        sitstopteleportloc.put(player.getName(), player.getLocation());
+	        player.teleport(sitlocation);
+	        player.setSneaking(false);
+	        Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
+	        Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0.1 ,0), 0, 0);
+	        Method getHandleMethod = arrow.getClass().getDeclaredMethod("getHandle");
+	        getHandleMethod.setAccessible(true);
+	        Object nmsarrow = getHandleMethod.invoke(arrow);
+	        Field bukkitEntityField = nmsarrow.getClass().getSuperclass().getDeclaredField("bukkitEntity");
+	        bukkitEntityField.setAccessible(true);
+	        Constructor<?> ctor = vehiclearrowclass.getDeclaredConstructor(this.getServer().getClass(), nmsarrow.getClass());
+	        ctor.setAccessible(true);
+	        Object vehiclearrow = ctor.newInstance(this.getServer(), nmsarrow);
+	        bukkitEntityField.set(nmsarrow, vehiclearrow);
+	        arrow.setPassenger(player);
+	        sit.put(player.getName(), (Entity) vehiclearrow);
+	        sitblock.put(block, player.getName());
+	        sitblockbr.put(player.getName(), block);
+	        startReSitTask(player);
+	        player.teleport(player.getWorld().getSpawnLocation());
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
+
     protected void startReSitTask(final Player player)
     {
     	int task = 
@@ -122,19 +154,33 @@ public class Chairs extends JavaPlugin {
     }
     protected void reSitPlayer(final Player player)
     {
-    	player.eject();
-    	final Entity prevarrow = sit.get(player.getName());
-		Block block = sitblockbr.get(player.getName());
-		final Entity arrow = block.getWorld().spawnArrow(block.getLocation().add(0.5, 0, 0.5), new Vector(0, 0.01, 0), 0, 0);
-		arrow.setPassenger(player);
-		sit.put(player.getName(), arrow);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
-		{
-			public void run()
+    	try {
+	    	player.eject();
+	    	final Entity prevarrow = sit.get(player.getName());
+			Block block = sitblockbr.get(player.getName());
+	        Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
+	        Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0.1 ,0), 0, 0);
+	        Method getHandleMethod = arrow.getClass().getDeclaredMethod("getHandle");
+	        getHandleMethod.setAccessible(true);
+	        Object nmsarrow = getHandleMethod.invoke(arrow);
+	        Field bukkitEntityField = nmsarrow.getClass().getSuperclass().getDeclaredField("bukkitEntity");
+	        bukkitEntityField.setAccessible(true);
+	        Constructor<?> ctor = vehiclearrowclass.getDeclaredConstructor(this.getServer().getClass(), nmsarrow.getClass());
+	        ctor.setAccessible(true);
+	        Object vehiclearrow = ctor.newInstance(this.getServer(), nmsarrow);
+	        bukkitEntityField.set(nmsarrow, vehiclearrow);
+	        arrow.setPassenger(player);
+			sit.put(player.getName(), arrow);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
 			{
-				prevarrow.remove();
-			}
-		},100);
+				public void run()
+				{
+					prevarrow.remove();
+				}
+			},100);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
     protected void unSitPlayer(final Player player, boolean ignoretp)
     {
@@ -241,7 +287,5 @@ public class Chairs extends JavaPlugin {
     public void logError(String _message) {
         log.log(Level.SEVERE, _message);
     }
-    
-    
-        
+     
 }

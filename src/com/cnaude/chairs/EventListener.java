@@ -16,6 +16,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
@@ -43,6 +44,20 @@ public class EventListener implements Listener {
     	if (plugin.sit.containsKey(player.getName()))
     	{
     		plugin.unSitPlayer(player,true);
+    	}
+    }
+    
+    @EventHandler
+    public void onExitVehicle(VehicleExitEvent e)
+    {
+    	if (e.getVehicle().getPassenger() instanceof Player)
+    	{
+    		Player player = (Player) e.getVehicle().getPassenger();
+    		if (plugin.sit.containsKey(player.getName()))
+    		{
+    			e.setCancelled(true);
+    			plugin.unSitPlayer(player, false);
+    		}
     	}
     }
     
