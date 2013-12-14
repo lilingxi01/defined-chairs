@@ -1,5 +1,7 @@
 package com.cnaude.chairs;
 
+import java.util.HashSet;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,6 +42,7 @@ public class EventListener implements Listener {
     	}
     }
     
+    private HashSet<String> queueUnsit = new HashSet<String>();
     @EventHandler(priority=EventPriority.LOWEST)
     public void onExitVehicle(VehicleExitEvent e)
     {
@@ -49,13 +52,18 @@ public class EventListener implements Listener {
     		if (plugin.sit.containsKey(player.getName()))
     		{
     			e.setCancelled(true);
-    			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+    			if (!queueUnsit.contains(player.getName()))
     			{
-    				public void run()
+    				queueUnsit.add(player.getName());
+    				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
     				{
-    	    			plugin.unSitPlayer(player, false);
-    				}
-    			});
+    					public void run()
+    					{
+    						queueUnsit.remove(player.getName());
+    						plugin.unSitPlayer(player, false);
+    					}
+    				});
+    			}
     		}
     	}
     }
