@@ -281,14 +281,7 @@ public class EventListener implements Listener {
     }
 
     private boolean isSitting(Player player) {
-        if (plugin.sit.containsKey(player.getName())) {
-        	if (player.isInsideVehicle()) {
-        		return true;
-            } else {
-            	plugin.clearSitInfo(player);
-            }
-        }
-        return false;
+        return plugin.sit.containsKey(player.getName());
     }
 
     private int getChairWidth(Block block, BlockFace face) {

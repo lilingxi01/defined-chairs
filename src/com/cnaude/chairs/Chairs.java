@@ -83,9 +83,11 @@ public class Chairs extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (String pName : new HashSet<String>(sit.keySet())) {
-        	ejectPlayerOnDisable(Bukkit.getPlayerExact(pName));
-        }
+    	for (Player player : getServer().getOnlinePlayers()) { 
+    		if (sit.containsKey(player.getName())) {
+    			unSitPlayer(player, true);
+    		}
+    	}
         if (ignoreList != null) {
             ignoreList.save();
         }
@@ -182,40 +184,38 @@ public class Chairs extends JavaPlugin {
     		e.printStackTrace();
     	}
     }
-    protected void unSitPlayer(final Player player, boolean ignoretp)
+    protected void unSitPlayer(final Player player, boolean ignoretp) 
     {
+    	final Entity arrow = sit.get(player.getName());
+		sit.remove(player.getName());
     	player.eject();
-    	final Location tploc = sitstopteleportloc.get(player.getName());
-    	if (tploc != null && !ignoretp)
+    	Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
     	{
-    		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
-    			public void run()
+    		public void run() 
+    		{
+    			arrow.remove();
+    		}
+    	},20);
+    	final Location tploc = sitstopteleportloc.get(player.getName());
+    	if (tploc != null && !ignoretp) 
+    	{
+    		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() 
+    		{
+    			public void run() 
     			{
     	    		player.teleport(tploc);
     	    		player.setSneaking(false);
     			}
     		},1);
     	}
-    	clearSitInfo(player);
-    }
-    private void ejectPlayerOnDisable(Player player)
-    {
-    	player.eject();
-    	clearSitInfo(player);
-    }
-    protected void clearSitInfo(Player player) {
-    	if (sit.containsKey(player.getName()))
-    	{
-    		sit.get(player.getName()).remove();
-    		sitblock.remove(sitblockbr.get(player.getName()));
-    		sitblockbr.remove(player.getName());
-    		sitstopteleportloc.remove(player.getName());
-    		sit.remove(player.getName());
-    		Bukkit.getScheduler().cancelTask(sittask.get(player.getName()));
-    		sittask.remove(player.getName());
-    		if (notifyplayer && !msgStanding.isEmpty()) {
-            	player.sendMessage(msgStanding);
-        	}
+		sitblock.remove(sitblockbr.get(player.getName()));
+		sitblockbr.remove(player.getName());
+		sitstopteleportloc.remove(player.getName());
+		Bukkit.getScheduler().cancelTask(sittask.get(player.getName()));
+		sittask.remove(player.getName());
+		if (notifyplayer && !msgStanding.isEmpty()) 
+		{
+        	player.sendMessage(msgStanding);
     	}
     }
     
