@@ -92,6 +92,10 @@ public class EventListener implements Listener {
         WoodenStep wStep = null;
         boolean blockOkay = false;
 
+        if (player.isSneaking()) {
+        	return false;
+        }
+        
         if (ignoreList.isIgnored(player.getName())) {
             return false;
         }
