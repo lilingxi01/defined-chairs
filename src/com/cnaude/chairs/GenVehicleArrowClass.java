@@ -64,6 +64,7 @@ public class GenVehicleArrowClass {
 		  File arrowfile = new File("VehicleArrow.class");
 		  InputStream arrwoinputstrean = new FileInputStream(arrowfile);
 		  File jarfile = new File("VehicleArrow.jar");
+		  jarfile.delete();
 		  final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(jarfile));
 		  ZipEntry entry = new ZipEntry(arrowfile.getName());
 		  zipout.putNextEntry(entry);
