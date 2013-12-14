@@ -3,6 +3,7 @@ package com.cnaude.chairs;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,20 +119,9 @@ public class Chairs extends JavaPlugin {
 	        Block block = sitlocation.getBlock();
 	        sitstopteleportloc.put(player.getName(), player.getLocation());
 	        player.teleport(sitlocation);
-	        player.setSneaking(false);
 	        Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
-	        Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0.1 ,0), 0, 0);
-	        Method getHandleMethod = arrow.getClass().getDeclaredMethod("getHandle");
-	        getHandleMethod.setAccessible(true);
-	        Object nmsarrow = getHandleMethod.invoke(arrow);
-	        Field bukkitEntityField = nmsarrow.getClass().getSuperclass().getDeclaredField("bukkitEntity");
-	        bukkitEntityField.setAccessible(true);
-	        Constructor<?> ctor = vehiclearrowclass.getDeclaredConstructor(this.getServer().getClass(), nmsarrow.getClass());
-	        ctor.setAccessible(true);
-	        Object vehiclearrow = ctor.newInstance(this.getServer(), nmsarrow);
-	        bukkitEntityField.set(nmsarrow, vehiclearrow);
-	        arrow.setPassenger(player);
-	        sit.put(player.getName(), (Entity) vehiclearrow);
+			Entity arrow = sitPlayerOnArrow(player, arrowloc);
+	        sit.put(player.getName(), arrow);
 	        sitblock.put(block, player.getName());
 	        sitblockbr.put(player.getName(), block);
 	        startReSitTask(player);
@@ -139,7 +129,6 @@ public class Chairs extends JavaPlugin {
     		e.printStackTrace();
     	}
     }
-
     protected void startReSitTask(final Player player)
     {
     	int task = 
@@ -159,18 +148,8 @@ public class Chairs extends JavaPlugin {
 	    	sit.remove(player.getName());
 	    	player.eject();
 			Block block = sitblockbr.get(player.getName());
-	        Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
-	        Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0.1 ,0), 0, 0);
-	        Method getHandleMethod = arrow.getClass().getDeclaredMethod("getHandle");
-	        getHandleMethod.setAccessible(true);
-	        Object nmsarrow = getHandleMethod.invoke(arrow);
-	        Field bukkitEntityField = nmsarrow.getClass().getSuperclass().getDeclaredField("bukkitEntity");
-	        bukkitEntityField.setAccessible(true);
-	        Constructor<?> ctor = vehiclearrowclass.getDeclaredConstructor(this.getServer().getClass(), nmsarrow.getClass());
-	        ctor.setAccessible(true);
-	        Object vehiclearrow = ctor.newInstance(this.getServer(), nmsarrow);
-	        bukkitEntityField.set(nmsarrow, vehiclearrow);
-	        arrow.setPassenger(player);
+			Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
+			Entity arrow = sitPlayerOnArrow(player, arrowloc);
 			sit.put(player.getName(), arrow);
 			Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
 			{
@@ -182,6 +161,21 @@ public class Chairs extends JavaPlugin {
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
+    }
+    private Entity sitPlayerOnArrow(Player player, Location arrowloc) throws NoSuchMethodException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException
+    {
+        Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0.1 ,0), 0, 0);
+        Method getHandleMethod = arrow.getClass().getDeclaredMethod("getHandle");
+        getHandleMethod.setAccessible(true);
+        Object nmsarrow = getHandleMethod.invoke(arrow);
+        Field bukkitEntityField = nmsarrow.getClass().getSuperclass().getDeclaredField("bukkitEntity");
+        bukkitEntityField.setAccessible(true);
+        Constructor<?> ctor = vehiclearrowclass.getDeclaredConstructor(this.getServer().getClass(), nmsarrow.getClass());
+        ctor.setAccessible(true);
+        Object vehiclearrow = ctor.newInstance(this.getServer(), nmsarrow);
+        bukkitEntityField.set(nmsarrow, vehiclearrow);
+        arrow.setPassenger(player);
+		return arrow;
     }
     protected void unSitPlayer(final Player player, boolean ignoretp) 
     {
