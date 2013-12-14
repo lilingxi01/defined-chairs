@@ -33,7 +33,7 @@ public class Chairs extends JavaPlugin {
     public boolean autoRotate, signCheck, notifyplayer;
     public boolean invertedStairCheck, invertedStepCheck, ignoreIfBlockInHand;
     public boolean sitEffectsEnabled;
-    public double sittingHeightAdj, distance;
+    public double distance;
     public int maxChairWidth;
     public int sitMaxHealth;
     public int sitHealthPerInterval;
@@ -216,7 +216,6 @@ public class Chairs extends JavaPlugin {
     	FileConfiguration config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(),"config.yml"));
         autoRotate = config.getBoolean("auto-rotate");
         signCheck = config.getBoolean("sign-check");
-        sittingHeightAdj = config.getDouble("sitting-height-adj");
         distance = config.getDouble("distance");
         maxChairWidth = config.getInt("max-chair-width");
         notifyplayer = config.getBoolean("notify-player");

@@ -3,15 +3,16 @@
 # A list of all compatible block and item names: http://bit.ly/AmJgMb.
 # ------
 # sit-block-settings: Set the blocks you want to be able to sit down on and sitting height. Use material_name:sitting_height
+# valid-signs: Valid sign materials for sign check
 # auto-rotate: If set to true, you are automatically rotated to the descending face of the stairs-block when sitting down.
 # max-chair-width: Define how many blocks a chair can be long (set to number <= 0 for unlimited width).
 # sign-check: If set to true, you will only be able to sit down when there are signs on both of the ends of the chair.
 # distance: The maximum distance between the chair (the center of the block) and the player to be able to sit down (to prevent glitching through walls, etc.).
-# sitting-height-adj: Non-stairs and non-steps are adjusted automatically by this amount.
 # upsidedown-check: If true then prevent players from sitting on upside down stairs.
 # upper-step-check: If true then prevent players from sitting on an upper slab.
 # seat-occupied-check: Check if seat is already occupied.
 # ignore-if-item-in-hand: Set this true disable sititng if player is holding an item in hand.
+# disabledWGRegions: You won't be able to sit in this regions
 # ------
 sit-block-settings:
   - WOOD_STAIRS:0.7
@@ -34,18 +35,17 @@ auto-rotate: true
 max-chair-width: 3
 sign-check: false
 distance: 2
-disabledWGRegions: []
-sitting-height-adj: 1.0
-notify-player: true
 upside-down-check: true
 upper-step-check: true
 ignore-if-item-in-hand: false
+disabledWGRegions: []
 sit-effects:
   enabled: false
   interval: 20
   healing:
     amount: 1
     max-percent: 100
+notify-player: true
 messages:
   sitting: '&7You are now sitting.'
   standing: '&7You are no longer sitting.'
