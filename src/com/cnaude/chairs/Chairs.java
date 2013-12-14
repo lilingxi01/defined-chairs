@@ -59,7 +59,7 @@ public class Chairs extends JavaPlugin {
 	    	getHandle.setAccessible(true);
 	    	Class<?> entityarrow = getHandle.invoke(arrow).getClass();
 	    	Class<?> craftserver = getServer().getClass();
-	    	vehiclearrowclass = new GenVehicleArrowClass().genAndLoadClass(arrowclass, entityarrow, craftserver);
+	    	vehiclearrowclass = new GenVehicleArrowClass(this).genAndLoadClass(arrowclass, entityarrow, craftserver);
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.severe("Failed to generate VehicleArrow class, exiting");

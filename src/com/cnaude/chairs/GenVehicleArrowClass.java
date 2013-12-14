@@ -23,6 +23,11 @@ import org.apache.bcel.generic.Type;
 
 public class GenVehicleArrowClass {
 
+	private File datafolder;
+	public GenVehicleArrowClass(Chairs plugin)
+	{
+		this.datafolder = plugin.getDataFolder();
+	}
 	
 	public Class<?> genAndLoadClass(String arrowclass, Class<?> entityarrow, Class<?> craftserver) throws IOException, ClassNotFoundException {
 		  ClassGen cg = new ClassGen(
@@ -60,10 +65,10 @@ public class GenVehicleArrowClass {
 		  mg.setMaxStack();
 		  cg.addMethod(mg.getMethod());
 		  il.dispose();
-		  cg.getJavaClass().dump("VehicleArrow.class");
-		  File arrowfile = new File("VehicleArrow.class");
+		  cg.getJavaClass().dump(datafolder+File.separator+"VehicleArrow.class");
+		  File arrowfile = new File(datafolder+File.separator+"VehicleArrow.class");
 		  InputStream arrwoinputstrean = new FileInputStream(arrowfile);
-		  File jarfile = new File("VehicleArrow.jar");
+		  File jarfile = new File(datafolder+File.separator+"VehicleArrow.jar");
 		  jarfile.delete();
 		  final ZipOutputStream zipout = new ZipOutputStream(new FileOutputStream(jarfile));
 		  ZipEntry entry = new ZipEntry(arrowfile.getName());
