@@ -34,14 +34,16 @@ public class Chairs extends JavaPlugin {
     public boolean invertedStairCheck, invertedStepCheck, ignoreIfBlockInHand;
     public boolean sitEffectsEnabled;
     public double distance;
+    public HashSet<String> disabledRegions = new HashSet<String>();
     public int maxChairWidth;
     public int sitMaxHealth;
     public int sitHealthPerInterval;
     public int sitEffectInterval;
-    public HashSet<String> disabledRegions = new HashSet<String>();
+    public boolean sitDisableAllCommands = false;
+    public HashSet<String> sitDisabledCommands = new HashSet<String>();
     private Logger log;
     public ChairsIgnoreList ignoreList; 
-    public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled;
+    public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled, msgCommandRestricted;
     
     private Class<?> vehiclearrowclass;
 
@@ -71,12 +73,8 @@ public class Chairs extends JavaPlugin {
         loadConfig();
         getServer().getPluginManager().registerEvents(new TrySitEventListener(this, ignoreList), this);
         getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
+        getServer().getPluginManager().registerEvents(new CommandRestrict(this), this);
         getCommand("chairs").setExecutor(new ChairsCommand(this, ignoreList));
-        if (sitEffectsEnabled) {
-            logInfo("Enabling sitting effects.");
-            chairEffects = new ChairEffects(this);
-        }
-        
     }
 
     @Override
@@ -243,6 +241,16 @@ public class Chairs extends JavaPlugin {
         sitEffectInterval = config.getInt("sit-effects.interval",20);
         sitMaxHealth = config.getInt("sit-effects.healing.max-percent",100);
         sitHealthPerInterval = config.getInt("sit-effects.healing.amount",1);
+        if (sitEffectsEnabled) {
+            if (chairEffects != null) {
+                chairEffects.cancel();     
+            }
+            logInfo("Enabling sitting effects.");
+            chairEffects = new ChairEffects(this);
+        }
+        
+        sitDisableAllCommands = config.getBoolean("sit-restrictions.commands.all");
+        sitDisabledCommands = new HashSet<String>(config.getStringList("sit-restrictions.commands.list"));
         
         msgSitting = ChatColor.translateAlternateColorCodes('&',config.getString("messages.sitting"));
         msgStanding = ChatColor.translateAlternateColorCodes('&',config.getString("messages.standing"));
@@ -251,6 +259,7 @@ public class Chairs extends JavaPlugin {
         msgEnabled = ChatColor.translateAlternateColorCodes('&',config.getString("messages.enabled"));
         msgDisabled = ChatColor.translateAlternateColorCodes('&',config.getString("messages.disabled"));
         msgReloaded = ChatColor.translateAlternateColorCodes('&',config.getString("messages.reloaded"));
+        msgCommandRestricted = ChatColor.translateAlternateColorCodes('&',config.getString("messages.command-restricted"));
 
         allowedBlocks = new ArrayList<ChairBlock>();
         for (String s : config.getStringList("sit-blocks")) {

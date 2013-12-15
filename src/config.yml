@@ -38,13 +38,19 @@ distance: 2
 upside-down-check: true
 upper-step-check: true
 ignore-if-item-in-hand: false
-disabledWGRegions: []
+disabledWGRegions:
+- exampleregionname
 sit-effects:
   enabled: false
   interval: 20
   healing:
     amount: 1
     max-percent: 100
+sit-restrictions:
+  commands:
+    all: false
+    list:
+    - /examplecommand
 notify-player: true
 messages:
   sitting: '&7You are now sitting.'
@@ -54,3 +60,4 @@ messages:
   no-permission: '&cYou do not have permission to do this!'
   enabled: '&7You have enabled chairs for yourself!'
   disabled: '&7You have disabled chairs for yourself!'
+  command-restricted: '&7You can't issue this command while sitting'
