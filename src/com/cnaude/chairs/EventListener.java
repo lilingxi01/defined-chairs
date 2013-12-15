@@ -15,6 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
@@ -36,6 +37,16 @@ public class EventListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event)
     {
     	Player player = event.getPlayer();
+    	if (plugin.sit.containsKey(player.getName()))
+    	{
+    		plugin.unSitPlayer(player,true);
+    	}
+    }
+    
+    @EventHandler(priority=EventPriority.LOWEST)
+    public void onPlayerDeath(PlayerDeathEvent event)
+    {
+    	Player player = event.getEntity();
     	if (plugin.sit.containsKey(player.getName()))
     	{
     		plugin.unSitPlayer(player,true);
