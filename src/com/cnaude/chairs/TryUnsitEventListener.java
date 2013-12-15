@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 
 public class TryUnsitEventListener implements Listener {
@@ -27,7 +28,17 @@ public class TryUnsitEventListener implements Listener {
     	Player player = event.getPlayer();
     	if (plugin.sit.containsKey(player.getName()))
     	{
-    		plugin.unSitPlayer(player,true);
+    		plugin.unSitPlayer(player, false, true);
+    	}
+    }
+    
+    @EventHandler(priority=EventPriority.LOWEST)
+    public void onPlayerTeleport(PlayerTeleportEvent event)
+    {
+    	Player player = event.getPlayer();
+    	if (plugin.sit.containsKey(player.getName()))
+    	{
+    		plugin.unSitPlayer(player, false, false);
     	}
     }
     
@@ -37,7 +48,7 @@ public class TryUnsitEventListener implements Listener {
     	Player player = event.getEntity();
     	if (plugin.sit.containsKey(player.getName()))
     	{
-    		plugin.unSitPlayer(player,true);
+    		plugin.unSitPlayer(player, false, false);
     	}
     }
     
@@ -59,7 +70,7 @@ public class TryUnsitEventListener implements Listener {
     					public void run()
     					{
     						queueUnsit.remove(player.getName());
-    						plugin.unSitPlayer(player, false);
+    						plugin.unSitPlayer(player, true, false);
     					}
     				});
     			}
@@ -74,7 +85,7 @@ public class TryUnsitEventListener implements Listener {
     	if (plugin.sitblock.containsKey(b))
     	{
     		Player player = Bukkit.getPlayerExact(plugin.sitblock.get(b));
-    		plugin.unSitPlayer(player,false);
+    		plugin.unSitPlayer(player, true, false);
     	}
     }
 

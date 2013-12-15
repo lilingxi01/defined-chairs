@@ -83,7 +83,7 @@ public class Chairs extends JavaPlugin {
     public void onDisable() {
     	for (Player player : getServer().getOnlinePlayers()) { 
     		if (sit.containsKey(player.getName())) {
-    			unSitPlayer(player, true);
+    			unSitPlayer(player, false, true);
     		}
     	}
         if (ignoreList != null) {
@@ -175,14 +175,14 @@ public class Chairs extends JavaPlugin {
         arrow.setPassenger(player);
 		return arrow;
     }
-    protected void unSitPlayer(final Player player, boolean playerleft) 
+    protected void unSitPlayer(final Player player, boolean restoreposition, boolean correctnmspostion) 
     {
     	final Entity arrow = sit.get(player.getName());
 		sit.remove(player.getName());
     	player.eject();
     	arrow.remove();
     	final Location tploc = sitstopteleportloc.get(player.getName());
-    	if (!playerleft) 
+    	if (restoreposition) 
     	{
     		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() 
     		{
@@ -194,22 +194,25 @@ public class Chairs extends JavaPlugin {
     		},1);
     	} else
     	{
-    		try {
-    			Method getHandleMethod = player.getClass().getDeclaredMethod("getHandle");
-    			getHandleMethod.setAccessible(true);
-    			Object nmsPlayer = getHandleMethod.invoke(player);
-    			Class<?> entityClass = nmsPlayer.getClass().getSuperclass().getSuperclass().getSuperclass();
-    			Field locXField = entityClass.getDeclaredField("locX");
-    			locXField.setAccessible(true);
-    			locXField.set(nmsPlayer, tploc.getX());
-    			Field locYField = entityClass.getDeclaredField("locY");
-    			locYField.setAccessible(true);
-    			locYField.set(nmsPlayer, tploc.getY());
-    			Field locZField = entityClass.getDeclaredField("locZ");
-    			locZField.setAccessible(true);
-    			locZField.set(nmsPlayer, tploc.getZ());
-    		} catch (Exception e) {
-    			e.printStackTrace();
+    		if (correctnmspostion)
+    		{
+	    		try {
+	    			Method getHandleMethod = player.getClass().getDeclaredMethod("getHandle");
+	    			getHandleMethod.setAccessible(true);
+	    			Object nmsPlayer = getHandleMethod.invoke(player);
+	    			Class<?> entityClass = nmsPlayer.getClass().getSuperclass().getSuperclass().getSuperclass();
+	    			Field locXField = entityClass.getDeclaredField("locX");
+	    			locXField.setAccessible(true);
+	    			locXField.set(nmsPlayer, tploc.getX());
+	    			Field locYField = entityClass.getDeclaredField("locY");
+	    			locYField.setAccessible(true);
+	    			locYField.set(nmsPlayer, tploc.getY());
+	    			Field locZField = entityClass.getDeclaredField("locZ");
+	    			locZField.setAccessible(true);
+	    			locZField.set(nmsPlayer, tploc.getZ());
+	    		} catch (Exception e) {
+	    			e.printStackTrace();
+	    		}
     		}
     	}
 		sitblock.remove(sitblockbr.get(player.getName()));
