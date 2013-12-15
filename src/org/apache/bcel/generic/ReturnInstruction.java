@@ -21,59 +21,62 @@ import org.apache.bcel.ExceptionConstants;
 
 /**
  * Super class for the xRETURN family of instructions.
- *
+ * 
  * @version $Id: ReturnInstruction.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
-public abstract class ReturnInstruction extends Instruction implements ExceptionThrower,
-        TypedInstruction, StackConsumer {
+public abstract class ReturnInstruction extends Instruction implements
+		ExceptionThrower, TypedInstruction, StackConsumer {
 
-    /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
-     */
-    ReturnInstruction() {
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Empty constructor needed for the Class.newInstance() statement in
+	 * Instruction.readInstruction(). Not to be used otherwise.
+	 */
+	ReturnInstruction() {
+	}
 
-    /**
-     * @param opcode of instruction
-     */
-    protected ReturnInstruction(short opcode) {
-        super(opcode, (short) 1);
-    }
+	/**
+	 * @param opcode
+	 *            of instruction
+	 */
+	protected ReturnInstruction(short opcode) {
+		super(opcode, (short) 1);
+	}
 
+	public Type getType() {
+		switch (opcode) {
+		case Constants.IRETURN:
+			return Type.INT;
+		case Constants.LRETURN:
+			return Type.LONG;
+		case Constants.FRETURN:
+			return Type.FLOAT;
+		case Constants.DRETURN:
+			return Type.DOUBLE;
+		case Constants.ARETURN:
+			return Type.OBJECT;
+		case Constants.RETURN:
+			return Type.VOID;
+		default: // Never reached
+			throw new ClassGenException("Unknown type " + opcode);
+		}
+	}
 
-    public Type getType() {
-        switch (opcode) {
-            case Constants.IRETURN:
-                return Type.INT;
-            case Constants.LRETURN:
-                return Type.LONG;
-            case Constants.FRETURN:
-                return Type.FLOAT;
-            case Constants.DRETURN:
-                return Type.DOUBLE;
-            case Constants.ARETURN:
-                return Type.OBJECT;
-            case Constants.RETURN:
-                return Type.VOID;
-            default: // Never reached
-                throw new ClassGenException("Unknown type " + opcode);
-        }
-    }
+	@Override
+	public Class<?>[] getExceptions() {
+		return new Class[] { ExceptionConstants.ILLEGAL_MONITOR_STATE };
+	}
 
-
-    public Class[] getExceptions() {
-        return new Class[] {
-            ExceptionConstants.ILLEGAL_MONITOR_STATE
-        };
-    }
-
-
-    /** @return type associated with the instruction
-     */
-    public Type getType( ConstantPoolGen cp ) {
-        return getType();
-    }
+	/**
+	 * @return type associated with the instruction
+	 */
+	@Override
+	public Type getType(ConstantPoolGen cp) {
+		return getType();
+	}
 }

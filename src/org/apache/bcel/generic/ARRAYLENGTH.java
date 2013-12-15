@@ -16,42 +16,52 @@
  */
 package org.apache.bcel.generic;
 
-/** 
- * ARRAYLENGTH -  Get length of array
- * <PRE>Stack: ..., arrayref -&gt; ..., length</PRE>
- *
+/**
+ * ARRAYLENGTH - Get length of array
+ * 
+ * <PRE>
+ * Stack: ..., arrayref -&gt; ..., length
+ * </PRE>
+ * 
  * @version $Id: ARRAYLENGTH.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
-public class ARRAYLENGTH extends Instruction implements ExceptionThrower, StackProducer {
+public class ARRAYLENGTH extends Instruction implements ExceptionThrower,
+		StackProducer {
 
-    /** Get length of array
-     */
-    public ARRAYLENGTH() {
-        super(org.apache.bcel.Constants.ARRAYLENGTH, (short) 1);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Get length of array
+	 */
+	public ARRAYLENGTH() {
+		super(org.apache.bcel.Constants.ARRAYLENGTH, (short) 1);
+	}
 
-    /** @return exceptions this instruction may cause
-     */
-    public Class[] getExceptions() {
-        return new Class[] {
-            org.apache.bcel.ExceptionConstants.NULL_POINTER_EXCEPTION
-        };
-    }
+	/**
+	 * @return exceptions this instruction may cause
+	 */
+	@Override
+	public Class<?>[] getExceptions() {
+		return new Class[] { org.apache.bcel.ExceptionConstants.NULL_POINTER_EXCEPTION };
+	}
 
-
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitExceptionThrower(this);
-        v.visitStackProducer(this);
-        v.visitARRAYLENGTH(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitExceptionThrower(this);
+		v.visitStackProducer(this);
+		v.visitARRAYLENGTH(this);
+	}
 }

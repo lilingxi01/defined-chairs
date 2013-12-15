@@ -17,145 +17,145 @@
 package org.apache.bcel.classfile;
 
 /**
- * Visitor with empty method bodies, can be extended and used in conjunction with the
- * DescendingVisitor class, e.g.
- *
+ * Visitor with empty method bodies, can be extended and used in conjunction
+ * with the DescendingVisitor class, e.g.
+ * 
  * By courtesy of David Spencer.
- *
+ * 
  * @see DescendingVisitor
  * @version $Id: EmptyVisitor.java 388707 2006-03-25 05:40:28Z tcurdt $
  * 
  */
 public class EmptyVisitor implements Visitor {
 
-    protected EmptyVisitor() {
-    }
-
-
-    public void visitCode( Code obj ) {
-    }
-
-
-    public void visitCodeException( CodeException obj ) {
-    }
-
-
-    public void visitConstantClass( ConstantClass obj ) {
-    }
-
-
-    public void visitConstantDouble( ConstantDouble obj ) {
-    }
-
-
-    public void visitConstantFieldref( ConstantFieldref obj ) {
-    }
-
-
-    public void visitConstantFloat( ConstantFloat obj ) {
-    }
-
-
-    public void visitConstantInteger( ConstantInteger obj ) {
-    }
-
-
-    public void visitConstantInterfaceMethodref( ConstantInterfaceMethodref obj ) {
-    }
-
-
-    public void visitConstantLong( ConstantLong obj ) {
-    }
-
-
-    public void visitConstantMethodref( ConstantMethodref obj ) {
-    }
-
-
-    public void visitConstantNameAndType( ConstantNameAndType obj ) {
-    }
-
-
-    public void visitConstantPool( ConstantPool obj ) {
-    }
-
-
-    public void visitConstantString( ConstantString obj ) {
-    }
-
-
-    public void visitConstantUtf8( ConstantUtf8 obj ) {
-    }
-
-
-    public void visitConstantValue( ConstantValue obj ) {
-    }
-
-
-    public void visitDeprecated( Deprecated obj ) {
-    }
-
-
-    public void visitExceptionTable( ExceptionTable obj ) {
-    }
-
-
-    public void visitField( Field obj ) {
-    }
-
-
-    public void visitInnerClass( InnerClass obj ) {
-    }
-
-
-    public void visitInnerClasses( InnerClasses obj ) {
-    }
-
-
-    public void visitJavaClass( JavaClass obj ) {
-    }
-
-
-    public void visitLineNumber( LineNumber obj ) {
-    }
-
-
-    public void visitLineNumberTable( LineNumberTable obj ) {
-    }
-
-
-    public void visitLocalVariable( LocalVariable obj ) {
-    }
-
-
-    public void visitLocalVariableTable( LocalVariableTable obj ) {
-    }
-
-
-    public void visitMethod( Method obj ) {
-    }
-
-
-    public void visitSignature( Signature obj ) {
-    }
-
-
-    public void visitSourceFile( SourceFile obj ) {
-    }
-
-
-    public void visitSynthetic( Synthetic obj ) {
-    }
-
-
-    public void visitUnknown( Unknown obj ) {
-    }
-
-
-    public void visitStackMap( StackMap obj ) {
-    }
-
-
-    public void visitStackMapEntry( StackMapEntry obj ) {
-    }
+	protected EmptyVisitor() {
+	}
+
+	@Override
+	public void visitCode(Code obj) {
+	}
+
+	@Override
+	public void visitCodeException(CodeException obj) {
+	}
+
+	@Override
+	public void visitConstantClass(ConstantClass obj) {
+	}
+
+	@Override
+	public void visitConstantDouble(ConstantDouble obj) {
+	}
+
+	@Override
+	public void visitConstantFieldref(ConstantFieldref obj) {
+	}
+
+	@Override
+	public void visitConstantFloat(ConstantFloat obj) {
+	}
+
+	@Override
+	public void visitConstantInteger(ConstantInteger obj) {
+	}
+
+	@Override
+	public void visitConstantInterfaceMethodref(ConstantInterfaceMethodref obj) {
+	}
+
+	@Override
+	public void visitConstantLong(ConstantLong obj) {
+	}
+
+	@Override
+	public void visitConstantMethodref(ConstantMethodref obj) {
+	}
+
+	@Override
+	public void visitConstantNameAndType(ConstantNameAndType obj) {
+	}
+
+	@Override
+	public void visitConstantPool(ConstantPool obj) {
+	}
+
+	@Override
+	public void visitConstantString(ConstantString obj) {
+	}
+
+	@Override
+	public void visitConstantUtf8(ConstantUtf8 obj) {
+	}
+
+	@Override
+	public void visitConstantValue(ConstantValue obj) {
+	}
+
+	@Override
+	public void visitDeprecated(Deprecated obj) {
+	}
+
+	@Override
+	public void visitExceptionTable(ExceptionTable obj) {
+	}
+
+	@Override
+	public void visitField(Field obj) {
+	}
+
+	@Override
+	public void visitInnerClass(InnerClass obj) {
+	}
+
+	@Override
+	public void visitInnerClasses(InnerClasses obj) {
+	}
+
+	@Override
+	public void visitJavaClass(JavaClass obj) {
+	}
+
+	@Override
+	public void visitLineNumber(LineNumber obj) {
+	}
+
+	@Override
+	public void visitLineNumberTable(LineNumberTable obj) {
+	}
+
+	@Override
+	public void visitLocalVariable(LocalVariable obj) {
+	}
+
+	@Override
+	public void visitLocalVariableTable(LocalVariableTable obj) {
+	}
+
+	@Override
+	public void visitMethod(Method obj) {
+	}
+
+	@Override
+	public void visitSignature(Signature obj) {
+	}
+
+	@Override
+	public void visitSourceFile(SourceFile obj) {
+	}
+
+	@Override
+	public void visitSynthetic(Synthetic obj) {
+	}
+
+	@Override
+	public void visitUnknown(Unknown obj) {
+	}
+
+	@Override
+	public void visitStackMap(StackMap obj) {
+	}
+
+	@Override
+	public void visitStackMapEntry(StackMapEntry obj) {
+	}
 }

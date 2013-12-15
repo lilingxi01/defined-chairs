@@ -16,35 +16,45 @@
  */
 package org.apache.bcel.generic;
 
-/** 
+/**
  * D2I - Convert double to int
- * <PRE>Stack: ..., value.word1, value.word2 -&gt; ..., result</PRE>
- *
+ * 
+ * <PRE>
+ * Stack: ..., value.word1, value.word2 -&gt; ..., result
+ * </PRE>
+ * 
  * @version $Id: D2I.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class D2I extends ConversionInstruction {
 
-    /** Convert double to int
-     */
-    public D2I() {
-        super(org.apache.bcel.Constants.D2I);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Convert double to int
+	 */
+	public D2I() {
+		super(org.apache.bcel.Constants.D2I);
+	}
 
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitTypedInstruction(this);
-        v.visitStackProducer(this);
-        v.visitStackConsumer(this);
-        v.visitConversionInstruction(this);
-        v.visitD2I(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitTypedInstruction(this);
+		v.visitStackProducer(this);
+		v.visitStackConsumer(this);
+		v.visitConversionInstruction(this);
+		v.visitD2I(this);
+	}
 }

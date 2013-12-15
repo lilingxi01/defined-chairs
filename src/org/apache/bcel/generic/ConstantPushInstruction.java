@@ -17,16 +17,18 @@
 package org.apache.bcel.generic;
 
 /**
- * Denotes a push instruction that produces a literal on the stack
- * such as  SIPUSH, BIPUSH, ICONST, etc.
- *
- * @version $Id: ConstantPushInstruction.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
-
+ * Denotes a push instruction that produces a literal on the stack such as
+ * SIPUSH, BIPUSH, ICONST, etc.
+ * 
+ * @version $Id: ConstantPushInstruction.java 386056 2006-03-15 11:31:56Z tcurdt
+ *          $
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * 
  * @see ICONST
  * @see SIPUSH
  */
-public interface ConstantPushInstruction extends PushInstruction, TypedInstruction {
+public interface ConstantPushInstruction extends PushInstruction,
+		TypedInstruction {
 
-    public Number getValue();
+	public Number getValue();
 }

@@ -16,33 +16,42 @@
  */
 package org.apache.bcel.generic;
 
-/** 
+/**
  * SALOAD - Load short from array
- * <PRE>Stack: ..., arrayref, index -&gt; ..., value</PRE>
- *
+ * 
+ * <PRE>
+ * Stack: ..., arrayref, index -&gt; ..., value
+ * </PRE>
+ * 
  * @version $Id: SALOAD.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class SALOAD extends ArrayInstruction implements StackProducer {
 
-    public SALOAD() {
-        super(org.apache.bcel.Constants.SALOAD);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	public SALOAD() {
+		super(org.apache.bcel.Constants.SALOAD);
+	}
 
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitStackProducer(this);
-        v.visitExceptionThrower(this);
-        v.visitTypedInstruction(this);
-        v.visitArrayInstruction(this);
-        v.visitSALOAD(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitStackProducer(this);
+		v.visitExceptionThrower(this);
+		v.visitTypedInstruction(this);
+		v.visitArrayInstruction(this);
+		v.visitSALOAD(this);
+	}
 }

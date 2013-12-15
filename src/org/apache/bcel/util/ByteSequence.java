@@ -20,49 +20,44 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
 /**
- * Utility class that implements a sequence of bytes which can be read
- * via the `readByte()' method. This is used to implement a wrapper for the 
- * Java byte code stream to gain some more readability.
- *
+ * Utility class that implements a sequence of bytes which can be read via the
+ * `readByte()' method. This is used to implement a wrapper for the Java byte
+ * code stream to gain some more readability.
+ * 
  * @version $Id: ByteSequence.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public final class ByteSequence extends DataInputStream {
 
-    private ByteArrayStream byte_stream;
+	private ByteArrayStream byte_stream;
 
+	public ByteSequence(byte[] bytes) {
+		super(new ByteArrayStream(bytes));
+		byte_stream = (ByteArrayStream) in;
+	}
 
-    public ByteSequence(byte[] bytes) {
-        super(new ByteArrayStream(bytes));
-        byte_stream = (ByteArrayStream) in;
-    }
+	public final int getIndex() {
+		return byte_stream.getPosition();
+	}
 
+	final void unreadByte() {
+		byte_stream.unreadByte();
+	}
 
-    public final int getIndex() {
-        return byte_stream.getPosition();
-    }
+	private static final class ByteArrayStream extends ByteArrayInputStream {
 
+		ByteArrayStream(byte[] bytes) {
+			super(bytes);
+		}
 
-    final void unreadByte() {
-        byte_stream.unreadByte();
-    }
+		final int getPosition() {
+			return pos;
+		} // is protected in ByteArrayInputStream
 
-    private static final class ByteArrayStream extends ByteArrayInputStream {
-
-        ByteArrayStream(byte[] bytes) {
-            super(bytes);
-        }
-
-
-        final int getPosition() {
-            return pos;
-        } // is protected in ByteArrayInputStream
-
-
-        final void unreadByte() {
-            if (pos > 0) {
-                pos--;
-            }
-        }
-    }
+		final void unreadByte() {
+			if (pos > 0) {
+				pos--;
+			}
+		}
+	}
 }

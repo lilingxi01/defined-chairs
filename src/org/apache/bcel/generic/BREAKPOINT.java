@@ -18,26 +18,32 @@ package org.apache.bcel.generic;
 
 /**
  * BREAKPOINT, JVM dependent, ignored by default
- *
+ * 
  * @version $Id: BREAKPOINT.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class BREAKPOINT extends Instruction {
 
-    public BREAKPOINT() {
-        super(org.apache.bcel.Constants.BREAKPOINT, (short) 1);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	public BREAKPOINT() {
+		super(org.apache.bcel.Constants.BREAKPOINT, (short) 1);
+	}
 
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitBREAKPOINT(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitBREAKPOINT(this);
+	}
 }

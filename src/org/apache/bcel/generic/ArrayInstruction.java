@@ -18,64 +18,70 @@ package org.apache.bcel.generic;
 
 /**
  * Super class for instructions dealing with array access such as IALOAD.
- *
+ * 
  * @version $Id: ArrayInstruction.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
-public abstract class ArrayInstruction extends Instruction implements ExceptionThrower,
-        TypedInstruction {
+public abstract class ArrayInstruction extends Instruction implements
+		ExceptionThrower, TypedInstruction {
 
-    /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
-     */
-    ArrayInstruction() {
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Empty constructor needed for the Class.newInstance() statement in
+	 * Instruction.readInstruction(). Not to be used otherwise.
+	 */
+	ArrayInstruction() {
+	}
 
-    /**
-     * @param opcode of instruction
-     */
-    protected ArrayInstruction(short opcode) {
-        super(opcode, (short) 1);
-    }
+	/**
+	 * @param opcode
+	 *            of instruction
+	 */
+	protected ArrayInstruction(short opcode) {
+		super(opcode, (short) 1);
+	}
 
+	@Override
+	public Class<?>[] getExceptions() {
+		return org.apache.bcel.ExceptionConstants.EXCS_ARRAY_EXCEPTION;
+	}
 
-    public Class[] getExceptions() {
-        return org.apache.bcel.ExceptionConstants.EXCS_ARRAY_EXCEPTION;
-    }
-
-
-    /** @return type associated with the instruction
-     */
-    public Type getType( ConstantPoolGen cp ) {
-        switch (opcode) {
-            case org.apache.bcel.Constants.IALOAD:
-            case org.apache.bcel.Constants.IASTORE:
-                return Type.INT;
-            case org.apache.bcel.Constants.CALOAD:
-            case org.apache.bcel.Constants.CASTORE:
-                return Type.CHAR;
-            case org.apache.bcel.Constants.BALOAD:
-            case org.apache.bcel.Constants.BASTORE:
-                return Type.BYTE;
-            case org.apache.bcel.Constants.SALOAD:
-            case org.apache.bcel.Constants.SASTORE:
-                return Type.SHORT;
-            case org.apache.bcel.Constants.LALOAD:
-            case org.apache.bcel.Constants.LASTORE:
-                return Type.LONG;
-            case org.apache.bcel.Constants.DALOAD:
-            case org.apache.bcel.Constants.DASTORE:
-                return Type.DOUBLE;
-            case org.apache.bcel.Constants.FALOAD:
-            case org.apache.bcel.Constants.FASTORE:
-                return Type.FLOAT;
-            case org.apache.bcel.Constants.AALOAD:
-            case org.apache.bcel.Constants.AASTORE:
-                return Type.OBJECT;
-            default:
-                throw new ClassGenException("Oops: unknown case in switch" + opcode);
-        }
-    }
+	/**
+	 * @return type associated with the instruction
+	 */
+	@Override
+	public Type getType(ConstantPoolGen cp) {
+		switch (opcode) {
+		case org.apache.bcel.Constants.IALOAD:
+		case org.apache.bcel.Constants.IASTORE:
+			return Type.INT;
+		case org.apache.bcel.Constants.CALOAD:
+		case org.apache.bcel.Constants.CASTORE:
+			return Type.CHAR;
+		case org.apache.bcel.Constants.BALOAD:
+		case org.apache.bcel.Constants.BASTORE:
+			return Type.BYTE;
+		case org.apache.bcel.Constants.SALOAD:
+		case org.apache.bcel.Constants.SASTORE:
+			return Type.SHORT;
+		case org.apache.bcel.Constants.LALOAD:
+		case org.apache.bcel.Constants.LASTORE:
+			return Type.LONG;
+		case org.apache.bcel.Constants.DALOAD:
+		case org.apache.bcel.Constants.DASTORE:
+			return Type.DOUBLE;
+		case org.apache.bcel.Constants.FALOAD:
+		case org.apache.bcel.Constants.FASTORE:
+			return Type.FLOAT;
+		case org.apache.bcel.Constants.AALOAD:
+		case org.apache.bcel.Constants.AASTORE:
+			return Type.OBJECT;
+		default:
+			throw new ClassGenException("Oops: unknown case in switch" + opcode);
+		}
+	}
 }

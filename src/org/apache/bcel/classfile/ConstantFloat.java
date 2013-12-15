@@ -21,100 +21,105 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import org.apache.bcel.Constants;
 
-/** 
- * This class is derived from the abstract 
- * <A HREF="org.apache.bcel.classfile.Constant.html">Constant</A> class 
- * and represents a reference to a float object.
- *
+/**
+ * This class is derived from the abstract <A
+ * HREF="org.apache.bcel.classfile.Constant.html">Constant</A> class and
+ * represents a reference to a float object.
+ * 
  * @version $Id: ConstantFloat.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
- * @see     Constant
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @see Constant
  */
 public final class ConstantFloat extends Constant implements ConstantObject {
 
-    private float bytes;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private float bytes;
 
+	/**
+	 * @param bytes
+	 *            Data
+	 */
+	public ConstantFloat(float bytes) {
+		super(Constants.CONSTANT_Float);
+		this.bytes = bytes;
+	}
 
-    /** 
-     * @param bytes Data
-     */
-    public ConstantFloat(float bytes) {
-        super(Constants.CONSTANT_Float);
-        this.bytes = bytes;
-    }
+	/**
+	 * Initialize from another object. Note that both objects use the same
+	 * references (shallow copy). Use clone() for a physical copy.
+	 */
+	public ConstantFloat(ConstantFloat c) {
+		this(c.getBytes());
+	}
 
+	/**
+	 * Initialize instance from file data.
+	 * 
+	 * @param file
+	 *            Input stream
+	 * @throws IOException
+	 */
+	ConstantFloat(DataInputStream file) throws IOException {
+		this(file.readFloat());
+	}
 
-    /**
-     * Initialize from another object. Note that both objects use the same
-     * references (shallow copy). Use clone() for a physical copy.
-     */
-    public ConstantFloat(ConstantFloat c) {
-        this(c.getBytes());
-    }
+	/**
+	 * Called by objects that are traversing the nodes of the tree implicitely
+	 * defined by the contents of a Java class. I.e., the hierarchy of methods,
+	 * fields, attributes, etc. spawns a tree of objects.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitConstantFloat(this);
+	}
 
+	/**
+	 * Dump constant float to file stream in binary format.
+	 * 
+	 * @param file
+	 *            Output file stream
+	 * @throws IOException
+	 */
+	@Override
+	public final void dump(DataOutputStream file) throws IOException {
+		file.writeByte(tag);
+		file.writeFloat(bytes);
+	}
 
-    /** 
-     * Initialize instance from file data.
-     *
-     * @param file Input stream
-     * @throws IOException
-     */
-    ConstantFloat(DataInputStream file) throws IOException {
-        this(file.readFloat());
-    }
+	/**
+	 * @return data, i.e., 4 bytes.
+	 */
+	public final float getBytes() {
+		return bytes;
+	}
 
+	/**
+	 * @param bytes
+	 *            the raw bytes that represent this float
+	 */
+	public final void setBytes(float bytes) {
+		this.bytes = bytes;
+	}
 
-    /**
-     * Called by objects that are traversing the nodes of the tree implicitely
-     * defined by the contents of a Java class. I.e., the hierarchy of methods,
-     * fields, attributes, etc. spawns a tree of objects.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitConstantFloat(this);
-    }
+	/**
+	 * @return String representation.
+	 */
+	@Override
+	public final String toString() {
+		return super.toString() + "(bytes = " + bytes + ")";
+	}
 
-
-    /**
-     * Dump constant float to file stream in binary format.
-     *
-     * @param file Output file stream
-     * @throws IOException
-     */
-    public final void dump( DataOutputStream file ) throws IOException {
-        file.writeByte(tag);
-        file.writeFloat(bytes);
-    }
-
-
-    /**
-     * @return data, i.e., 4 bytes.
-     */
-    public final float getBytes() {
-        return bytes;
-    }
-
-
-    /**
-     * @param bytes the raw bytes that represent this float
-     */
-    public final void setBytes( float bytes ) {
-        this.bytes = bytes;
-    }
-
-
-    /**
-     * @return String representation.
-     */
-    public final String toString() {
-        return super.toString() + "(bytes = " + bytes + ")";
-    }
-
-
-    /** @return Float object
-     */
-    public Object getConstantValue( ConstantPool cp ) {
-        return new Float(bytes);
-    }
+	/**
+	 * @return Float object
+	 */
+	@Override
+	public Object getConstantValue(ConstantPool cp) {
+		return new Float(bytes);
+	}
 }

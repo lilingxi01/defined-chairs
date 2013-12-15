@@ -16,34 +16,44 @@
  */
 package org.apache.bcel.generic;
 
-/** 
+/**
  * LSUB - Substract longs
- * <PRE>Stack: ..., value1.word1, value1.word2, value2.word1, value2.word2 -&gt;</PRE>
- *        ..., result.word1, result.word2
- *
+ * 
+ * <PRE>
+ * Stack: ..., value1.word1, value1.word2, value2.word1, value2.word2 -&gt;
+ * </PRE>
+ * 
+ * ..., result.word1, result.word2
+ * 
  * @version $Id: LSUB.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class LSUB extends ArithmeticInstruction {
 
-    public LSUB() {
-        super(org.apache.bcel.Constants.LSUB);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	public LSUB() {
+		super(org.apache.bcel.Constants.LSUB);
+	}
 
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitTypedInstruction(this);
-        v.visitStackProducer(this);
-        v.visitStackConsumer(this);
-        v.visitArithmeticInstruction(this);
-        v.visitLSUB(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitTypedInstruction(this);
+		v.visitStackProducer(this);
+		v.visitStackConsumer(this);
+		v.visitArithmeticInstruction(this);
+		v.visitLSUB(this);
+	}
 }

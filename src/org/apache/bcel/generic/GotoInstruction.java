@@ -16,23 +16,28 @@
  */
 package org.apache.bcel.generic;
 
-/** 
+/**
  * Super class for GOTO
- *
+ * 
  * @version $Id: GotoInstruction.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
-public abstract class GotoInstruction extends BranchInstruction implements UnconditionalBranch {
+public abstract class GotoInstruction extends BranchInstruction implements
+		UnconditionalBranch {
 
-    GotoInstruction(short opcode, InstructionHandle target) {
-        super(opcode, target);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	GotoInstruction(short opcode, InstructionHandle target) {
+		super(opcode, target);
+	}
 
-    /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
-     */
-    GotoInstruction() {
-    }
+	/**
+	 * Empty constructor needed for the Class.newInstance() statement in
+	 * Instruction.readInstruction(). Not to be used otherwise.
+	 */
+	GotoInstruction() {
+	}
 }

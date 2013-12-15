@@ -16,35 +16,45 @@
  */
 package org.apache.bcel.generic;
 
-/** 
+/**
  * F2L - Convert float to long
- * <PRE>Stack: ..., value -&gt; ..., result.word1, result.word2</PRE>
- *
+ * 
+ * <PRE>
+ * Stack: ..., value -&gt; ..., result.word1, result.word2
+ * </PRE>
+ * 
  * @version $Id: F2L.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class F2L extends ConversionInstruction {
 
-    /** Convert float to long
-     */
-    public F2L() {
-        super(org.apache.bcel.Constants.F2L);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Convert float to long
+	 */
+	public F2L() {
+		super(org.apache.bcel.Constants.F2L);
+	}
 
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitTypedInstruction(this);
-        v.visitStackProducer(this);
-        v.visitStackConsumer(this);
-        v.visitConversionInstruction(this);
-        v.visitF2L(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitTypedInstruction(this);
+		v.visitStackProducer(this);
+		v.visitStackConsumer(this);
+		v.visitConversionInstruction(this);
+		v.visitF2L(this);
+	}
 }

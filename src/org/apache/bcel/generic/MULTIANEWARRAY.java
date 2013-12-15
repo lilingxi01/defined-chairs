@@ -22,125 +22,137 @@ import org.apache.bcel.ExceptionConstants;
 import org.apache.bcel.classfile.ConstantPool;
 import org.apache.bcel.util.ByteSequence;
 
-/** 
+/**
  * MULTIANEWARRAY - Create new mutidimensional array of references
- * <PRE>Stack: ..., count1, [count2, ...] -&gt; ..., arrayref</PRE>
- *
+ * 
+ * <PRE>
+ * Stack: ..., count1, [count2, ...] -&gt; ..., arrayref
+ * </PRE>
+ * 
  * @version $Id: MULTIANEWARRAY.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
-public class MULTIANEWARRAY extends CPInstruction implements LoadClass, AllocationInstruction,
-        ExceptionThrower {
+public class MULTIANEWARRAY extends CPInstruction implements LoadClass,
+		AllocationInstruction, ExceptionThrower {
 
-    private short dimensions;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private short dimensions;
 
+	/**
+	 * Empty constructor needed for the Class.newInstance() statement in
+	 * Instruction.readInstruction(). Not to be used otherwise.
+	 */
+	MULTIANEWARRAY() {
+	}
 
-    /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
-     */
-    MULTIANEWARRAY() {
-    }
+	public MULTIANEWARRAY(int index, short dimensions) {
+		super(org.apache.bcel.Constants.MULTIANEWARRAY, index);
+		if (dimensions < 1) {
+			throw new ClassGenException("Invalid dimensions value: "
+					+ dimensions);
+		}
+		this.dimensions = dimensions;
+		length = 4;
+	}
 
+	/**
+	 * Dump instruction as byte code to stream out.
+	 * 
+	 * @param out
+	 *            Output stream
+	 */
+	@Override
+	public void dump(DataOutputStream out) throws IOException {
+		out.writeByte(opcode);
+		out.writeShort(index);
+		out.writeByte(dimensions);
+	}
 
-    public MULTIANEWARRAY(int index, short dimensions) {
-        super(org.apache.bcel.Constants.MULTIANEWARRAY, index);
-        if (dimensions < 1) {
-            throw new ClassGenException("Invalid dimensions value: " + dimensions);
-        }
-        this.dimensions = dimensions;
-        length = 4;
-    }
+	/**
+	 * Read needed data (i.e., no. dimension) from file.
+	 */
+	@Override
+	protected void initFromFile(ByteSequence bytes, boolean wide)
+			throws IOException {
+		super.initFromFile(bytes, wide);
+		dimensions = bytes.readByte();
+		length = 4;
+	}
 
+	/**
+	 * @return number of dimensions to be created
+	 */
+	public final short getDimensions() {
+		return dimensions;
+	}
 
-    /**
-     * Dump instruction as byte code to stream out.
-     * @param out Output stream
-     */
-    public void dump( DataOutputStream out ) throws IOException {
-        out.writeByte(opcode);
-        out.writeShort(index);
-        out.writeByte(dimensions);
-    }
+	/**
+	 * @return mnemonic for instruction
+	 */
+	@Override
+	public String toString(boolean verbose) {
+		return super.toString(verbose) + " " + index + " " + dimensions;
+	}
 
+	/**
+	 * @return mnemonic for instruction with symbolic references resolved
+	 */
+	@Override
+	public String toString(ConstantPool cp) {
+		return super.toString(cp) + " " + dimensions;
+	}
 
-    /**
-     * Read needed data (i.e., no. dimension) from file.
-     */
-    protected void initFromFile( ByteSequence bytes, boolean wide ) throws IOException {
-        super.initFromFile(bytes, wide);
-        dimensions = bytes.readByte();
-        length = 4;
-    }
+	/**
+	 * Also works for instructions whose stack effect depends on the constant
+	 * pool entry they reference.
+	 * 
+	 * @return Number of words consumed from stack by this instruction
+	 */
+	@Override
+	public int consumeStack(ConstantPoolGen cpg) {
+		return dimensions;
+	}
 
+	@Override
+	public Class<?>[] getExceptions() {
+		Class<?>[] cs = new Class[2 + ExceptionConstants.EXCS_CLASS_AND_INTERFACE_RESOLUTION.length];
+		System.arraycopy(
+				ExceptionConstants.EXCS_CLASS_AND_INTERFACE_RESOLUTION, 0, cs,
+				0,
+				ExceptionConstants.EXCS_CLASS_AND_INTERFACE_RESOLUTION.length);
+		cs[ExceptionConstants.EXCS_CLASS_AND_INTERFACE_RESOLUTION.length + 1] = ExceptionConstants.NEGATIVE_ARRAY_SIZE_EXCEPTION;
+		cs[ExceptionConstants.EXCS_CLASS_AND_INTERFACE_RESOLUTION.length] = ExceptionConstants.ILLEGAL_ACCESS_ERROR;
+		return cs;
+	}
 
-    /**
-     * @return number of dimensions to be created
-     */
-    public final short getDimensions() {
-        return dimensions;
-    }
+	@Override
+	public ObjectType getLoadClassType(ConstantPoolGen cpg) {
+		Type t = getType(cpg);
+		if (t instanceof ArrayType) {
+			t = ((ArrayType) t).getBasicType();
+		}
+		return (t instanceof ObjectType) ? (ObjectType) t : null;
+	}
 
-
-    /**
-     * @return mnemonic for instruction
-     */
-    public String toString( boolean verbose ) {
-        return super.toString(verbose) + " " + index + " " + dimensions;
-    }
-
-
-    /**
-     * @return mnemonic for instruction with symbolic references resolved
-     */
-    public String toString( ConstantPool cp ) {
-        return super.toString(cp) + " " + dimensions;
-    }
-
-
-    /**
-     * Also works for instructions whose stack effect depends on the
-     * constant pool entry they reference.
-     * @return Number of words consumed from stack by this instruction
-     */
-    public int consumeStack( ConstantPoolGen cpg ) {
-        return dimensions;
-    }
-
-
-    public Class[] getExceptions() {
-        Class[] cs = new Class[2 + ExceptionConstants.EXCS_CLASS_AND_INTERFACE_RESOLUTION.length];
-        System.arraycopy(ExceptionConstants.EXCS_CLASS_AND_INTERFACE_RESOLUTION, 0, cs, 0,
-                ExceptionConstants.EXCS_CLASS_AND_INTERFACE_RESOLUTION.length);
-        cs[ExceptionConstants.EXCS_CLASS_AND_INTERFACE_RESOLUTION.length + 1] = ExceptionConstants.NEGATIVE_ARRAY_SIZE_EXCEPTION;
-        cs[ExceptionConstants.EXCS_CLASS_AND_INTERFACE_RESOLUTION.length] = ExceptionConstants.ILLEGAL_ACCESS_ERROR;
-        return cs;
-    }
-
-
-    public ObjectType getLoadClassType( ConstantPoolGen cpg ) {
-        Type t = getType(cpg);
-        if (t instanceof ArrayType) {
-            t = ((ArrayType) t).getBasicType();
-        }
-        return (t instanceof ObjectType) ? (ObjectType) t : null;
-    }
-
-
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitLoadClass(this);
-        v.visitAllocationInstruction(this);
-        v.visitExceptionThrower(this);
-        v.visitTypedInstruction(this);
-        v.visitCPInstruction(this);
-        v.visitMULTIANEWARRAY(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitLoadClass(this);
+		v.visitAllocationInstruction(this);
+		v.visitExceptionThrower(this);
+		v.visitTypedInstruction(this);
+		v.visitCPInstruction(this);
+		v.visitMULTIANEWARRAY(this);
+	}
 }

@@ -18,31 +18,37 @@ package org.apache.bcel.generic;
 
 /**
  * Super class for the IFxxx family of instructions.
- *
+ * 
  * @version $Id: IfInstruction.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
-public abstract class IfInstruction extends BranchInstruction implements StackConsumer {
+public abstract class IfInstruction extends BranchInstruction implements
+		StackConsumer {
 
-    /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
-     */
-    IfInstruction() {
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Empty constructor needed for the Class.newInstance() statement in
+	 * Instruction.readInstruction(). Not to be used otherwise.
+	 */
+	IfInstruction() {
+	}
 
-    /**
-     * @param opcode opcode of instruction
-     * @param target Target instruction to branch to
-     */
-    protected IfInstruction(short opcode, InstructionHandle target) {
-        super(opcode, target);
-    }
+	/**
+	 * @param opcode
+	 *            opcode of instruction
+	 * @param target
+	 *            Target instruction to branch to
+	 */
+	protected IfInstruction(short opcode, InstructionHandle target) {
+		super(opcode, target);
+	}
 
-
-    /**
-     * @return negation of instruction, e.g. IFEQ.negate() == IFNE
-     */
-    public abstract IfInstruction negate();
+	/**
+	 * @return negation of instruction, e.g. IFEQ.negate() == IFNE
+	 */
+	public abstract IfInstruction negate();
 }

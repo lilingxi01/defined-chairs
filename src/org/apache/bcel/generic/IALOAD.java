@@ -16,36 +16,45 @@
  */
 package org.apache.bcel.generic;
 
-/** 
+/**
  * IALOAD - Load int from array
- * <PRE>Stack: ..., arrayref, index -&gt; ..., value</PRE>
- *
+ * 
+ * <PRE>
+ * Stack: ..., arrayref, index -&gt; ..., value
+ * </PRE>
+ * 
  * @version $Id: IALOAD.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class IALOAD extends ArrayInstruction implements StackProducer {
 
-    /** 
-     * Load int from array
-     */
-    public IALOAD() {
-        super(org.apache.bcel.Constants.IALOAD);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Load int from array
+	 */
+	public IALOAD() {
+		super(org.apache.bcel.Constants.IALOAD);
+	}
 
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitStackProducer(this);
-        v.visitExceptionThrower(this);
-        v.visitTypedInstruction(this);
-        v.visitArrayInstruction(this);
-        v.visitIALOAD(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitStackProducer(this);
+		v.visitExceptionThrower(this);
+		v.visitTypedInstruction(this);
+		v.visitArrayInstruction(this);
+		v.visitIALOAD(this);
+	}
 }

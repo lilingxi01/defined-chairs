@@ -19,68 +19,76 @@ package org.apache.bcel.generic;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-/** 
+/**
  * JSR - Jump to subroutine
- *
+ * 
  * @version $Id: JSR.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class JSR extends JsrInstruction implements VariableLengthInstruction {
 
-    /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
-     */
-    JSR() {
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Empty constructor needed for the Class.newInstance() statement in
+	 * Instruction.readInstruction(). Not to be used otherwise.
+	 */
+	JSR() {
+	}
 
-    public JSR(InstructionHandle target) {
-        super(org.apache.bcel.Constants.JSR, target);
-    }
+	public JSR(InstructionHandle target) {
+		super(org.apache.bcel.Constants.JSR, target);
+	}
 
+	/**
+	 * Dump instruction as byte code to stream out.
+	 * 
+	 * @param out
+	 *            Output stream
+	 */
+	@Override
+	public void dump(DataOutputStream out) throws IOException {
+		index = getTargetOffset();
+		if (opcode == org.apache.bcel.Constants.JSR) {
+			super.dump(out);
+		} else { // JSR_W
+			index = getTargetOffset();
+			out.writeByte(opcode);
+			out.writeInt(index);
+		}
+	}
 
-    /**
-     * Dump instruction as byte code to stream out.
-     * @param out Output stream
-     */
-    public void dump( DataOutputStream out ) throws IOException {
-        index = getTargetOffset();
-        if (opcode == org.apache.bcel.Constants.JSR) {
-            super.dump(out);
-        } else { // JSR_W
-            index = getTargetOffset();
-            out.writeByte(opcode);
-            out.writeInt(index);
-        }
-    }
+	@Override
+	protected int updatePosition(int offset, int max_offset) {
+		int i = getTargetOffset(); // Depending on old position value
+		position += offset; // Position may be shifted by preceding expansions
+		if (Math.abs(i) >= (32767 - max_offset)) { // to large for short
+													// (estimate)
+			opcode = org.apache.bcel.Constants.JSR_W;
+			length = 5;
+			return 2; // 5 - 3
+		}
+		return 0;
+	}
 
-
-    protected int updatePosition( int offset, int max_offset ) {
-        int i = getTargetOffset(); // Depending on old position value
-        position += offset; // Position may be shifted by preceding expansions
-        if (Math.abs(i) >= (32767 - max_offset)) { // to large for short (estimate)
-            opcode = org.apache.bcel.Constants.JSR_W;
-            length = 5;
-            return 2; // 5 - 3
-        }
-        return 0;
-    }
-
-
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitStackProducer(this);
-        v.visitVariableLengthInstruction(this);
-        v.visitBranchInstruction(this);
-        v.visitJsrInstruction(this);
-        v.visitJSR(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitStackProducer(this);
+		v.visitVariableLengthInstruction(this);
+		v.visitBranchInstruction(this);
+		v.visitJsrInstruction(this);
+		v.visitJSR(this);
+	}
 }

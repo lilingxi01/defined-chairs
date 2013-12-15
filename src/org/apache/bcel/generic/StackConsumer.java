@@ -18,13 +18,14 @@ package org.apache.bcel.generic;
 
 /**
  * Denote an instruction that may consume a value from the stack.
- *
+ * 
  * @version $Id: StackConsumer.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public interface StackConsumer {
 
-    /** @return how many words are consumed from stack
-     */
-    public int consumeStack( ConstantPoolGen cpg );
+	/**
+	 * @return how many words are consumed from stack
+	 */
+	public int consumeStack(ConstantPoolGen cpg);
 }

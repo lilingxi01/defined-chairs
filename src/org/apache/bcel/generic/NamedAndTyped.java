@@ -19,20 +19,17 @@ package org.apache.bcel.generic;
 /**
  * Denote entity that has both name and type. This is true for local variables,
  * methods and fields.
- *
+ * 
  * @version $Id: NamedAndTyped.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public interface NamedAndTyped {
 
-    public String getName();
+	public String getName();
 
+	public Type getType();
 
-    public Type getType();
+	public void setName(String name);
 
-
-    public void setName( String name );
-
-
-    public void setType( Type type );
+	public void setType(Type type);
 }

@@ -17,19 +17,18 @@
 package org.apache.bcel.generic;
 
 /**
- * Denote that a class targets InstructionHandles within an InstructionList. Namely
- * the following implementers:
- *
+ * Denote that a class targets InstructionHandles within an InstructionList.
+ * Namely the following implementers:
+ * 
  * @see BranchHandle
  * @see LocalVariableGen
  * @see CodeExceptionGen
  * @version $Id: InstructionTargeter.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public interface InstructionTargeter {
 
-    public boolean containsTarget( InstructionHandle ih );
+	public boolean containsTarget(InstructionHandle ih);
 
-
-    public void updateTarget( InstructionHandle old_ih, InstructionHandle new_ih );
+	public void updateTarget(InstructionHandle old_ih, InstructionHandle new_ih);
 }

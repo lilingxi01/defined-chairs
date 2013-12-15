@@ -16,35 +16,45 @@
  */
 package org.apache.bcel.generic;
 
-/** 
- * AASTORE -  Store into reference array
- * <PRE>Stack: ..., arrayref, index, value -&gt; ...</PRE>
- *
+/**
+ * AASTORE - Store into reference array
+ * 
+ * <PRE>
+ * Stack: ..., arrayref, index, value -&gt; ...
+ * </PRE>
+ * 
  * @version $Id: AASTORE.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class AASTORE extends ArrayInstruction implements StackConsumer {
 
-    /** Store into reference array
-     */
-    public AASTORE() {
-        super(org.apache.bcel.Constants.AASTORE);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Store into reference array
+	 */
+	public AASTORE() {
+		super(org.apache.bcel.Constants.AASTORE);
+	}
 
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitStackConsumer(this);
-        v.visitExceptionThrower(this);
-        v.visitTypedInstruction(this);
-        v.visitArrayInstruction(this);
-        v.visitAASTORE(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitStackConsumer(this);
+		v.visitExceptionThrower(this);
+		v.visitTypedInstruction(this);
+		v.visitArrayInstruction(this);
+		v.visitAASTORE(this);
+	}
 }

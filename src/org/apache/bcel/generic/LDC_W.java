@@ -19,36 +19,43 @@ package org.apache.bcel.generic;
 import java.io.IOException;
 import org.apache.bcel.util.ByteSequence;
 
-/** 
+/**
  * LDC_W - Push item from constant pool (wide index)
- *
- * <PRE>Stack: ... -&gt; ..., item.word1, item.word2</PRE>
- *
+ * 
+ * <PRE>
+ * Stack: ... -&gt; ..., item.word1, item.word2
+ * </PRE>
+ * 
  * @version $Id: LDC_W.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class LDC_W extends LDC {
 
-    /**
-     * Empty constructor needed for the Class.newInstance() statement in
-     * Instruction.readInstruction(). Not to be used otherwise.
-     */
-    LDC_W() {
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Empty constructor needed for the Class.newInstance() statement in
+	 * Instruction.readInstruction(). Not to be used otherwise.
+	 */
+	LDC_W() {
+	}
 
-    public LDC_W(int index) {
-        super(index);
-    }
+	public LDC_W(int index) {
+		super(index);
+	}
 
-
-    /**
-     * Read needed data (i.e., index) from file.
-     */
-    protected void initFromFile( ByteSequence bytes, boolean wide ) throws IOException {
-        setIndex(bytes.readUnsignedShort());
-        // Override just in case it has been changed
-        opcode = org.apache.bcel.Constants.LDC_W;
-        length = 3;
-    }
+	/**
+	 * Read needed data (i.e., index) from file.
+	 */
+	@Override
+	protected void initFromFile(ByteSequence bytes, boolean wide)
+			throws IOException {
+		setIndex(bytes.readUnsignedShort());
+		// Override just in case it has been changed
+		opcode = org.apache.bcel.Constants.LDC_W;
+		length = 3;
+	}
 }

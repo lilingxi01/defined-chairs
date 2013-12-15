@@ -16,35 +16,45 @@
  */
 package org.apache.bcel.generic;
 
-/** 
+/**
  * DALOAD - Load double from array
- * <PRE>Stack: ..., arrayref, index -&gt; ..., result.word1, result.word2</PRE>
- *
+ * 
+ * <PRE>
+ * Stack: ..., arrayref, index -&gt; ..., result.word1, result.word2
+ * </PRE>
+ * 
  * @version $Id: DALOAD.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class DALOAD extends ArrayInstruction implements StackProducer {
 
-    /** Load double from array
-     */
-    public DALOAD() {
-        super(org.apache.bcel.Constants.DALOAD);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Load double from array
+	 */
+	public DALOAD() {
+		super(org.apache.bcel.Constants.DALOAD);
+	}
 
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitStackProducer(this);
-        v.visitExceptionThrower(this);
-        v.visitTypedInstruction(this);
-        v.visitArrayInstruction(this);
-        v.visitDALOAD(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitStackProducer(this);
+		v.visitExceptionThrower(this);
+		v.visitTypedInstruction(this);
+		v.visitArrayInstruction(this);
+		v.visitDALOAD(this);
+	}
 }

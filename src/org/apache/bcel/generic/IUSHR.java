@@ -16,33 +16,42 @@
  */
 package org.apache.bcel.generic;
 
-/** 
+/**
  * IUSHR - Logical shift right int
- * <PRE>Stack: ..., value1, value2 -&gt; ..., result</PRE>
- *
+ * 
+ * <PRE>
+ * Stack: ..., value1, value2 -&gt; ..., result
+ * </PRE>
+ * 
  * @version $Id: IUSHR.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public class IUSHR extends ArithmeticInstruction {
 
-    public IUSHR() {
-        super(org.apache.bcel.Constants.IUSHR);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	public IUSHR() {
+		super(org.apache.bcel.Constants.IUSHR);
+	}
 
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitTypedInstruction(this);
-        v.visitStackProducer(this);
-        v.visitStackConsumer(this);
-        v.visitArithmeticInstruction(this);
-        v.visitIUSHR(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitTypedInstruction(this);
+		v.visitStackProducer(this);
+		v.visitStackConsumer(this);
+		v.visitArithmeticInstruction(this);
+		v.visitIUSHR(this);
+	}
 }

@@ -18,11 +18,11 @@ package org.apache.bcel.classfile;
 
 /**
  * Denote class to have an accept method();
- *
+ * 
  * @version $Id: Node.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
 public interface Node {
 
-    public void accept( Visitor obj );
+	public void accept(Visitor obj);
 }

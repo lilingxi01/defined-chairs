@@ -16,40 +16,52 @@
  */
 package org.apache.bcel.generic;
 
-/** 
+/**
  * DCMPL - Compare doubles: value1 < value2
- * <PRE>Stack: ..., value1.word1, value1.word2, value2.word1, value2.word2 -&gt;</PRE>
- *        ..., result
- *
+ * 
+ * <PRE>
+ * Stack: ..., value1.word1, value1.word2, value2.word1, value2.word2 -&gt;
+ * </PRE>
+ * 
+ * ..., result
+ * 
  * @version $Id: DCMPL.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
-public class DCMPL extends Instruction implements TypedInstruction, StackProducer, StackConsumer {
+public class DCMPL extends Instruction implements TypedInstruction,
+		StackProducer, StackConsumer {
 
-    public DCMPL() {
-        super(org.apache.bcel.Constants.DCMPL, (short) 1);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	public DCMPL() {
+		super(org.apache.bcel.Constants.DCMPL, (short) 1);
+	}
 
-    /** @return Type.DOUBLE
-     */
-    public Type getType( ConstantPoolGen cp ) {
-        return Type.DOUBLE;
-    }
+	/**
+	 * @return Type.DOUBLE
+	 */
+	@Override
+	public Type getType(ConstantPoolGen cp) {
+		return Type.DOUBLE;
+	}
 
-
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitTypedInstruction(this);
-        v.visitStackProducer(this);
-        v.visitStackConsumer(this);
-        v.visitDCMPL(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitTypedInstruction(this);
+		v.visitStackProducer(this);
+		v.visitStackConsumer(this);
+		v.visitDCMPL(this);
+	}
 }

@@ -16,39 +16,50 @@
  */
 package org.apache.bcel.generic;
 
-/** 
+/**
  * FCMPG - Compare floats: value1 > value2
- * <PRE>Stack: ..., value1, value2 -&gt; ..., result</PRE>
- *
+ * 
+ * <PRE>
+ * Stack: ..., value1, value2 -&gt; ..., result
+ * </PRE>
+ * 
  * @version $Id: FCMPG.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
  */
-public class FCMPG extends Instruction implements TypedInstruction, StackProducer, StackConsumer {
+public class FCMPG extends Instruction implements TypedInstruction,
+		StackProducer, StackConsumer {
 
-    public FCMPG() {
-        super(org.apache.bcel.Constants.FCMPG, (short) 1);
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
+	public FCMPG() {
+		super(org.apache.bcel.Constants.FCMPG, (short) 1);
+	}
 
-    /** @return Type.FLOAT
-     */
-    public Type getType( ConstantPoolGen cp ) {
-        return Type.FLOAT;
-    }
+	/**
+	 * @return Type.FLOAT
+	 */
+	@Override
+	public Type getType(ConstantPoolGen cp) {
+		return Type.FLOAT;
+	}
 
-
-    /**
-     * Call corresponding visitor method(s). The order is:
-     * Call visitor methods of implemented interfaces first, then
-     * call methods according to the class hierarchy in descending order,
-     * i.e., the most specific visitXXX() call comes last.
-     *
-     * @param v Visitor object
-     */
-    public void accept( Visitor v ) {
-        v.visitTypedInstruction(this);
-        v.visitStackProducer(this);
-        v.visitStackConsumer(this);
-        v.visitFCMPG(this);
-    }
+	/**
+	 * Call corresponding visitor method(s). The order is: Call visitor methods
+	 * of implemented interfaces first, then call methods according to the class
+	 * hierarchy in descending order, i.e., the most specific visitXXX() call
+	 * comes last.
+	 * 
+	 * @param v
+	 *            Visitor object
+	 */
+	@Override
+	public void accept(Visitor v) {
+		v.visitTypedInstruction(this);
+		v.visitStackProducer(this);
+		v.visitStackConsumer(this);
+		v.visitFCMPG(this);
+	}
 }

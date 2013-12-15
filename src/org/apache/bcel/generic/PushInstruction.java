@@ -17,12 +17,12 @@
 package org.apache.bcel.generic;
 
 /**
- * Denotes an unparameterized instruction to produce a value on top of the stack,
- * such as ILOAD, LDC, SIPUSH, DUP, ICONST, etc.
- *
+ * Denotes an unparameterized instruction to produce a value on top of the
+ * stack, such as ILOAD, LDC, SIPUSH, DUP, ICONST, etc.
+ * 
  * @version $Id: PushInstruction.java 386056 2006-03-15 11:31:56Z tcurdt $
- * @author  <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
-
+ * @author <A HREF="mailto:m.dahm@gmx.de">M. Dahm</A>
+ * 
  * @see ILOAD
  * @see ICONST
  * @see LDC
