@@ -28,7 +28,11 @@ import org.apache.bcel.classfile.JavaClass;
  */
 public class ClassQueue implements java.io.Serializable {
 
-    protected LinkedList vec = new LinkedList();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	protected LinkedList<JavaClass> vec = new LinkedList<JavaClass>();
 
 
     public void enqueue( JavaClass clazz ) {

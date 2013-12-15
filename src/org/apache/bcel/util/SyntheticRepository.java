@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
 
@@ -47,10 +48,13 @@ import org.apache.bcel.classfile.JavaClass;
  */
 public class SyntheticRepository implements Repository {
 
-    private static final String DEFAULT_PATH = ClassPath.getClassPath();
-    private static Map _instances = new HashMap(); // CLASSPATH X REPOSITORY
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+    private static Map<ClassPath, SyntheticRepository> _instances = new HashMap<ClassPath, SyntheticRepository>(); // CLASSPATH X REPOSITORY
     private ClassPath _path = null;
-    private Map _loadedClasses = new HashMap(); // CLASSNAME X JAVACLASS
+    private Map<String, SoftReference<JavaClass>> _loadedClasses = new HashMap<String, SoftReference<JavaClass>>(); // CLASSNAME X JAVACLASS
 
 
     private SyntheticRepository(ClassPath path) {
@@ -77,7 +81,7 @@ public class SyntheticRepository implements Repository {
      * Store a new JavaClass instance into this Repository.
      */
     public void storeClass( JavaClass clazz ) {
-        _loadedClasses.put(clazz.getClassName(), new SoftReference(clazz));
+        _loadedClasses.put(clazz.getClassName(), new SoftReference<JavaClass>(clazz));
         clazz.setRepository(this);
     }
 
@@ -94,7 +98,7 @@ public class SyntheticRepository implements Repository {
      * Find an already defined (cached) JavaClass object by name.
      */
     public JavaClass findClass( String className ) {
-        SoftReference ref = (SoftReference) _loadedClasses.get(className);
+        SoftReference<?> ref = (SoftReference<?>) _loadedClasses.get(className);
         if (ref == null) {
             return null;
         }
@@ -144,7 +148,7 @@ public class SyntheticRepository implements Repository {
      * @throws ClassNotFoundException if the class is not in the
      *   Repository, and its representation could not be found
      */
-    public JavaClass loadClass( Class clazz ) throws ClassNotFoundException {
+    public JavaClass loadClass( Class<?> clazz ) throws ClassNotFoundException {
         String className = clazz.getName();
         JavaClass repositoryClass = findClass(className);
         if (repositoryClass != null) {
