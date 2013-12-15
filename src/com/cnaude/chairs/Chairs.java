@@ -177,14 +177,14 @@ public class Chairs extends JavaPlugin {
         arrow.setPassenger(player);
 		return arrow;
     }
-    protected void unSitPlayer(final Player player, boolean ignoretp) 
+    protected void unSitPlayer(final Player player, boolean playerleft) 
     {
     	final Entity arrow = sit.get(player.getName());
 		sit.remove(player.getName());
     	player.eject();
     	arrow.remove();
     	final Location tploc = sitstopteleportloc.get(player.getName());
-    	if (tploc != null && !ignoretp) 
+    	if (!playerleft) 
     	{
     		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() 
     		{
@@ -194,6 +194,25 @@ public class Chairs extends JavaPlugin {
     	    		player.setSneaking(false);
     			}
     		},1);
+    	} else
+    	{
+    		try {
+    			Method getHandleMethod = player.getClass().getDeclaredMethod("getHandle");
+    			getHandleMethod.setAccessible(true);
+    			Object nmsPlayer = getHandleMethod.invoke(player);
+    			Class<?> entityClass = nmsPlayer.getClass().getSuperclass().getSuperclass().getSuperclass();
+    			Field locXField = entityClass.getDeclaredField("locX");
+    			locXField.setAccessible(true);
+    			locXField.set(nmsPlayer, tploc.getX());
+    			Field locYField = entityClass.getDeclaredField("locY");
+    			locYField.setAccessible(true);
+    			locYField.set(nmsPlayer, tploc.getY());
+    			Field locZField = entityClass.getDeclaredField("locZ");
+    			locZField.setAccessible(true);
+    			locZField.set(nmsPlayer, tploc.getZ());
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
     	}
 		sitblock.remove(sitblockbr.get(player.getName()));
 		sitblockbr.remove(player.getName());
