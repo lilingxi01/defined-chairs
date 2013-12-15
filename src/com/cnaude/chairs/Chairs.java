@@ -23,7 +23,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
@@ -41,7 +40,6 @@ public class Chairs extends JavaPlugin {
     public int sitEffectInterval;
     public HashSet<String> disabledRegions = new HashSet<String>();
     private Logger log;
-    public PluginManager pm;
     public ChairsIgnoreList ignoreList; 
     public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled;
     
@@ -68,11 +66,11 @@ public class Chairs extends JavaPlugin {
 		}
         ignoreList = new ChairsIgnoreList(this);
         ignoreList.load();
-        pm = this.getServer().getPluginManager();
         getConfig().options().copyDefaults(true);
         saveConfig();
         loadConfig();
-        getServer().getPluginManager().registerEvents(new EventListener(this, ignoreList), this);
+        getServer().getPluginManager().registerEvents(new TrySitEventListener(this, ignoreList), this);
+        getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
         getCommand("chairs").setExecutor(new ChairsCommand(this, ignoreList));
         if (sitEffectsEnabled) {
             logInfo("Enabling sitting effects.");
