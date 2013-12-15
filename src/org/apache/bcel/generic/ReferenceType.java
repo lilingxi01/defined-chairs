@@ -265,9 +265,9 @@ public abstract class ReferenceType extends Type {
 			// every ArrayType?
 		}
 		if (((this instanceof ObjectType) && ((ObjectType) this)
-				.referencesInterface())
+				.referencesInterfaceExact())
 				|| ((t instanceof ObjectType) && ((ObjectType) t)
-						.referencesInterface())) {
+						.referencesInterfaceExact())) {
 			return Type.OBJECT;
 			// TODO: The above line is correct comparing to the vmspec2. But one
 			// could
