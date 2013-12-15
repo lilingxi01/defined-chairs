@@ -40,17 +40,17 @@ public class TryUnsitEventListener implements Listener {
     	if (plugin.sit.containsKey(player.getName()))
     	{
     		plugin.unSitPlayer(player, false, false);
+        	event.setCancelled(true);
+        	final Location loc = event.getTo();
+        	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+        	{
+        		public void run()
+        		{
+        	    	player.teleport(loc);
+        	    	player.setSneaking(false);
+        		}
+        	},1);
     	}
-    	event.setCancelled(true);
-    	final Location loc = event.getTo();
-    	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-    	{
-    		public void run()
-    		{
-    	    	player.teleport(loc);
-    	    	player.setSneaking(false);
-    		}
-    	},1);
     }
     
     @EventHandler(priority=EventPriority.LOWEST)
