@@ -252,25 +252,20 @@ public class Chairs extends JavaPlugin {
         msgReloaded = ChatColor.translateAlternateColorCodes('&',config.getString("messages.reloaded"));
 
         allowedBlocks = new ArrayList<ChairBlock>();
-        for (String s : config.getStringList("sit-block-settings")) {
+        for (String s : config.getStringList("sit-blocks")) {
             String type;
             double sh = 0.7;
             String tmp[] = s.split("[:]");
             type = tmp[0];         
             if (tmp.length == 2) {
                sh = Double.parseDouble(tmp[1]);
-            }
-            try {                
-                Material mat = Material.matchMaterial(type);
-                if (mat != null) {                    
-                    logInfo("Allowed block: " + mat.toString() + " => " + sh);
-                    allowedBlocks.add(new ChairBlock(mat,sh));
-                } else {
-                    logError("Invalid block: " + type);
-                }
-            }
-            catch (Exception e) {
-                logError(e.getMessage());
+            }             
+            Material mat = Material.matchMaterial(type);
+            if (mat != null) {                    
+                logInfo("Allowed block: " + mat.toString() + " => " + sh);
+                allowedBlocks.add(new ChairBlock(mat,sh));
+            } else {
+                logError("Invalid block: " + type);
             }
         }
         
