@@ -3,6 +3,7 @@ package com.cnaude.chairs;
 import java.util.HashSet;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,11 +36,21 @@ public class TryUnsitEventListener implements Listener {
     @EventHandler(priority=EventPriority.LOWEST)
     public void onPlayerTeleport(PlayerTeleportEvent event)
     {
-    	Player player = event.getPlayer();
+    	final Player player = event.getPlayer();
     	if (plugin.sit.containsKey(player.getName()))
     	{
     		plugin.unSitPlayer(player, false, false);
     	}
+    	event.setCancelled(true);
+    	final Location loc = event.getTo();
+    	Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+    	{
+    		public void run()
+    		{
+    	    	player.teleport(loc);
+    	    	player.setSneaking(false);
+    		}
+    	},1);
     }
     
     @EventHandler(priority=EventPriority.LOWEST)
