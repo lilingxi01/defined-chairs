@@ -35,8 +35,6 @@ auto-rotate: true
 max-chair-width: 3
 sign-check: false
 distance: 2
-upside-down-check: true
-upper-step-check: true
 ignore-if-item-in-hand: false
 disabledWGRegions:
 - exampleregionname

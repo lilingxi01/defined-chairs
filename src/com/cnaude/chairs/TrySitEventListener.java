@@ -29,16 +29,9 @@ public class TrySitEventListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (isSitting(player)) {
-            return;
-        }
-        if (plugin.ignoreIfBlockInHand && event.getPlayer().getItemInHand().getType() != Material.AIR) {
-            return;
-        }
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
         	Block block = event.getClickedBlock();
-        	if (sitAllowed(player, block))
-        	{
+        	if (sitAllowed(player, block)) {
             	event.setCancelled(true);
         		Location sitLocation = getSitLocation(block, player.getLocation().getYaw());
             	plugin.sitPlayer(player, sitLocation);
@@ -48,30 +41,50 @@ public class TrySitEventListener implements Listener {
 
     private boolean sitAllowed(Player player, Block block)
     {
+    	// Check for permissions
+        if (!player.hasPermission("chairs.sit")) {
+            return false;
+        }
+    	
+        // Check for already sitting
+        if (isSitting(player)) {
+            return false;
+        }
+        
+        // Check for item in hand
+        if (plugin.ignoreIfBlockInHand && player.getItemInHand().getType() != Material.AIR) {
+            return false;
+        }
+        
+        // Check for sneaking
+        if (player.isSneaking()) {
+        	return false;
+        }
+        
+        // Check for /chairs off
+        if (ignoreList.isIgnored(player.getName())) {
+            return false;
+        }
+        
+        // Sit occupied check
+        if (plugin.sitblock.containsKey(block)) {
+        	player.sendMessage(plugin.msgOccupied.replace("%PLAYER%", plugin.sitblock.get(block)));
+            return false;
+        }
+    	
+        // Region allowance check
+        if (!WGHook.isAllowedInRegion(plugin.disabledRegions, block.getLocation())) {
+        	return false;
+        }
+        
         Stairs stairs = null;
         Step step = null;
         WoodenStep wStep = null;
         boolean blockOkay = false;
 
-        if (player.isSneaking()) {
-        	return false;
-        }
-        
-        if (ignoreList.isIgnored(player.getName())) {
-            return false;
-        }
-        // Permissions Check
-        if (!player.hasPermission("chairs.sit")) {
-                return false;
-        }
-
+        // Check for block is chair
         for (ChairBlock cb : plugin.allowedBlocks) {
-            if (cb.getMat().toString().contains("STAIRS")) {
-                if (cb.getMat().equals(block.getType())) {
-                    blockOkay = true;
-                    continue;
-                }
-            } else if (cb.getMat().equals(block.getType())) {
+            if (cb.getMat().equals(block.getType())) {
                 blockOkay = true;
                 continue;
             }
@@ -110,24 +123,19 @@ public class TrySitEventListener implements Listener {
                 return false;
             }
 
-            if (stairs != null) {
-                if (stairs.isInverted() && plugin.invertedStairCheck) {
-                    return false;
-                }
+            // Check if block is inverted
+            if (stairs != null && stairs.isInverted()) {
+            	return false;
             }
-            if (step != null) {
-                if (step.isInverted() && plugin.invertedStepCheck) {
-                    return false;
-                }
+            if (step != null && step.isInverted()) {
+            	return false;
             }
-            if (wStep != null) {
-                if (wStep.isInverted() && plugin.invertedStepCheck) {
-                    return false;
-                }
+            if (wStep != null && wStep.isInverted()) {
+            	return false;
             }
             
-            // Check for signs.
-            if (plugin.signCheck == true && stairs != null) {
+            // Check for signs (only for stairs)
+            if (plugin.signCheck && stairs != null) {
                 boolean sign1 = false;
                 boolean sign2 = false;
 
@@ -139,12 +147,12 @@ public class TrySitEventListener implements Listener {
                     sign2 = checkSign(block, BlockFace.SOUTH) || checkFrame(block, BlockFace.SOUTH, player);
                 }
 
-                if (!(sign1 == true && sign2 == true)) {
+                if (!(sign1 && sign2)) {
                     return false;
                 }
             }
 
-            // Check for maximal chair width.
+            // Check for maximal chair width (only for stairs)
             if (plugin.maxChairWidth > 0 && stairs != null) {
                 if (stairs.getDescendingDirection() == BlockFace.NORTH || stairs.getDescendingDirection() == BlockFace.SOUTH) {
                     chairwidth += getChairWidth(block, BlockFace.EAST);
@@ -158,21 +166,7 @@ public class TrySitEventListener implements Listener {
                     return false;
                 }
             }
-            
-            //Sit occupied check
-            if (plugin.sitblock.containsKey(block))
-            {
-            	if (!plugin.msgOccupied.isEmpty()) {
-            		player.sendMessage(plugin.msgOccupied.replaceAll("%PLAYER%", plugin.sitblock.get(block)));
-            	}
-                return false;
-            }
-            
-            //region allowance check
-            if (!WGHook.isAllowedInRegion(plugin.disabledRegions, block.getLocation()))
-            {
-            	return false;
-            }
+
     		return true;
         }
         

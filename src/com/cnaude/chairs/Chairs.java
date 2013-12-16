@@ -31,7 +31,7 @@ public class Chairs extends JavaPlugin {
     public List<ChairBlock> allowedBlocks;
     public List<Material> validSigns;
     public boolean autoRotate, signCheck, notifyplayer;
-    public boolean invertedStairCheck, invertedStepCheck, ignoreIfBlockInHand;
+    public boolean ignoreIfBlockInHand;
     public boolean sitEffectsEnabled;
     public double distance;
     public HashSet<String> disabledRegions = new HashSet<String>();
@@ -231,8 +231,6 @@ public class Chairs extends JavaPlugin {
         distance = config.getDouble("distance");
         maxChairWidth = config.getInt("max-chair-width");
         notifyplayer = config.getBoolean("notify-player");
-        invertedStairCheck = config.getBoolean("upside-down-check");
-        invertedStepCheck = config.getBoolean("upper-step-check");
         ignoreIfBlockInHand = config.getBoolean("ignore-if-item-in-hand");
         
         disabledRegions = new HashSet<String>(config.getStringList("disabledWGRegions"));
