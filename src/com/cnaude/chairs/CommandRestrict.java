@@ -20,13 +20,14 @@ public class CommandRestrict implements Listener {
     	String playercommand = event.getMessage().toLowerCase();
     	if (plugin.sit.containsKey(player.getName()))
     	{
+			if (plugin.sitDisableAllCommands)
+			{
+				event.setCancelled(true);
+				player.sendMessage(plugin.msgCommandRestricted);
+				return;
+			}
     		for (String disabledCommand : plugin.sitDisabledCommands)
     		{
-    			if (plugin.sitDisableAllCommands)
-    			{
-    				event.setCancelled(true);
-					player.sendMessage(plugin.msgCommandRestricted);
-    			} else
     			if (disabledCommand.startsWith(playercommand))
     			{
     				String therest = disabledCommand.replace(playercommand, "");
@@ -34,6 +35,7 @@ public class CommandRestrict implements Listener {
     				{
     					event.setCancelled(true);
     					player.sendMessage(plugin.msgCommandRestricted);
+    					return;
     				}
     			}
     		}
