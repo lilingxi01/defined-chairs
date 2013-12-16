@@ -60,4 +60,4 @@ messages:
   no-permission: '&cYou do not have permission to do this!'
   enabled: '&7You have enabled chairs for yourself!'
   disabled: '&7You have disabled chairs for yourself!'
-  command-restricted: '&7You can't issue this command while sitting'
+  command-restricted: '&7You can''t issue this command while sitting'
