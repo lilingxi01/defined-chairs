@@ -80,23 +80,16 @@ public class TrySitEventListener implements Listener {
         Stairs stairs = null;
         Step step = null;
         WoodenStep wStep = null;
-        boolean blockOkay = false;
 
         // Check for block is chair
-        for (ChairBlock cb : plugin.allowedBlocks) {
-            if (cb.getMat().equals(block.getType())) {
-                blockOkay = true;
-                continue;
-            }
-        }
         if (
-        	!player.hasPermission("chairs.sit.antiopcheck") &&
-        	player.hasPermission("chairs.sit." + block.getType().toString())
-        ) {
-        	blockOkay = true;
-        }
-        if (blockOkay) {
-       	
+        	isValidChair(block) || 
+        	(
+        			!player.hasPermission("chairs.sit.antiopcheck") &&
+        			player.hasPermission("chairs.sit." + block.getType().toString())
+        	)
+        )
+        {
             if (block.getState().getData() instanceof Stairs) {
                 stairs = (Stairs) block.getState().getData();
             } else if (block.getState().getData() instanceof Step) {
