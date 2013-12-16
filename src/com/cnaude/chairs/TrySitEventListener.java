@@ -34,7 +34,7 @@ public class TrySitEventListener implements Listener {
         	if (sitAllowed(player, block)) {
             	event.setCancelled(true);
         		Location sitLocation = getSitLocation(block, player.getLocation().getYaw());
-            	plugin.sitPlayer(player, sitLocation);
+            	plugin.getPlayerSitData().sitPlayer(player, sitLocation);
         	}
         }
     }
@@ -67,8 +67,8 @@ public class TrySitEventListener implements Listener {
         }
         
         // Sit occupied check
-        if (plugin.sitblock.containsKey(block)) {
-        	player.sendMessage(plugin.msgOccupied.replace("%PLAYER%", plugin.sitblock.get(block)));
+        if (plugin.getPlayerSitData().isBlockOccupied(block)) {
+        	player.sendMessage(plugin.msgOccupied.replace("%PLAYER%", plugin.getPlayerSitData().getPlayerOnChair(block).getName()));
             return false;
         }
     	
@@ -227,7 +227,7 @@ public class TrySitEventListener implements Listener {
     }
 
     private boolean isSitting(Player player) {
-        return plugin.sit.containsKey(player.getName());
+        return plugin.getPlayerSitData().isSitting(player);
     }
 
     private int getChairWidth(Block block, BlockFace face) {

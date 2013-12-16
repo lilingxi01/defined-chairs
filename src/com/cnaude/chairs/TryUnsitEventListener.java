@@ -26,9 +26,9 @@ public class TryUnsitEventListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event)
     {
     	Player player = event.getPlayer();
-    	if (plugin.sit.containsKey(player.getName()))
+    	if (plugin.getPlayerSitData().isSitting(player))
     	{
-    		plugin.unSitPlayer(player, false, true);
+    		plugin.getPlayerSitData().unSitPlayer(player, false, true);
     	}
     }
     
@@ -36,7 +36,7 @@ public class TryUnsitEventListener implements Listener {
     public void onPlayerTeleport(PlayerTeleportEvent event)
     {
     	final Player player = event.getPlayer();
-    	if (plugin.sit.containsKey(player.getName()))
+    	if (plugin.getPlayerSitData().isSitting(player))
     	{
     		event.setCancelled(true);
     	}
@@ -46,9 +46,9 @@ public class TryUnsitEventListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event)
     {
     	Player player = event.getEntity();
-    	if (plugin.sit.containsKey(player.getName()))
+    	if (plugin.getPlayerSitData().isSitting(player))
     	{
-    		plugin.unSitPlayer(player, false, false);
+    		plugin.getPlayerSitData().unSitPlayer(player, false, false);
     	}
     }
     
@@ -59,7 +59,7 @@ public class TryUnsitEventListener implements Listener {
     	if (e.getVehicle().getPassenger() instanceof Player)
     	{
     		final Player player = (Player) e.getVehicle().getPassenger();
-    		if (plugin.sit.containsKey(player.getName()))
+    		if (plugin.getPlayerSitData().isSitting(player))
     		{
     			e.setCancelled(true);
     			if (!queueUnsit.contains(player.getName()))
@@ -70,7 +70,7 @@ public class TryUnsitEventListener implements Listener {
     					public void run()
     					{
     						queueUnsit.remove(player.getName());
-    						plugin.unSitPlayer(player, true, false);
+    						plugin.getPlayerSitData().unSitPlayer(player, true, false);
     					}
     				});
     			}
@@ -82,10 +82,10 @@ public class TryUnsitEventListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event)
     {
     	Block b = event.getBlock();
-    	if (plugin.sitblock.containsKey(b))
+    	if (plugin.getPlayerSitData().isBlockOccupied(b))
     	{
-    		Player player = Bukkit.getPlayerExact(plugin.sitblock.get(b));
-    		plugin.unSitPlayer(player, true, false);
+    		Player player = plugin.getPlayerSitData().getPlayerOnChair(b);
+    		plugin.getPlayerSitData().unSitPlayer(player, true, false);
     	}
     }
 

@@ -18,7 +18,7 @@ public class CommandRestrict implements Listener {
     {
     	Player player = event.getPlayer();
     	String playercommand = event.getMessage().toLowerCase();
-    	if (plugin.sit.containsKey(player.getName()))
+    	if (plugin.getPlayerSitData().isSitting(player))
     	{
 			if (plugin.sitDisableAllCommands)
 			{

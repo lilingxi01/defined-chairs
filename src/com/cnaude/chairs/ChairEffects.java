@@ -36,8 +36,7 @@ public class ChairEffects {
             @Override
             public void run() {
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    String pName = p.getName();
-                    if (plugin.sit.containsKey(pName)) {
+                    if (plugin.getPlayerSitData().isSitting(p)) {
                         if (p.hasPermission("chairs.sit.health")) {
                             double pHealthPcnt = ((double) p.getHealth()) / (double) p.getMaxHealth() * 100d;
                             if ((pHealthPcnt < plugin.sitMaxHealth) && (p.getHealth() < p.getMaxHealth())) {

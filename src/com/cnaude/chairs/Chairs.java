@@ -1,27 +1,20 @@
 package com.cnaude.chairs;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
@@ -45,7 +38,14 @@ public class Chairs extends JavaPlugin {
     public ChairsIgnoreList ignoreList; 
     public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled, msgCommandRestricted;
     
-    private Class<?> vehiclearrowclass;
+    
+    
+    private PlayerSitData psitdata;
+    protected PlayerSitData getPlayerSitData()
+    {
+    	return psitdata;
+    }    
+    protected Class<?> vehiclearrowclass;
 
     @Override
     public void onEnable() {
@@ -71,6 +71,7 @@ public class Chairs extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
         loadConfig();
+        psitdata = new PlayerSitData(this);
         getServer().getPluginManager().registerEvents(new TrySitEventListener(this, ignoreList), this);
         getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
         getServer().getPluginManager().registerEvents(new CommandRestrict(this), this);
@@ -80,8 +81,8 @@ public class Chairs extends JavaPlugin {
     @Override
     public void onDisable() {
     	for (Player player : getServer().getOnlinePlayers()) { 
-    		if (sit.containsKey(player.getName())) {
-    			unSitPlayer(player, false, true);
+    		if (psitdata.isSitting(player)) {
+    			psitdata.unSitPlayer(player, false, true);
     		}
     	}
         if (ignoreList != null) {
@@ -100,130 +101,7 @@ public class Chairs extends JavaPlugin {
         }
     }
     
-    protected HashMap<String, Entity> sit = new HashMap<String, Entity>();
-    protected HashMap<Block, String> sitblock = new HashMap<Block, String>();
-    protected HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
-    protected HashMap<String, Location> sitstopteleportloc = new HashMap<String, Location>();
-    protected HashMap<String, Integer> sittask = new HashMap<String, Integer>();
-    protected void sitPlayer(Player player, Location sitlocation)
-    {
-    	try {
-    		if (notifyplayer && !msgSitting.isEmpty()) 
-    		{
-	            player.sendMessage(msgSitting);
-	        }
-	        Block block = sitlocation.getBlock();
-	        sitstopteleportloc.put(player.getName(), player.getLocation());
-	        player.teleport(sitlocation);
-	        Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
-			Entity arrow = sitPlayerOnArrow(player, arrowloc);
-	        sit.put(player.getName(), arrow);
-	        sitblock.put(block, player.getName());
-	        sitblockbr.put(player.getName(), block);
-	        startReSitTask(player);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    }
-    protected void startReSitTask(final Player player)
-    {
-    	int task = 
-    	Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
-    	{
-    		public void run()
-    		{
-    			reSitPlayer(player);
-    		}    	
-    	},1000,1000);
-    	sittask.put(player.getName(), task);
-    }
-    protected void reSitPlayer(final Player player)
-    {
-    	try {
-	    	final Entity prevarrow = sit.get(player.getName());
-	    	sit.remove(player.getName());
-	    	player.eject();
-			Block block = sitblockbr.get(player.getName());
-			Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
-			Entity arrow = sitPlayerOnArrow(player, arrowloc);
-			sit.put(player.getName(), arrow);
-			Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable()
-			{
-				public void run()
-				{
-					prevarrow.remove();
-				}
-			},100);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	}
-    }
-    private Entity sitPlayerOnArrow(Player player, Location arrowloc) throws NoSuchMethodException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException
-    {
-        Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0.1 ,0), 0, 0);
-        Method getHandleMethod = arrow.getClass().getDeclaredMethod("getHandle");
-        getHandleMethod.setAccessible(true);
-        Object nmsarrow = getHandleMethod.invoke(arrow);
-        Field bukkitEntityField = nmsarrow.getClass().getSuperclass().getDeclaredField("bukkitEntity");
-        bukkitEntityField.setAccessible(true);
-        Constructor<?> ctor = vehiclearrowclass.getDeclaredConstructor(this.getServer().getClass(), nmsarrow.getClass());
-        ctor.setAccessible(true);
-        Object vehiclearrow = ctor.newInstance(this.getServer(), nmsarrow);
-        bukkitEntityField.set(nmsarrow, vehiclearrow);
-        arrow.setPassenger(player);
-		return arrow;
-    }
-    protected void unSitPlayer(final Player player, boolean restoreposition, boolean correctnmspostion) 
-    {
-    	final Entity arrow = sit.get(player.getName());
-		sit.remove(player.getName());
-    	player.eject();
-    	arrow.remove();
-    	final Location tploc = sitstopteleportloc.get(player.getName());
-    	if (restoreposition) 
-    	{
-    		Bukkit.getScheduler().scheduleSyncDelayedTask(this, new Runnable() 
-    		{
-    			public void run() 
-    			{
-    	    		player.teleport(tploc);
-    	    		player.setSneaking(false);
-    			}
-    		},1);
-    	} else
-    	{
-    		if (correctnmspostion)
-    		{
-	    		try {
-	    			Method getHandleMethod = player.getClass().getDeclaredMethod("getHandle");
-	    			getHandleMethod.setAccessible(true);
-	    			Object nmsPlayer = getHandleMethod.invoke(player);
-	    			Class<?> entityClass = nmsPlayer.getClass().getSuperclass().getSuperclass().getSuperclass();
-	    			Field locXField = entityClass.getDeclaredField("locX");
-	    			locXField.setAccessible(true);
-	    			locXField.set(nmsPlayer, tploc.getX());
-	    			Field locYField = entityClass.getDeclaredField("locY");
-	    			locYField.setAccessible(true);
-	    			locYField.set(nmsPlayer, tploc.getY());
-	    			Field locZField = entityClass.getDeclaredField("locZ");
-	    			locZField.setAccessible(true);
-	    			locZField.set(nmsPlayer, tploc.getZ());
-	    		} catch (Exception e) {
-	    			e.printStackTrace();
-	    		}
-    		}
-    	}
-		sitblock.remove(sitblockbr.get(player.getName()));
-		sitblockbr.remove(player.getName());
-		sitstopteleportloc.remove(player.getName());
-		Bukkit.getScheduler().cancelTask(sittask.get(player.getName()));
-		sittask.remove(player.getName());
-		if (notifyplayer && !msgStanding.isEmpty()) 
-		{
-        	player.sendMessage(msgStanding);
-    	}
-    }
-    
+ 
     public void loadConfig() {
     	FileConfiguration config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(),"config.yml"));
         autoRotate = config.getBoolean("auto-rotate");
