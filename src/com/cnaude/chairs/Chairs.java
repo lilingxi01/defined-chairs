@@ -93,6 +93,7 @@ public class Chairs extends JavaPlugin {
         }
         log = null;
         vehiclearrowclass = null;
+        psitdata = null;
     }
     
     public void restartEffectsTask() {
