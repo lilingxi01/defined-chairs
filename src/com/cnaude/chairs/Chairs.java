@@ -45,7 +45,11 @@ public class Chairs extends JavaPlugin {
     {
     	return psitdata;
     }    
-    protected Class<?> vehiclearrowclass;
+    private Class<?> vehiclearrowclass;
+    protected Class<?> getVehicleArrowClass()
+    {
+    	return vehiclearrowclass;
+    }
 
     @Override
     public void onEnable() {

@@ -98,7 +98,7 @@ public class PlayerSitData {
         Object nmsarrow = getHandleMethod.invoke(arrow);
         Field bukkitEntityField = nmsarrow.getClass().getSuperclass().getDeclaredField("bukkitEntity");
         bukkitEntityField.setAccessible(true);
-        Constructor<?> ctor = plugin.vehiclearrowclass.getDeclaredConstructor(Bukkit.getServer().getClass(), nmsarrow.getClass());
+        Constructor<?> ctor = plugin.getVehicleArrowClass().getDeclaredConstructor(Bukkit.getServer().getClass(), nmsarrow.getClass());
         ctor.setAccessible(true);
         Object vehiclearrow = ctor.newInstance(Bukkit.getServer(), nmsarrow);
         bukkitEntityField.set(nmsarrow, vehiclearrow);
