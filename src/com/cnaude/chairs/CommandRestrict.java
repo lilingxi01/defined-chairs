@@ -31,7 +31,7 @@ public class CommandRestrict implements Listener {
     			if (disabledCommand.startsWith(playercommand))
     			{
     				String therest = disabledCommand.replace(playercommand, "");
-    				if (therest.startsWith(" "))
+    				if (therest.isEmpty() || therest.startsWith(" "))
     				{
     					event.setCancelled(true);
     					player.sendMessage(plugin.msgCommandRestricted);
