@@ -30,7 +30,7 @@ public class CommandRestrict implements Listener {
     		{
     			if (disabledCommand.startsWith(playercommand))
     			{
-    				String therest = disabledCommand.replace(playercommand, "");
+    				String therest = playercommand.replace(disabledCommand, "");
     				if (therest.isEmpty() || therest.startsWith(" "))
     				{
     					event.setCancelled(true);
