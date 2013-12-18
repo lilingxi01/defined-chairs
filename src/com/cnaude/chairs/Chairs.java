@@ -56,7 +56,7 @@ public class Chairs extends JavaPlugin {
     	log = this.getLogger();
 		try {
 	    	World world = getServer().getWorlds().get(0);
-	    	Arrow arrow = world.spawnArrow(new Location(world, 0, 0, 0), new Vector(0, 0.1, 0), 0, 0);
+	    	Arrow arrow = world.spawnArrow(new Location(world, 0, 0, 0), new Vector(0, 0, 0), 0, 0);
 	    	String arrowclass = arrow.getClass().getName();
 	    	Method getHandle;
 			getHandle = arrow.getClass().getDeclaredMethod("getHandle");
@@ -64,6 +64,7 @@ public class Chairs extends JavaPlugin {
 	    	Class<?> entityarrow = getHandle.invoke(arrow).getClass();
 	    	Class<?> craftserver = getServer().getClass();
 	    	vehiclearrowclass = new GenVehicleArrowClass(this).genAndLoadClass(arrowclass, entityarrow, craftserver);
+	    	arrow.remove();
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.severe("Failed to generate VehicleArrow class, exiting");
