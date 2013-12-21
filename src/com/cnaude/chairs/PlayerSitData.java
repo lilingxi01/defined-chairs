@@ -92,7 +92,7 @@ public class PlayerSitData {
     }
     private Entity sitPlayerOnArrow(Player player, Location arrowloc) throws NoSuchMethodException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException
     {
-        Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0.1 ,0), 0, 0);
+        Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0 ,0), 0, 0);
         Method getHandleMethod = arrow.getClass().getDeclaredMethod("getHandle");
         getHandleMethod.setAccessible(true);
         Object nmsarrow = getHandleMethod.invoke(arrow);
