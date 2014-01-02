@@ -29,6 +29,17 @@ public class PlayerSitData {
 	{
 		return sit.containsKey(player.getName());
 	}
+	protected boolean isAroowOccupied(Entity entity)
+	{
+		for (Entity usedentity : sit.values())
+		{
+			if (usedentity.getEntityId() == entity.getEntityId())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	protected boolean isBlockOccupied(Block block)
 	{
 		return sitblock.containsKey(block);

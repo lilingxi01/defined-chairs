@@ -18,17 +18,20 @@ public class ChairEffects {
 
     public ChairEffects(Chairs plugin) {
         this.plugin = plugin;
+    }
+    
+    public void startHealing() {
         effectsTask();
     }
 
-    public void cancel() {
+    public void cancelHealing() {
         plugin.getServer().getScheduler().cancelTask(taskID);
         taskID = 0;
     }
     
-    public void restart() {
-        this.cancel();
-        this.effectsTask();
+    public void restartHealing() {
+    	cancelHealing();
+        startHealing();
     }
 
     private void effectsTask() {

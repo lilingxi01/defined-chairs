@@ -39,9 +39,9 @@ ignore-if-item-in-hand: false
 disabledWGRegions:
 - exampleregionname
 sit-effects:
-  enabled: false
-  interval: 20
   healing:
+    enabled: false
+    interval: 20
     amount: 1
     max-percent: 100
 sit-restrictions:

@@ -4,9 +4,17 @@
  */
 package com.cnaude.chairs;
 
+import java.util.Iterator;
+
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.RemoteConsoleCommandSender;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 /**
@@ -30,9 +38,8 @@ public class ChairsCommand implements CommandExecutor {
         } 
         if (args[0].equalsIgnoreCase("reload")) {
             if (sender.hasPermission("chairs.reload") || !(sender instanceof Player)) {
-                //plugin.reloadConfig();
                 plugin.loadConfig();
-                plugin.restartEffectsTask();
+                plugin.chairEffects.restartHealing();
                 if (!plugin.msgReloaded.isEmpty()) {
                     sender.sendMessage(plugin.msgReloaded);
                 }
@@ -41,6 +48,20 @@ public class ChairsCommand implements CommandExecutor {
                     sender.sendMessage(plugin.msgNoPerm);
                 }
             }
+        }
+        if (args[0].equalsIgnoreCase("removearrows")) {
+        	if (sender instanceof ConsoleCommandSender || sender instanceof RemoteConsoleCommandSender || (sender instanceof Player && sender.hasPermission("chairs.removearrows"))) {
+        		if (args.length == 2) {
+        			World world = Bukkit.getWorld(args[1]);
+        			int removed = removeArrows(world);
+        			sender.sendMessage("Removed "+removed+" unused arrows");
+        		} else if (args.length == 1) {
+        			for (World world : Bukkit.getWorlds()) {
+            			int removed = removeArrows(world);
+            			sender.sendMessage("Removed "+removed+" unused arrows");
+        			}
+        		}
+        	} 
         }
         if (sender instanceof Player) {
             Player p = (Player) sender;
@@ -68,8 +89,23 @@ public class ChairsCommand implements CommandExecutor {
                     }
                 }
             }
-            //plugin.sendSit(p,Integer.parseInt(args[0]));
         }
         return true;
     }
+    
+    private int removeArrows(World world) {
+		Iterator<Entity> entityit = world.getEntities().iterator();
+		int removed = 0;
+		while (entityit.hasNext()) {
+			Entity entity = entityit.next();
+			if (entity instanceof Arrow) {
+				if (!plugin.getPlayerSitData().isAroowOccupied(entity)) {
+					entity.remove();
+					removed++;
+				}
+			}
+		}
+		return removed;
+    }
+    
 }

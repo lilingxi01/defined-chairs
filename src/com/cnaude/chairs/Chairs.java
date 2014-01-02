@@ -71,11 +71,15 @@ public class Chairs extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
+        chairEffects = new ChairEffects(this);
         ignoreList = new ChairsIgnoreList(this);
         ignoreList.load();
         getConfig().options().copyDefaults(true);
         saveConfig();
         loadConfig();
+        if (sitEffectsEnabled) {
+        	chairEffects.startHealing();
+        }
         psitdata = new PlayerSitData(this);
         getServer().getPluginManager().registerEvents(new TrySitEventListener(this, ignoreList), this);
         getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
@@ -93,20 +97,12 @@ public class Chairs extends JavaPlugin {
         if (ignoreList != null) {
             ignoreList.save();
         }
-        if (chairEffects != null) {
-            chairEffects.cancel();     
-        }
+        chairEffects.cancelHealing(); 
+        chairEffects = null;
         log = null;
         vehiclearrowclass = null;
         psitdata = null;
     }
-    
-    public void restartEffectsTask() {
-        if (chairEffects != null) {
-            chairEffects.restart();
-        }
-    }
-    
  
     public void loadConfig() {
     	FileConfiguration config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(),"config.yml"));
@@ -119,17 +115,10 @@ public class Chairs extends JavaPlugin {
         
         disabledRegions = new HashSet<String>(config.getStringList("disabledWGRegions"));
         
-        sitEffectsEnabled = config.getBoolean("sit-effects.enabled", false);
-        sitEffectInterval = config.getInt("sit-effects.interval",20);
+        sitEffectsEnabled = config.getBoolean("sit-effects.healing.enabled", false);
+        sitEffectInterval = config.getInt("sit-effects.healing.interval",20);
         sitMaxHealth = config.getInt("sit-effects.healing.max-percent",100);
         sitHealthPerInterval = config.getInt("sit-effects.healing.amount",1);
-        if (sitEffectsEnabled) {
-            if (chairEffects != null) {
-                chairEffects.cancel();     
-            }
-            logInfo("Enabling sitting effects.");
-            chairEffects = new ChairEffects(this);
-        }
         
         sitDisableAllCommands = config.getBoolean("sit-restrictions.commands.all");
         sitDisabledCommands = new HashSet<String>(config.getStringList("sit-restrictions.commands.list"));
