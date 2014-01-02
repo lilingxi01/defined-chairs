@@ -39,7 +39,11 @@ public class ChairsCommand implements CommandExecutor {
         if (args[0].equalsIgnoreCase("reload")) {
             if (sender.hasPermission("chairs.reload") || !(sender instanceof Player)) {
                 plugin.loadConfig();
-                plugin.chairEffects.restartHealing();
+                if (plugin.sitEffectsEnabled) {
+                	plugin.chairEffects.restartHealing();
+                } else {
+                	plugin.chairEffects.cancelHealing();
+                }
                 if (!plugin.msgReloaded.isEmpty()) {
                     sender.sendMessage(plugin.msgReloaded);
                 }
