@@ -25,13 +25,13 @@ public class Chairs extends JavaPlugin {
     public List<Material> validSigns;
     public boolean autoRotate, signCheck, notifyplayer;
     public boolean ignoreIfBlockInHand;
-    public boolean sitEffectsEnabled;
     public double distance;
     public HashSet<String> disabledRegions = new HashSet<String>();
     public int maxChairWidth;
+    public boolean sitHealEnabled;
     public int sitMaxHealth;
     public int sitHealthPerInterval;
-    public int sitEffectInterval;
+    public int sitHealInterval;
     public boolean sitDisableAllCommands = false;
     public HashSet<String> sitDisabledCommands = new HashSet<String>();
     private Logger log;
@@ -77,7 +77,7 @@ public class Chairs extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveConfig();
         loadConfig();
-        if (sitEffectsEnabled) {
+        if (sitHealEnabled) {
         	chairEffects.startHealing();
         }
         psitdata = new PlayerSitData(this);
@@ -115,8 +115,8 @@ public class Chairs extends JavaPlugin {
         
         disabledRegions = new HashSet<String>(config.getStringList("disabledWGRegions"));
         
-        sitEffectsEnabled = config.getBoolean("sit-effects.healing.enabled", false);
-        sitEffectInterval = config.getInt("sit-effects.healing.interval",20);
+        sitHealEnabled = config.getBoolean("sit-effects.healing.enabled", false);
+        sitHealInterval = config.getInt("sit-effects.healing.interval",20);
         sitMaxHealth = config.getInt("sit-effects.healing.max-percent",100);
         sitHealthPerInterval = config.getInt("sit-effects.healing.amount",1);
         

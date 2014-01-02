@@ -53,6 +53,6 @@ public class ChairEffects {
                     }
                 }
             }
-        }, plugin.sitEffectInterval, plugin.sitEffectInterval);
+        }, plugin.sitHealInterval, plugin.sitHealInterval);
     }
 }
