@@ -8,11 +8,9 @@
 # max-chair-width: Define how many blocks a chair can be long (set to number <= 0 for unlimited width).
 # sign-check: If set to true, you will only be able to sit down when there are signs on both of the ends of the chair.
 # distance: The maximum distance between the chair (the center of the block) and the player to be able to sit down (to prevent glitching through walls, etc.).
-# upsidedown-check: If true then prevent players from sitting on upside down stairs.
-# upper-step-check: If true then prevent players from sitting on an upper slab.
 # seat-occupied-check: Check if seat is already occupied.
-# ignore-if-item-in-hand: Set this true disable sititng if player is holding an item in hand.
-# disabledWGRegions: You won't be able to sit in this regions
+# ignore-if-item-in-hand: Set this true to disable sititng if player is holding an item in hand.
+# disabledWGRegions: Player won't be able to sit in those regions
 # ------
 sit-blocks:
   - WOOD_STAIRS:0.7
@@ -26,6 +24,7 @@ sit-blocks:
   - NETHER_BRICK_STAIRS:0.7
   - QUARTZ_STAIRS:0.7
   - ACACIA_STAIRS:0.7
+  - DARK_OAK_STAIRS:0.7
 valid-signs:
   - SIGN
   - WALL_SIGN
