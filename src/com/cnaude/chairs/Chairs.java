@@ -125,6 +125,8 @@ public class Chairs extends JavaPlugin {
         sitMaxHealth = config.getInt("sit-effects.healing.max-percent",100);
         sitHealthPerInterval = config.getInt("sit-effects.healing.amount",1);
         
+        sitPickupEnabled = config.getBoolean("sit-effects.itempickup.enabled", false);
+        
         sitDisableAllCommands = config.getBoolean("sit-restrictions.commands.all");
         sitDisabledCommands = new HashSet<String>(config.getStringList("sit-restrictions.commands.list"));
         

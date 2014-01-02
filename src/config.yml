@@ -44,6 +44,8 @@ sit-effects:
     interval: 20
     amount: 1
     max-percent: 100
+  itempickup:
+    enabled: false
 sit-restrictions:
   commands:
     all: false
