@@ -82,14 +82,14 @@ public class ChairEffects {
     		public void run() {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                 	if (plugin.getPlayerSitData().isSitting(p)) {
-                		for (Entity entity : p.getNearbyEntities(1, 1, 1)) {
+                		for (Entity entity : p.getNearbyEntities(1, 2, 1)) {
                 			if (entity instanceof Item) {
                                 if (p.getInventory().firstEmpty() != -1) {
-                    				Item item = Item.class.cast(entity);
-                    				if (item.getPickupDelay() == 0) {
-                    					p.getInventory().addItem(item.getItemStack());
+                    				Item item = (Item) entity;
+                                	if (item.getPickupDelay() == 0) {
+                                		p.getInventory().addItem(item.getItemStack());
                                 		entity.remove();
-                    				}
+                                	}
                                 }
                 			}
                 		}
