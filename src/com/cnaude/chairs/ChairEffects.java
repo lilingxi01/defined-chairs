@@ -5,6 +5,8 @@
 package com.cnaude.chairs;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 
 /**
@@ -13,20 +15,24 @@ import org.bukkit.entity.Player;
  */
 public class ChairEffects {
 
-    Chairs plugin;
-    int taskID;
+    private Chairs plugin;
+    private int healTaskID = -1;
+    private int pickupTaskID = -1;
+    
 
     public ChairEffects(Chairs plugin) {
         this.plugin = plugin;
     }
     
     public void startHealing() {
-        effectsTask();
+        healEffectsTask();
     }
 
     public void cancelHealing() {
-        plugin.getServer().getScheduler().cancelTask(taskID);
-        taskID = 0;
+    	if (healTaskID != -1) {
+    		plugin.getServer().getScheduler().cancelTask(healTaskID);
+    		healTaskID = -1;
+    	}
     }
     
     public void restartHealing() {
@@ -34,8 +40,8 @@ public class ChairEffects {
         startHealing();
     }
 
-    private void effectsTask() {
-        taskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+    private void healEffectsTask() {
+        healTaskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
                 for (Player p : Bukkit.getOnlinePlayers()) {
@@ -55,4 +61,39 @@ public class ChairEffects {
             }
         }, plugin.sitHealInterval, plugin.sitHealInterval);
     }
+    
+    public void startPickup() {
+    	pickupEffectsTask();
+    }
+
+    public void cancelPickup() {
+    	if (pickupTaskID != -1)
+        plugin.getServer().getScheduler().cancelTask(pickupTaskID);
+        pickupTaskID = -1;
+    }
+    
+    public void restartPickup() {
+    	cancelPickup();
+    	startPickup();
+    }
+    
+    private void pickupEffectsTask() {
+    	pickupTaskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+    		public void run() {
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                	if (plugin.getPlayerSitData().isSitting(p)) {
+                		for (Entity entity : p.getNearbyEntities(1, 1, 1)) {
+                			if (entity instanceof Item) {
+                                if (p.getInventory().firstEmpty() != -1) {
+                                	p.getInventory().addItem(Item.class.cast(entity).getItemStack());
+                                	entity.remove();
+                                }
+                			}
+                		}
+                    }
+                }
+    		}
+    	},0,1);
+    }
+    
 }

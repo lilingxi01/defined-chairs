@@ -32,6 +32,7 @@ public class Chairs extends JavaPlugin {
     public int sitMaxHealth;
     public int sitHealthPerInterval;
     public int sitHealInterval;
+    public boolean sitPickupEnabled;
     public boolean sitDisableAllCommands = false;
     public HashSet<String> sitDisabledCommands = new HashSet<String>();
     private Logger log;
@@ -74,13 +75,16 @@ public class Chairs extends JavaPlugin {
         chairEffects = new ChairEffects(this);
         ignoreList = new ChairsIgnoreList(this);
         ignoreList.load();
+        psitdata = new PlayerSitData(this);
         getConfig().options().copyDefaults(true);
         saveConfig();
         loadConfig();
         if (sitHealEnabled) {
         	chairEffects.startHealing();
         }
-        psitdata = new PlayerSitData(this);
+        if (sitPickupEnabled) {
+        	chairEffects.startPickup();
+        }
         getServer().getPluginManager().registerEvents(new TrySitEventListener(this, ignoreList), this);
         getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
         getServer().getPluginManager().registerEvents(new CommandRestrict(this), this);
@@ -97,7 +101,8 @@ public class Chairs extends JavaPlugin {
         if (ignoreList != null) {
             ignoreList.save();
         }
-        chairEffects.cancelHealing(); 
+        chairEffects.cancelHealing();
+        chairEffects.cancelPickup();
         chairEffects = null;
         log = null;
         vehiclearrowclass = null;

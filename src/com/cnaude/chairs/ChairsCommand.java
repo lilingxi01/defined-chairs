@@ -44,6 +44,11 @@ public class ChairsCommand implements CommandExecutor {
                 } else {
                 	plugin.chairEffects.cancelHealing();
                 }
+                if (plugin.sitPickupEnabled) {
+                	plugin.chairEffects.restartPickup();
+                } else {
+                	plugin.chairEffects.cancelPickup();
+                }
                 if (!plugin.msgReloaded.isEmpty()) {
                     sender.sendMessage(plugin.msgReloaded);
                 }
