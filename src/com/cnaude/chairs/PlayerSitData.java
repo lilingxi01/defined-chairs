@@ -116,7 +116,7 @@ public class PlayerSitData {
         arrow.setPassenger(player);
 		return arrow;
     }
-    protected void unSitPlayer(final Player player, boolean restoreposition, boolean correctnmspostion) 
+    protected void unSitPlayer(final Player player, boolean restoreposition, boolean correctleaveposition) 
     {
     	final Entity arrow = sit.get(player.getName());
 		sit.remove(player.getName());
@@ -133,28 +133,9 @@ public class PlayerSitData {
     	    		player.setSneaking(false);
     			}
     		},1);
-    	} else
+    	} else if (correctleaveposition)
     	{
-    		if (correctnmspostion)
-    		{
-	    		try {
-	    			Method getHandleMethod = player.getClass().getDeclaredMethod("getHandle");
-	    			getHandleMethod.setAccessible(true);
-	    			Object nmsPlayer = getHandleMethod.invoke(player);
-	    			Class<?> entityClass = nmsPlayer.getClass().getSuperclass().getSuperclass().getSuperclass();
-	    			Field locXField = entityClass.getDeclaredField("locX");
-	    			locXField.setAccessible(true);
-	    			locXField.set(nmsPlayer, tploc.getX());
-	    			Field locYField = entityClass.getDeclaredField("locY");
-	    			locYField.setAccessible(true);
-	    			locYField.set(nmsPlayer, tploc.getY());
-	    			Field locZField = entityClass.getDeclaredField("locZ");
-	    			locZField.setAccessible(true);
-	    			locZField.set(nmsPlayer, tploc.getZ());
-	    		} catch (Exception e) {
-	    			e.printStackTrace();
-	    		}
-    		}
+	    	player.teleport(tploc);
     	}
 		sitblock.remove(sitblockbr.get(player.getName()));
 		sitblockbr.remove(player.getName());
