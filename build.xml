@@ -11,6 +11,7 @@
      		<fileset file="src/config.yml" />
      		<fileset file="src/plugin.yml" />
 		</copy>
+    	<unzip src="libs/javassist.jar" dest="build/classes/" />
         <jar destfile="target/Chairs.jar" basedir="build/classes" />
 		<delete dir="build" />
     </target>

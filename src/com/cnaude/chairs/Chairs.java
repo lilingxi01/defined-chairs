@@ -52,9 +52,12 @@ public class Chairs extends JavaPlugin {
     	return vehiclearrowclass;
     }
 
+	GenVehicleArrowClass genvehiclearrow = new GenVehicleArrowClass();
+    
     @Override
     public void onEnable() {
-    	log = this.getLogger();
+    	log = this.getLogger();    	
+    	//load vehiclearrowclass
 		try {
 	    	World world = getServer().getWorlds().get(0);
 	    	Arrow arrow = world.spawnArrow(new Location(world, 0, 0, 0), new Vector(0, 0, 0), 0, 0);
@@ -64,7 +67,7 @@ public class Chairs extends JavaPlugin {
 	    	getHandle.setAccessible(true);
 	    	Class<?> entityarrow = getHandle.invoke(arrow).getClass();
 	    	Class<?> craftserver = getServer().getClass();
-	    	vehiclearrowclass = new GenVehicleArrowClass(this).genAndLoadClass(arrowclass, entityarrow, craftserver);
+	    	vehiclearrowclass = genvehiclearrow.genAndLoadClass(arrowclass, entityarrow, craftserver);
 	    	arrow.remove();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,6 +108,7 @@ public class Chairs extends JavaPlugin {
         chairEffects.cancelPickup();
         chairEffects = null;
         log = null;
+        genvehiclearrow = null;
         vehiclearrowclass = null;
         psitdata = null;
     }
