@@ -1,6 +1,7 @@
 package com.cnaude.chairs;
 
 import java.io.IOException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Vehicle;
 
@@ -9,6 +10,7 @@ import javassist.ClassClassPath;
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtNewConstructor;
+import javassist.CtNewMethod;
 import javassist.NotFoundException;
 
 public class GenVehicleArrowClass {
@@ -20,9 +22,9 @@ public class GenVehicleArrowClass {
 		(
 				new ClassClassPath(Bukkit.class)
 		);
-		CtClass cc = pool.makeClass("com.cnaude.chairs.VehicleArrow");
-		cc.setSuperclass(pool.getCtClass(arrowclass));
-		cc.setInterfaces
+		CtClass vehiclearrow = pool.makeClass("com.cnaude.chairs.VehicleArrow");
+		vehiclearrow.setSuperclass(pool.getCtClass(arrowclass));
+		vehiclearrow.setInterfaces
 		(
 			new CtClass[]
 			{
@@ -30,11 +32,16 @@ public class GenVehicleArrowClass {
 			}
 		);
 		String counstructorsource = "public VehicleArrow("+craftserver.getName()+" server, "+entityarrow.getName()+" entity)\n{\nsuper(server, entity);\n}";
-		cc.addConstructor
+		vehiclearrow.addConstructor
 		(
-				CtNewConstructor.make(counstructorsource, cc)
+				CtNewConstructor.make(counstructorsource, vehiclearrow)
 		);
-		return cc.toClass();
+		String removemethodsource = "public void remove()\n{\nif (this.getPassenger() == null)\n{\nsuper.remove();\n}\n}";
+		vehiclearrow.addMethod
+		(
+			CtNewMethod.make(removemethodsource, vehiclearrow)
+		);
+		return vehiclearrow.toClass();
 	}
 
 
