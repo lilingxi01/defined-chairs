@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 
 /**
  *
@@ -86,9 +87,13 @@ public class ChairEffects {
                 			if (entity instanceof Item) {
                                 if (p.getInventory().firstEmpty() != -1) {
                     				Item item = (Item) entity;
-                                	if (item.getPickupDelay() == 0) {
-                                		p.getInventory().addItem(item.getItemStack());
-                                		entity.remove();
+                                	PlayerPickupItemEvent pickupevent = new PlayerPickupItemEvent(p, item, 0);
+                                	Bukkit.getPluginManager().callEvent(pickupevent);
+                                	if (!pickupevent.isCancelled()) {
+                                		if (item.getPickupDelay() == 0) {
+                                			p.getInventory().addItem(item.getItemStack());
+                                			entity.remove();
+                                		}
                                 	}
                                 }
                 			}
