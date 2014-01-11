@@ -6,7 +6,7 @@ authors:
  - spoothie
  - cnaude
  - _Shevchik_
-main: com.cnaude.chairs.Chairs
+main: com.cnaude.chairs.core.Chairs
 commands:
     chairs:
         description: Various commands for Chairs.

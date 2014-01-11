@@ -25,7 +25,7 @@ import com.cnaude.chairs.listeners.TrySitEventListener;
 import com.cnaude.chairs.listeners.TryUnsitEventListener;
 import com.cnaude.chairs.sitaddons.ChairEffects;
 import com.cnaude.chairs.sitaddons.CommandRestrict;
-import com.cnaude.chairs.vehiclearrow.GenVehicleArrowClass;
+import com.cnaude.chairs.vehiclearrow.GetVehicleArrowClass;
 
 public class Chairs extends JavaPlugin {
     public ChairEffects chairEffects;
@@ -60,7 +60,7 @@ public class Chairs extends JavaPlugin {
     	return vehiclearrowclass;
     }
 
-	GenVehicleArrowClass genvehiclearrow = new GenVehicleArrowClass();
+	GetVehicleArrowClass genvehiclearrow = new GetVehicleArrowClass();
     
     @Override
     public void onEnable() {
@@ -75,7 +75,7 @@ public class Chairs extends JavaPlugin {
 	    	getHandle.setAccessible(true);
 	    	Class<?> entityarrow = getHandle.invoke(arrow).getClass();
 	    	Class<?> craftserver = getServer().getClass();
-	    	vehiclearrowclass = genvehiclearrow.genAndLoadClass(arrowclass, entityarrow, craftserver);
+	    	vehiclearrowclass = genvehiclearrow.getVehicleArrowClass(arrowclass, entityarrow, craftserver);
 	    	arrow.remove();
 		} catch (Exception e) {
 			e.printStackTrace();
