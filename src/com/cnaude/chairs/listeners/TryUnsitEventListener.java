@@ -1,4 +1,4 @@
-package com.cnaude.chairs;
+package com.cnaude.chairs.listeners;
 
 import java.util.HashSet;
 
@@ -13,6 +13,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
+
+import com.cnaude.chairs.core.Chairs;
 
 public class TryUnsitEventListener implements Listener {
 	

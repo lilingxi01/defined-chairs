@@ -1,4 +1,4 @@
-package com.cnaude.chairs;
+package com.cnaude.chairs.core;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -25,11 +25,11 @@ public class PlayerSitData {
 	private HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
 	private HashMap<String, Location> sitstopteleportloc = new HashMap<String, Location>();
 	private HashMap<String, Integer> sittask = new HashMap<String, Integer>();
-	protected boolean isSitting(Player player) 
+	public boolean isSitting(Player player) 
 	{
 		return sit.containsKey(player.getName());
 	}
-	protected boolean isAroowOccupied(Entity entity)
+	public boolean isAroowOccupied(Entity entity)
 	{
 		for (Entity usedentity : sit.values())
 		{
@@ -40,15 +40,15 @@ public class PlayerSitData {
 		}
 		return false;
 	}
-	protected boolean isBlockOccupied(Block block)
+	public boolean isBlockOccupied(Block block)
 	{
 		return sitblock.containsKey(block);
 	}
-	protected Player getPlayerOnChair(Block chair)
+	public Player getPlayerOnChair(Block chair)
 	{
 		return Bukkit.getPlayerExact(sitblock.get(chair));
 	}
-    protected void sitPlayer(Player player, Location sitlocation)
+    public void sitPlayer(Player player, Location sitlocation)
     {
     	try {
     		if (plugin.notifyplayer) 
@@ -68,7 +68,7 @@ public class PlayerSitData {
     		e.printStackTrace();
     	}
     }
-    protected void startReSitTask(final Player player)
+    public void startReSitTask(final Player player)
     {
     	int task = 
     	Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
@@ -80,7 +80,7 @@ public class PlayerSitData {
     	},1000,1000);
     	sittask.put(player.getName(), task);
     }
-    protected void reSitPlayer(final Player player)
+    public void reSitPlayer(final Player player)
     {
     	try {
 	    	final Entity prevarrow = sit.get(player.getName());
@@ -116,7 +116,7 @@ public class PlayerSitData {
         arrow.setPassenger(player);
 		return arrow;
     }
-    protected void unSitPlayer(final Player player, boolean restoreposition, boolean correctleaveposition) 
+    public void unSitPlayer(final Player player, boolean restoreposition, boolean correctleaveposition) 
     {
     	final Entity arrow = sit.get(player.getName());
 		sit.remove(player.getName());

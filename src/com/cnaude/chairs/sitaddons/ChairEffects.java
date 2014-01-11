@@ -2,13 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.cnaude.chairs;
+package com.cnaude.chairs.sitaddons;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+
+import com.cnaude.chairs.core.Chairs;
 
 /**
  *

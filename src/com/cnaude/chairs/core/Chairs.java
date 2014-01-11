@@ -1,4 +1,4 @@
-package com.cnaude.chairs;
+package com.cnaude.chairs.core;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -18,6 +18,14 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
+
+import com.cnaude.chairs.commands.ChairsCommand;
+import com.cnaude.chairs.commands.ChairsIgnoreList;
+import com.cnaude.chairs.listeners.TrySitEventListener;
+import com.cnaude.chairs.listeners.TryUnsitEventListener;
+import com.cnaude.chairs.sitaddons.ChairEffects;
+import com.cnaude.chairs.sitaddons.CommandRestrict;
+import com.cnaude.chairs.vehiclearrow.GenVehicleArrowClass;
 
 public class Chairs extends JavaPlugin {
     public ChairEffects chairEffects;
@@ -42,7 +50,7 @@ public class Chairs extends JavaPlugin {
     
     
     private PlayerSitData psitdata;
-    protected PlayerSitData getPlayerSitData()
+    public PlayerSitData getPlayerSitData()
     {
     	return psitdata;
     }    

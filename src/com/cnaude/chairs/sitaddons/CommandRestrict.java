@@ -1,10 +1,12 @@
-package com.cnaude.chairs;
+package com.cnaude.chairs.sitaddons;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+
+import com.cnaude.chairs.core.Chairs;
 
 public class CommandRestrict implements Listener {
 	

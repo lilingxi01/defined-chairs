@@ -1,4 +1,4 @@
-package com.cnaude.chairs;
+package com.cnaude.chairs.listeners;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,6 +14,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
+
+import com.cnaude.chairs.commands.ChairsIgnoreList;
+import com.cnaude.chairs.core.ChairBlock;
+import com.cnaude.chairs.core.Chairs;
+import com.cnaude.chairs.pluginhooks.WGHook;
 
 public class TrySitEventListener implements Listener {
 

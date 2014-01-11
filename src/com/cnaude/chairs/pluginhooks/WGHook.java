@@ -1,4 +1,4 @@
-package com.cnaude.chairs;
+package com.cnaude.chairs.pluginhooks;
 
 import java.util.HashSet;
 import java.util.List;

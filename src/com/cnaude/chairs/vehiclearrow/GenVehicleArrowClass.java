@@ -1,4 +1,4 @@
-package com.cnaude.chairs;
+package com.cnaude.chairs.vehiclearrow;
 
 import java.io.IOException;
 
