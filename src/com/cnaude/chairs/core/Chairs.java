@@ -44,16 +44,16 @@ public class Chairs extends JavaPlugin {
     public boolean sitDisableAllCommands = false;
     public HashSet<String> sitDisabledCommands = new HashSet<String>();
     private Logger log;
-    public ChairsIgnoreList ignoreList; 
+    public ChairsIgnoreList ignoreList;
     public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled, msgCommandRestricted;
-    
-    
-    
+
+
+
     private PlayerSitData psitdata;
     public PlayerSitData getPlayerSitData()
     {
     	return psitdata;
-    }    
+    }
     private Class<?> vehiclearrowclass;
     protected Class<?> getVehicleArrowClass()
     {
@@ -61,10 +61,10 @@ public class Chairs extends JavaPlugin {
     }
 
 	GetVehicleArrowClass genvehiclearrow = new GetVehicleArrowClass();
-    
+
     @Override
     public void onEnable() {
-    	log = this.getLogger();    	
+    	log = this.getLogger();
     	//load vehiclearrowclass
 		try {
 	    	World world = getServer().getWorlds().get(0);
@@ -104,7 +104,7 @@ public class Chairs extends JavaPlugin {
 
     @Override
     public void onDisable() {
-    	for (Player player : getServer().getOnlinePlayers()) { 
+    	for (Player player : getServer().getOnlinePlayers()) {
     		if (psitdata.isSitting(player)) {
     			psitdata.unSitPlayer(player, false, true);
     		}
@@ -120,7 +120,7 @@ public class Chairs extends JavaPlugin {
         vehiclearrowclass = null;
         psitdata = null;
     }
- 
+
     public void loadConfig() {
     	FileConfiguration config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(),"config.yml"));
         autoRotate = config.getBoolean("auto-rotate");
@@ -129,19 +129,19 @@ public class Chairs extends JavaPlugin {
         maxChairWidth = config.getInt("max-chair-width");
         notifyplayer = config.getBoolean("notify-player");
         ignoreIfBlockInHand = config.getBoolean("ignore-if-item-in-hand");
-        
+
         disabledRegions = new HashSet<String>(config.getStringList("disabledWGRegions"));
-        
+
         sitHealEnabled = config.getBoolean("sit-effects.healing.enabled", false);
         sitHealInterval = config.getInt("sit-effects.healing.interval",20);
         sitMaxHealth = config.getInt("sit-effects.healing.max-percent",100);
         sitHealthPerInterval = config.getInt("sit-effects.healing.amount",1);
-        
+
         sitPickupEnabled = config.getBoolean("sit-effects.itempickup.enabled", false);
-        
+
         sitDisableAllCommands = config.getBoolean("sit-restrictions.commands.all");
         sitDisabledCommands = new HashSet<String>(config.getStringList("sit-restrictions.commands.list"));
-        
+
         msgSitting = ChatColor.translateAlternateColorCodes('&',config.getString("messages.sitting"));
         msgStanding = ChatColor.translateAlternateColorCodes('&',config.getString("messages.standing"));
         msgOccupied = ChatColor.translateAlternateColorCodes('&',config.getString("messages.occupied"));
@@ -156,21 +156,21 @@ public class Chairs extends JavaPlugin {
             String type;
             double sh = 0.7;
             String tmp[] = s.split("[:]");
-            type = tmp[0];         
+            type = tmp[0];
             if (tmp.length == 2) {
                sh = Double.parseDouble(tmp[1]);
-            }             
+            }
             Material mat = Material.matchMaterial(type);
-            if (mat != null) {                    
+            if (mat != null) {
                 logInfo("Allowed block: " + mat.toString() + " => " + sh);
                 allowedBlocks.add(new ChairBlock(mat,sh));
             } else {
                 logError("Invalid block: " + type);
             }
         }
-        
-        validSigns = new ArrayList<Material>();    
-        for (String type : config.getStringList("valid-signs")) {            
+
+        validSigns = new ArrayList<Material>();
+        for (String type : config.getStringList("valid-signs")) {
             try {
             	validSigns.add(Material.matchMaterial(type));
             }
@@ -178,8 +178,8 @@ public class Chairs extends JavaPlugin {
                 logError(e.getMessage());
             }
         }
-    } 
-    
+    }
+
     public void logInfo(String _message) {
         log.log(Level.INFO, _message);
     }
@@ -187,5 +187,5 @@ public class Chairs extends JavaPlugin {
     public void logError(String _message) {
         log.log(Level.SEVERE, _message);
     }
-     
+
 }

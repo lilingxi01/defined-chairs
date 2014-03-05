@@ -21,12 +21,12 @@ public class ChairEffects {
     private Chairs plugin;
     private int healTaskID = -1;
     private int pickupTaskID = -1;
-    
+
 
     public ChairEffects(Chairs plugin) {
         this.plugin = plugin;
     }
-    
+
     public void startHealing() {
         healEffectsTask();
     }
@@ -37,7 +37,7 @@ public class ChairEffects {
     		healTaskID = -1;
     	}
     }
-    
+
     public void restartHealing() {
     	cancelHealing();
         startHealing();
@@ -64,25 +64,27 @@ public class ChairEffects {
             }
         }, plugin.sitHealInterval, plugin.sitHealInterval);
     }
-    
+
     public void startPickup() {
     	pickupEffectsTask();
     }
 
     public void cancelPickup() {
-    	if (pickupTaskID != -1)
-        plugin.getServer().getScheduler().cancelTask(pickupTaskID);
+    	if (pickupTaskID != -1) {
+			plugin.getServer().getScheduler().cancelTask(pickupTaskID);
+		}
         pickupTaskID = -1;
     }
-    
+
     public void restartPickup() {
     	cancelPickup();
     	startPickup();
     }
-    
+
     private void pickupEffectsTask() {
     	pickupTaskID = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-    		public void run() {
+    		@Override
+			public void run() {
                 for (Player p : Bukkit.getOnlinePlayers()) {
                 	if (plugin.getPlayerSitData().isSitting(p)) {
                 		for (Entity entity : p.getNearbyEntities(1, 2, 1)) {
@@ -105,5 +107,5 @@ public class ChairEffects {
     		}
     	},0,1);
     }
-    
+
 }

@@ -29,7 +29,7 @@ public class ChairsCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             return false;
-        } 
+        }
         if (args[0].equalsIgnoreCase("reload")) {
             if (sender.hasPermission("chairs.reload") || !(sender instanceof Player)) {
                 plugin.loadConfig();
@@ -81,5 +81,5 @@ public class ChairsCommand implements CommandExecutor {
         }
         return true;
     }
-    
+
 }

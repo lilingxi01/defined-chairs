@@ -8,15 +8,15 @@ import org.bukkit.entity.Vehicle;
 
 public class VehicleArrow extends CraftArrow implements Vehicle {
 
-	public VehicleArrow(CraftServer server, EntityArrow entity) 
+	public VehicleArrow(CraftServer server, EntityArrow entity)
 	{
 		super(server, entity);
 	}
-	
+
 	@Override
-	public void remove() 
+	public void remove()
 	{
-		if (this.getPassenger() == null) 
+		if (this.getPassenger() == null)
 		{
 			super.remove();
 		}

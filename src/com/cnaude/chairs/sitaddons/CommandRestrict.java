@@ -9,12 +9,12 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import com.cnaude.chairs.core.Chairs;
 
 public class CommandRestrict implements Listener {
-	
+
 	private Chairs plugin;
 	public CommandRestrict(Chairs plugin) {
 		this.plugin = plugin;
 	}
-	
+
     @EventHandler(priority=EventPriority.LOWEST)
     public void onPlayerCommand(PlayerCommandPreprocessEvent event)
     {

@@ -13,7 +13,7 @@ public class GetVehicleArrowClass {
         if (nmspackageversion.equals("v1_7_R1"))
         {
         	return Class.forName(pkgname+"."+"nms172"+"."+vehiclearrowclassname);
-        } else 
+        } else
         if (nmspackageversion.equals("v1_6_R3"))
         {
         	return Class.forName(pkgname+"."+"nms164"+"."+vehiclearrowclassname);
@@ -22,5 +22,5 @@ public class GetVehicleArrowClass {
 	}
 
 
-	
+
 }

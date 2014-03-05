@@ -19,40 +19,32 @@ public class PlayerSitData {
 	public PlayerSitData(Chairs plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	private HashMap<String, Entity> sit = new HashMap<String, Entity>();
 	private HashMap<Block, String> sitblock = new HashMap<Block, String>();
 	private HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
 	private HashMap<String, Location> sitstopteleportloc = new HashMap<String, Location>();
 	private HashMap<String, Integer> sittask = new HashMap<String, Integer>();
-	public boolean isSitting(Player player) 
-	{
+	public boolean isSitting(Player player) {
 		return sit.containsKey(player.getName());
 	}
-	public boolean isAroowOccupied(Entity entity)
-	{
-		for (Entity usedentity : sit.values())
-		{
-			if (usedentity.getEntityId() == entity.getEntityId())
-			{
+	public boolean isAroowOccupied(Entity entity) {
+		for (Entity usedentity : sit.values()) {
+			if (usedentity.getEntityId() == entity.getEntityId()) {
 				return true;
 			}
 		}
 		return false;
 	}
-	public boolean isBlockOccupied(Block block)
-	{
+	public boolean isBlockOccupied(Block block) {
 		return sitblock.containsKey(block);
 	}
-	public Player getPlayerOnChair(Block chair)
-	{
+	public Player getPlayerOnChair(Block chair) {
 		return Bukkit.getPlayerExact(sitblock.get(chair));
 	}
-    public void sitPlayer(Player player, Location sitlocation)
-    {
+    public void sitPlayer(Player player, Location sitlocation) {
     	try {
-    		if (plugin.notifyplayer) 
-    		{
+    		if (plugin.notifyplayer) {
 	            player.sendMessage(plugin.msgSitting);
 	        }
 	        Block block = sitlocation.getBlock();
@@ -68,15 +60,13 @@ public class PlayerSitData {
     		e.printStackTrace();
     	}
     }
-    public void startReSitTask(final Player player)
-    {
-    	int task = 
-    	Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable()
-    	{
-    		public void run()
-    		{
+    public void startReSitTask(final Player player) {
+    	int task =
+    	Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+    		@Override
+			public void run() {
     			reSitPlayer(player);
-    		}    	
+    		}
     	},1000,1000);
     	sittask.put(player.getName(), task);
     }
@@ -90,10 +80,9 @@ public class PlayerSitData {
 			Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
 			Entity arrow = sitPlayerOnArrow(player, arrowloc);
 			sit.put(player.getName(), arrow);
-			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-			{
-				public void run()
-				{
+			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+				@Override
+				public void run() {
 					prevarrow.remove();
 				}
 			},100);
@@ -101,8 +90,7 @@ public class PlayerSitData {
     		e.printStackTrace();
     	}
     }
-    private Entity sitPlayerOnArrow(Player player, Location arrowloc) throws NoSuchMethodException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException
-    {
+    private Entity sitPlayerOnArrow(Player player, Location arrowloc) throws NoSuchMethodException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException {
         Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0 ,0), 0, 0);
         Method getHandleMethod = arrow.getClass().getDeclaredMethod("getHandle");
         getHandleMethod.setAccessible(true);
@@ -116,25 +104,23 @@ public class PlayerSitData {
         arrow.setPassenger(player);
 		return arrow;
     }
-    public void unSitPlayer(final Player player, boolean restoreposition, boolean correctleaveposition) 
-    {
+    public void unSitPlayer(final Player player, boolean restoreposition, boolean correctleaveposition) {
     	final Entity arrow = sit.get(player.getName());
 		sit.remove(player.getName());
     	player.eject();
     	arrow.remove();
     	final Location tploc = sitstopteleportloc.get(player.getName());
-    	if (restoreposition) 
-    	{
-    		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() 
+    	if (restoreposition) {
+    		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
     		{
-    			public void run() 
+    			@Override
+				public void run()
     			{
     	    		player.teleport(tploc);
     	    		player.setSneaking(false);
     			}
     		},1);
-    	} else if (correctleaveposition)
-    	{
+    	} else if (correctleaveposition) {
 	    	player.teleport(tploc);
     	}
 		sitblock.remove(sitblockbr.get(player.getName()));
@@ -142,10 +128,9 @@ public class PlayerSitData {
 		sitstopteleportloc.remove(player.getName());
 		Bukkit.getScheduler().cancelTask(sittask.get(player.getName()));
 		sittask.remove(player.getName());
-		if (plugin.notifyplayer) 
-		{
+		if (plugin.notifyplayer) {
         	player.sendMessage(plugin.msgStanding);
     	}
     }
-	
+
 }
