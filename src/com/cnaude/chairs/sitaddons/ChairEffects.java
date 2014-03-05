@@ -6,6 +6,7 @@ package com.cnaude.chairs.sitaddons;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -89,12 +90,12 @@ public class ChairEffects {
                 	if (plugin.getPlayerSitData().isSitting(p)) {
                 		for (Entity entity : p.getNearbyEntities(1, 2, 1)) {
                 			if (entity instanceof Item) {
-                                if (p.getInventory().firstEmpty() != -1) {
-                    				Item item = (Item) entity;
-                                	PlayerPickupItemEvent pickupevent = new PlayerPickupItemEvent(p, item, 0);
-                                	Bukkit.getPluginManager().callEvent(pickupevent);
-                                	if (!pickupevent.isCancelled()) {
-                                		if (item.getPickupDelay() == 0) {
+                				Item item = (Item) entity;
+                        		if (item.getPickupDelay() == 0) {
+                        			if (p.getInventory().firstEmpty() != -1) {
+	                                	PlayerPickupItemEvent pickupevent = new PlayerPickupItemEvent(p, item, 0);
+	                                	Bukkit.getPluginManager().callEvent(pickupevent);
+	                                	if (!pickupevent.isCancelled()) {
                                 			p.getInventory().addItem(item.getItemStack());
                                 			entity.remove();
                                 		}
