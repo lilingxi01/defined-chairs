@@ -12,20 +12,16 @@ import com.sk89q.worldguard.bukkit.WGBukkit;
 public class WGHook {
 
 	public static boolean isAllowedInRegion(HashSet<String> disabledRegions, Location location) {
-		if (Bukkit.getPluginManager().getPlugin("WorldGuard") == null)
-		{
+		if (Bukkit.getPluginManager().getPlugin("WorldGuard") == null) {
 			return true;
 		}
-		if (disabledRegions.isEmpty())
-		{
+		if (disabledRegions.isEmpty()) {
 			return true;
 		}
 
 		List<String> aregions = WGBukkit.getRegionManager(location.getWorld()).getApplicableRegionsIDs(BukkitUtil.toVector(location));
-		for (String region : aregions)
-		{
-			if (disabledRegions.contains(region))
-			{
+		for (String region : aregions) {
+			if (disabledRegions.contains(region)) {
 				return false;
 			}
 		}
