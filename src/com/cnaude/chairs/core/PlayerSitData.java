@@ -1,9 +1,6 @@
 package com.cnaude.chairs.core;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import org.bukkit.Bukkit;
@@ -11,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class PlayerSitData {
 
@@ -27,14 +23,6 @@ public class PlayerSitData {
 	private HashMap<String, Integer> sittask = new HashMap<String, Integer>();
 	public boolean isSitting(Player player) {
 		return sit.containsKey(player.getName());
-	}
-	public boolean isAroowOccupied(Entity entity) {
-		for (Entity usedentity : sit.values()) {
-			if (usedentity.getEntityId() == entity.getEntityId()) {
-				return true;
-			}
-		}
-		return false;
 	}
 	public boolean isBlockOccupied(Block block) {
 		return sitblock.containsKey(block);
@@ -70,8 +58,7 @@ public class PlayerSitData {
     	},1000,1000);
     	sittask.put(player.getName(), task);
     }
-    public void reSitPlayer(final Player player)
-    {
+    public void reSitPlayer(final Player player) {
     	try {
 	    	final Entity prevarrow = sit.get(player.getName());
 	    	sit.remove(player.getName());
@@ -91,31 +78,31 @@ public class PlayerSitData {
     	}
     }
     private Entity sitPlayerOnArrow(Player player, Location arrowloc) throws NoSuchMethodException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        Entity arrow = player.getWorld().spawnArrow(arrowloc, new Vector(0, 0 ,0), 0, 0);
-        Method getHandleMethod = arrow.getClass().getDeclaredMethod("getHandle");
-        getHandleMethod.setAccessible(true);
-        Object nmsarrow = getHandleMethod.invoke(arrow);
-        Field bukkitEntityField = nmsarrow.getClass().getSuperclass().getDeclaredField("bukkitEntity");
-        bukkitEntityField.setAccessible(true);
-        Constructor<?> ctor = plugin.getVehicleArrowClass().getDeclaredConstructor(Bukkit.getServer().getClass(), nmsarrow.getClass());
-        ctor.setAccessible(true);
-        Object vehiclearrow = ctor.newInstance(Bukkit.getServer(), nmsarrow);
-        bukkitEntityField.set(nmsarrow, vehiclearrow);
+        Entity arrow = plugin.getNMSAccess().spawnArrow(arrowloc);
         arrow.setPassenger(player);
 		return arrow;
     }
-    public void unSitPlayer(final Player player, boolean restoreposition, boolean correctleaveposition) {
+    public void unsitPlayerNormal(Player player) {
+    	unsitPlayer(player, false, true, false);
+    }
+    public void unsitPlayerForce(Player player) {
+    	unsitPlayer(player, true, true, false);
+    }
+    public void unsitPlayerNow(Player player) {
+    	unsitPlayer(player, true, false, true);
+    }
+    private void unsitPlayer(final Player player, boolean eject,  boolean restoreposition, boolean correctleaveposition) {
     	final Entity arrow = sit.get(player.getName());
 		sit.remove(player.getName());
-    	player.eject();
+		if (eject) {
+			player.eject();
+		}
     	arrow.remove();
     	final Location tploc = sitstopteleportloc.get(player.getName());
     	if (restoreposition) {
-    		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
-    		{
+    		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
     			@Override
-				public void run()
-    			{
+				public void run() {
     	    		player.teleport(tploc);
     	    		player.setSneaking(false);
     			}

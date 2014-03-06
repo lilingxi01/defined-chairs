@@ -1,8 +1,5 @@
 package com.cnaude.chairs.listeners;
 
-import java.util.HashSet;
-
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +25,7 @@ public class TryUnsitEventListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
     	Player player = event.getPlayer();
     	if (plugin.getPlayerSitData().isSitting(player)) {
-    		plugin.getPlayerSitData().unSitPlayer(player, false, true);
+    		plugin.getPlayerSitData().unsitPlayerNow(player);
     	}
     }
 
@@ -44,27 +41,16 @@ public class TryUnsitEventListener implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
     	Player player = event.getEntity();
     	if (plugin.getPlayerSitData().isSitting(player)) {
-    		plugin.getPlayerSitData().unSitPlayer(player, false, false);
+    		plugin.getPlayerSitData().unsitPlayerNow(player);
     	}
     }
 
-    private HashSet<String> queueUnsit = new HashSet<String>();
     @EventHandler(priority=EventPriority.LOWEST)
     public void onExitVehicle(VehicleExitEvent e) {
     	if (e.getVehicle().getPassenger() instanceof Player) {
     		final Player player = (Player) e.getVehicle().getPassenger();
     		if (plugin.getPlayerSitData().isSitting(player)) {
-    			e.setCancelled(true);
-    			if (!queueUnsit.contains(player.getName())) {
-    				queueUnsit.add(player.getName());
-    				Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-    					@Override
-						public void run() {
-    						queueUnsit.remove(player.getName());
-    						plugin.getPlayerSitData().unSitPlayer(player, true, false);
-    					}
-    				});
-    			}
+    			plugin.getPlayerSitData().unsitPlayerNormal(player);
     		}
     	}
     }
@@ -74,7 +60,7 @@ public class TryUnsitEventListener implements Listener {
     	Block b = event.getBlock();
     	if (plugin.getPlayerSitData().isBlockOccupied(b)) {
     		Player player = plugin.getPlayerSitData().getPlayerOnChair(b);
-    		plugin.getPlayerSitData().unSitPlayer(player, true, false);
+    		plugin.getPlayerSitData().unsitPlayerForce(player);
     	}
     }
 

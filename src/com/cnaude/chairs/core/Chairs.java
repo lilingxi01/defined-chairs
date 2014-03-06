@@ -1,7 +1,6 @@
 package com.cnaude.chairs.core;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,24 +8,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
 import com.cnaude.chairs.commands.ChairsCommand;
 import com.cnaude.chairs.commands.ChairsIgnoreList;
+import com.cnaude.chairs.core.api.ChairsAPI;
 import com.cnaude.chairs.listeners.NANLoginListener;
 import com.cnaude.chairs.listeners.TrySitEventListener;
 import com.cnaude.chairs.listeners.TryUnsitEventListener;
 import com.cnaude.chairs.sitaddons.ChairEffects;
 import com.cnaude.chairs.sitaddons.CommandRestrict;
-import com.cnaude.chairs.vehiclearrow.GetVehicleArrowClass;
+import com.cnaude.chairs.vehiclearrow.NMSAccess;
 
 public class Chairs extends JavaPlugin {
     public ChairEffects chairEffects;
@@ -54,28 +50,16 @@ public class Chairs extends JavaPlugin {
     public PlayerSitData getPlayerSitData() {
     	return psitdata;
     }
-    private Class<?> vehiclearrowclass;
-    protected Class<?> getVehicleArrowClass() {
-    	return vehiclearrowclass;
+    private NMSAccess nmsaccess = new NMSAccess();
+    protected NMSAccess getNMSAccess() {
+    	return nmsaccess;
     }
-
-	GetVehicleArrowClass genvehiclearrow = new GetVehicleArrowClass();
 
     @Override
     public void onEnable() {
     	log = this.getLogger();
-    	//load vehiclearrowclass
 		try {
-	    	World world = getServer().getWorlds().get(0);
-	    	Arrow arrow = world.spawnArrow(new Location(world, 0, 0, 0), new Vector(0, 0, 0), 0, 0);
-	    	String arrowclass = arrow.getClass().getName();
-	    	Method getHandle;
-			getHandle = arrow.getClass().getDeclaredMethod("getHandle");
-	    	getHandle.setAccessible(true);
-	    	Class<?> entityarrow = getHandle.invoke(arrow).getClass();
-	    	Class<?> craftserver = getServer().getClass();
-	    	vehiclearrowclass = genvehiclearrow.getVehicleArrowClass(arrowclass, entityarrow, craftserver);
-	    	arrow.remove();
+	    	nmsaccess.setupVehicleArrow();
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.severe("Failed to generate VehicleArrow class, exiting");
@@ -100,24 +84,26 @@ public class Chairs extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
         getServer().getPluginManager().registerEvents(new CommandRestrict(this), this);
         getCommand("chairs").setExecutor(new ChairsCommand(this, ignoreList));
+        new ChairsAPI(getPlayerSitData());
     }
 
     @Override
     public void onDisable() {
     	for (Player player : getServer().getOnlinePlayers()) {
     		if (psitdata.isSitting(player)) {
-    			psitdata.unSitPlayer(player, false, true);
+    			psitdata.unsitPlayerNow(player);
     		}
     	}
         if (ignoreList != null) {
             ignoreList.save();
         }
-        chairEffects.cancelHealing();
-        chairEffects.cancelPickup();
-        chairEffects = null;
+        if (chairEffects != null) {
+		    chairEffects.cancelHealing();
+		    chairEffects.cancelPickup();
+		    chairEffects = null;
+        }
         log = null;
-        genvehiclearrow = null;
-        vehiclearrowclass = null;
+        nmsaccess = null;
         psitdata = null;
     }
 
