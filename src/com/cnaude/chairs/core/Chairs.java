@@ -21,6 +21,7 @@ import org.bukkit.util.Vector;
 
 import com.cnaude.chairs.commands.ChairsCommand;
 import com.cnaude.chairs.commands.ChairsIgnoreList;
+import com.cnaude.chairs.listeners.NANLoginListener;
 import com.cnaude.chairs.listeners.TrySitEventListener;
 import com.cnaude.chairs.listeners.TryUnsitEventListener;
 import com.cnaude.chairs.sitaddons.ChairEffects;
@@ -50,13 +51,11 @@ public class Chairs extends JavaPlugin {
 
 
     private PlayerSitData psitdata;
-    public PlayerSitData getPlayerSitData()
-    {
+    public PlayerSitData getPlayerSitData() {
     	return psitdata;
     }
     private Class<?> vehiclearrowclass;
-    protected Class<?> getVehicleArrowClass()
-    {
+    protected Class<?> getVehicleArrowClass() {
     	return vehiclearrowclass;
     }
 
@@ -96,6 +95,7 @@ public class Chairs extends JavaPlugin {
         if (sitPickupEnabled) {
         	chairEffects.startPickup();
         }
+        getServer().getPluginManager().registerEvents(new NANLoginListener(), this);
         getServer().getPluginManager().registerEvents(new TrySitEventListener(this, ignoreList), this);
         getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
         getServer().getPluginManager().registerEvents(new CommandRestrict(this), this);
