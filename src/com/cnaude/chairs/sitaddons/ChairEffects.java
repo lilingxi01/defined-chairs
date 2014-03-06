@@ -9,6 +9,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import com.cnaude.chairs.core.Chairs;
@@ -101,6 +103,31 @@ public class ChairEffects {
                                 		}
                                 	}
                                 }
+                			} else if (entity instanceof ExperienceOrb) {
+                				ExperienceOrb eorb = (ExperienceOrb) entity;
+                				int exptoadd = eorb.getExperience();
+                				while (exptoadd > 0) {
+        							int localexptoadd = 0;
+                					if (p.getExpToLevel() < exptoadd) {
+                						localexptoadd = p.getExpToLevel();
+                  						PlayerExpChangeEvent expchangeevent = new PlayerExpChangeEvent(p, localexptoadd);
+                  						Bukkit.getPluginManager().callEvent(expchangeevent);
+                  						p.giveExp(expchangeevent.getAmount());
+                						if (p.getExpToLevel() <= 0) {
+                							PlayerLevelChangeEvent levelchangeevent = new PlayerLevelChangeEvent(p, p.getLevel(), p.getLevel()+1);
+                      						Bukkit.getPluginManager().callEvent(levelchangeevent);
+                      						p.setExp(0);
+                      						p.giveExpLevels(1);
+                						}
+            						} else {
+            							localexptoadd = exptoadd;
+                  						PlayerExpChangeEvent expchangeevent = new PlayerExpChangeEvent(p, localexptoadd);
+                  						Bukkit.getPluginManager().callEvent(expchangeevent);
+                  						p.giveExp(expchangeevent.getAmount());
+            						}
+                					exptoadd -= localexptoadd;
+            					}
+               					entity.remove();
                 			}
                 		}
                     }
