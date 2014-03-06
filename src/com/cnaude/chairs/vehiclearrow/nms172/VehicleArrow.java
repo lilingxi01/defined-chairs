@@ -14,7 +14,7 @@ public class VehicleArrow extends CraftArrow implements Vehicle {
 
 	@Override
 	public void remove() {
-		if (this.getPassenger() == null) {
+		if (isEmpty()) {
 			super.remove();
 		}
 	}
