@@ -24,8 +24,7 @@ public class ChairsIgnoreList implements Serializable{
 	private static final String IGNORE_FILE = "plugins/Chairs/ignores.ser";
 
 	private Chairs plugin;
-	public ChairsIgnoreList(Chairs plugin)
-	{
+	public ChairsIgnoreList(Chairs plugin) {
 		this.plugin = plugin;
 	}
 
@@ -66,12 +65,10 @@ public class ChairsIgnoreList implements Serializable{
 		if (ignoreList.contains(s)) {
 			return;
 		}
-		//Chairs.get().logInfo("Adding " + s + " to ignore list.");
 		ignoreList.add(s);
 	}
 
 	public void removePlayer(String s) {
-		//Chairs.get().logInfo("Removing " + s + " from ignore list.");
 		ignoreList.remove(s);
 	}
 

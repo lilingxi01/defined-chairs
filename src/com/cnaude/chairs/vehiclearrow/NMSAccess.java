@@ -18,14 +18,14 @@ public class NMSAccess {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
 		String nmspackageversion = packageName.substring(packageName.lastIndexOf('.') + 1);
 		switch (nmspackageversion) {
-		case "v1_7_R1": {
-			nmsArrowClass = Class.forName(pkgname+"."+"nms172"+".NMSChairsArrow");
-			return;
-		}
-		case "v1_6_R3": {
-			nmsArrowClass = Class.forName(pkgname+"."+"nms164"+".NMSChairsArrow");
-			return;
-		}
+			case "v1_7_R1": {
+				nmsArrowClass = Class.forName(pkgname+"."+"nms172"+".NMSChairsArrow");
+				return;
+			}
+			case "v1_6_R3": {
+				nmsArrowClass = Class.forName(pkgname+"."+"nms164"+".NMSChairsArrow");
+				return;
+			}
 		}
 		throw new Exception("ChairsReloaded is not compatible with your server version");
 	}

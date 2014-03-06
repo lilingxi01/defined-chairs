@@ -25,6 +25,7 @@ import com.cnaude.chairs.sitaddons.CommandRestrict;
 import com.cnaude.chairs.vehiclearrow.NMSAccess;
 
 public class Chairs extends JavaPlugin {
+
 	public ChairEffects chairEffects;
 	public List<ChairBlock> allowedBlocks;
 	public List<Material> validSigns;
@@ -43,7 +44,6 @@ public class Chairs extends JavaPlugin {
 	private Logger log;
 	public ChairsIgnoreList ignoreList;
 	public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled, msgCommandRestricted;
-
 
 
 	private PlayerSitData psitdata;
