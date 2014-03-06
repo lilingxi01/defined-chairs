@@ -14,5 +14,5 @@ public class ChairsAPI {
 	public static boolean isSitting(Player player) {
 		return pdata.isSitting(player);
 	}
-	
+
 }

@@ -15,33 +15,33 @@ public class CommandRestrict implements Listener {
 		this.plugin = plugin;
 	}
 
-    @EventHandler(priority=EventPriority.LOWEST)
-    public void onPlayerCommand(PlayerCommandPreprocessEvent event)
-    {
-    	Player player = event.getPlayer();
-    	String playercommand = event.getMessage().toLowerCase();
-    	if (plugin.getPlayerSitData().isSitting(player))
-    	{
+	@EventHandler(priority=EventPriority.LOWEST)
+	public void onPlayerCommand(PlayerCommandPreprocessEvent event)
+	{
+		Player player = event.getPlayer();
+		String playercommand = event.getMessage().toLowerCase();
+		if (plugin.getPlayerSitData().isSitting(player))
+		{
 			if (plugin.sitDisableAllCommands)
 			{
 				event.setCancelled(true);
 				player.sendMessage(plugin.msgCommandRestricted);
 				return;
 			}
-    		for (String disabledCommand : plugin.sitDisabledCommands)
-    		{
-    			if (disabledCommand.startsWith(playercommand))
-    			{
-    				String therest = playercommand.replace(disabledCommand, "");
-    				if (therest.isEmpty() || therest.startsWith(" "))
-    				{
-    					event.setCancelled(true);
-    					player.sendMessage(plugin.msgCommandRestricted);
-    					return;
-    				}
-    			}
-    		}
-    	}
-    }
+			for (String disabledCommand : plugin.sitDisabledCommands)
+			{
+				if (disabledCommand.startsWith(playercommand))
+				{
+					String therest = playercommand.replace(disabledCommand, "");
+					if (therest.isEmpty() || therest.startsWith(" "))
+					{
+						event.setCancelled(true);
+						player.sendMessage(plugin.msgCommandRestricted);
+						return;
+					}
+				}
+			}
+		}
+	}
 
 }

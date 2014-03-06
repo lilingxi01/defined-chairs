@@ -11,20 +11,20 @@ import org.bukkit.Material;
  * @author cnaude
  */
 public class ChairBlock {
-    private Material mat;
-    private double sitHeight;
+	private Material mat;
+	private double sitHeight;
 
-    public ChairBlock(Material m, double s) {
-        mat = m;
-        sitHeight = s;
-    }
+	public ChairBlock(Material m, double s) {
+		mat = m;
+		sitHeight = s;
+	}
 
-    public Material getMat() {
-        return mat;
-    }
+	public Material getMat() {
+		return mat;
+	}
 
-    public double getSitHeight() {
-        return sitHeight;
-    }
+	public double getSitHeight() {
+		return sitHeight;
+	}
 
 }
