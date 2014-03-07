@@ -17,7 +17,6 @@ public class PlayerSitData {
 
 	private HashMap<String, Entity> sit = new HashMap<String, Entity>();
 	private HashMap<Block, String> sitblock = new HashMap<Block, String>();
-	private HashMap<String, Block> sitblockbr = new HashMap<String, Block>();
 	private HashMap<String, Location> sitstopteleportloc = new HashMap<String, Location>();
 	private HashMap<String, Integer> sittask = new HashMap<String, Integer>();
 
@@ -46,7 +45,6 @@ public class PlayerSitData {
 			arrow.setPassenger(player);
 			sit.put(player.getName(), arrow);
 			sitblock.put(block, player.getName());
-			sitblockbr.put(player.getName(), block);
 			startReSitTask(player);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -125,8 +123,7 @@ public class PlayerSitData {
 		} else if (correctleaveposition) {
 			player.teleport(tploc);
 		}
-		sitblock.remove(sitblockbr.get(player.getName()));
-		sitblockbr.remove(player.getName());
+		sitblock.values().remove(player.getName());
 		sitstopteleportloc.remove(player.getName());
 		Bukkit.getScheduler().cancelTask(sittask.get(player.getName()));
 		sittask.remove(player.getName());
