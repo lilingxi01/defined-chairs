@@ -170,8 +170,7 @@ public class TrySitEventListener implements Listener {
 		return false;
 	}
 
-	private Location getSitLocation(Block block, Float playerYaw)
-	{
+	private Location getSitLocation(Block block, Float playerYaw) {
 		double sh = 0.7;
 
 		for (ChairBlock cb : plugin.allowedBlocks) {
@@ -267,10 +266,8 @@ public class TrySitEventListener implements Listener {
 	}
 
 	private boolean checkDirection(Block block1, Block block2) {
-		if (block1.getState().getData() instanceof Stairs
-				&& block2.getState().getData() instanceof Stairs) {
-			if (((Stairs) block1.getState().getData()).getDescendingDirection()
-					.equals(((Stairs) block2.getState().getData()).getDescendingDirection())) {
+		if (block1.getState().getData() instanceof Stairs && block2.getState().getData() instanceof Stairs) {
+			if (((Stairs) block1.getState().getData()).getDescendingDirection().equals(((Stairs) block2.getState().getData()).getDescendingDirection())) {
 				return true;
 			}
 		}
