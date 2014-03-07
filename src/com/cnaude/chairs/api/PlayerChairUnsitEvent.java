@@ -9,11 +9,17 @@ public class PlayerChairUnsitEvent extends PlayerEvent implements Cancellable {
 
 	private static final HandlerList handlers = new HandlerList();
 	private boolean cancelled = false;
+	private boolean canbecancelled = true;
 
-	public PlayerChairUnsitEvent(Player who) {
+	public PlayerChairUnsitEvent(Player who, boolean canbecancelled) {
 		super(who);
+		this.canbecancelled = canbecancelled;
 	}
 
+	public boolean canBeCancelled() {
+		return canbecancelled;
+	}
+	
 	@Override
 	public HandlerList getHandlers() {
 		return handlers;
