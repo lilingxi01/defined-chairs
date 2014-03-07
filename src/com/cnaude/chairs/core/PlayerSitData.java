@@ -72,9 +72,7 @@ public class PlayerSitData {
 			final Entity prevarrow = sit.get(player.getName());
 			sit.remove(player.getName());
 			player.eject();
-			Block block = sitblockbr.get(player.getName());
-			Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
-			Entity arrow = plugin.getNMSAccess().spawnArrow(arrowloc);
+			Entity arrow = plugin.getNMSAccess().spawnArrow(prevarrow.getLocation());
 			arrow.setPassenger(player);
 			sit.put(player.getName(), arrow);
 			Bukkit.getScheduler().scheduleSyncDelayedTask(
