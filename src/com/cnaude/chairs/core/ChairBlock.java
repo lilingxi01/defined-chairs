@@ -1,16 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.cnaude.chairs.core;
 
 import org.bukkit.Material;
 
-/**
- *
- * @author cnaude
- */
 public class ChairBlock {
+
 	private Material mat;
 	private double sitHeight;
 

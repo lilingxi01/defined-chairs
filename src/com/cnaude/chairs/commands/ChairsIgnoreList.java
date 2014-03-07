@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.cnaude.chairs.commands;
 
 import java.io.File;
@@ -14,14 +10,11 @@ import java.util.ArrayList;
 
 import com.cnaude.chairs.core.Chairs;
 
-/**
- *
- * @author cnaude
- */
 @SuppressWarnings("serial")
-public class ChairsIgnoreList implements Serializable{
+public class ChairsIgnoreList implements Serializable {
+
 	private static ArrayList<String> ignoreList = new ArrayList<String>();
-	private static final String IGNORE_FILE = "plugins/Chairs/ignores.ser";
+	private static final String IGNORE_FILE = "plugins"+File.separator+"Chairs"+File.separator+"ignores.ser";
 
 	private Chairs plugin;
 	public ChairsIgnoreList(Chairs plugin) {

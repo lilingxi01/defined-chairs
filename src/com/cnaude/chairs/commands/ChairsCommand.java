@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.cnaude.chairs.commands;
 
 import org.bukkit.command.Command;
@@ -11,10 +7,6 @@ import org.bukkit.entity.Player;
 
 import com.cnaude.chairs.core.Chairs;
 
-/**
- *
- * @author cnaude
- */
 public class ChairsCommand implements CommandExecutor {
 
 	private final Chairs plugin;
@@ -43,13 +35,9 @@ public class ChairsCommand implements CommandExecutor {
 				} else {
 					plugin.chairEffects.cancelPickup();
 				}
-				if (!plugin.msgReloaded.isEmpty()) {
-					sender.sendMessage(plugin.msgReloaded);
-				}
+				sender.sendMessage(plugin.msgReloaded);
 			} else {
-				if (!plugin.msgNoPerm.isEmpty()) {
-					sender.sendMessage(plugin.msgNoPerm);
-				}
+				sender.sendMessage(plugin.msgNoPerm);
 			}
 		}
 		if (sender instanceof Player) {
@@ -57,25 +45,17 @@ public class ChairsCommand implements CommandExecutor {
 			if (args[0].equalsIgnoreCase("on")) {
 				if (p.hasPermission("chairs.self")) {
 					ignoreList.removePlayer(p.getName());
-					if (!plugin.msgEnabled.isEmpty()) {
-						p.sendMessage(plugin.msgEnabled);
-					}
+					p.sendMessage(plugin.msgEnabled);
 				} else {
-					if (!plugin.msgNoPerm.isEmpty()) {
-						p.sendMessage(plugin.msgNoPerm);
-					}
+					p.sendMessage(plugin.msgNoPerm);
 				}
 			}
 			if (args[0].equalsIgnoreCase("off")) {
 				if (p.hasPermission("chairs.self")) {
 					ignoreList.addPlayer(p.getName());
-					if (!plugin.msgDisabled.isEmpty()) {
-						p.sendMessage(plugin.msgDisabled);
-					}
+					p.sendMessage(plugin.msgDisabled);
 				} else {
-					if (!plugin.msgNoPerm.isEmpty()) {
-						p.sendMessage(plugin.msgNoPerm);
-					}
+					p.sendMessage(plugin.msgNoPerm);
 				}
 			}
 		}
