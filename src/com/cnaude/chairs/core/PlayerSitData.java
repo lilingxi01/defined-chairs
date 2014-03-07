@@ -32,19 +32,18 @@ public class PlayerSitData {
 		return Bukkit.getPlayerExact(sitblock.get(chair));
 	}
 
-	public void sitPlayer(Player player, Location sitlocation) {
+	public void sitPlayer(Player player,  Block blocktooccupy, Location sitlocation) {
 		try {
 			if (plugin.notifyplayer) {
 				player.sendMessage(plugin.msgSitting);
 			}
-			Block block = sitlocation.getBlock();
 			sitstopteleportloc.put(player.getName(), player.getLocation());
 			player.teleport(sitlocation);
-			Location arrowloc = block.getLocation().add(0.5, 0 , 0.5);
+			Location arrowloc = sitlocation.getBlock().getLocation().add(0.5, 0 , 0.5);
 			Entity arrow = plugin.getNMSAccess().spawnArrow(arrowloc);
 			arrow.setPassenger(player);
 			sit.put(player.getName(), arrow);
-			sitblock.put(block, player.getName());
+			sitblock.put(blocktooccupy, player.getName());
 			startReSitTask(player);
 		} catch (Exception e) {
 			e.printStackTrace();

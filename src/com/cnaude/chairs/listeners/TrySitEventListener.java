@@ -39,7 +39,7 @@ public class TrySitEventListener implements Listener {
 			if (sitAllowed(player, block)) {
 				event.setCancelled(true);
 				Location sitLocation = getSitLocation(block, player.getLocation().getYaw());
-				plugin.getPlayerSitData().sitPlayer(player, sitLocation);
+				plugin.getPlayerSitData().sitPlayer(player, block, sitLocation);
 			}
 		}
 	}
