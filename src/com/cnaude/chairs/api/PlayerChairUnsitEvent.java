@@ -1,4 +1,4 @@
-package com.cnaude.chairs.core.api;
+package com.cnaude.chairs.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

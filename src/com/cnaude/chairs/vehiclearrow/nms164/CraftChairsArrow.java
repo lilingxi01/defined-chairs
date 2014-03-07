@@ -8,7 +8,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 
-import com.cnaude.chairs.core.api.ChairsAPI;
+import com.cnaude.chairs.api.ChairsAPI;
 
 public class CraftChairsArrow extends CraftArrow implements Vehicle {
 

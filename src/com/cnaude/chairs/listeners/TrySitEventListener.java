@@ -33,8 +33,8 @@ public class TrySitEventListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		Player player = event.getPlayer();
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			Player player = event.getPlayer();
 			Block block = event.getClickedBlock();
 			if (sitAllowed(player, block)) {
 				event.setCancelled(true);

@@ -14,9 +14,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.cnaude.chairs.api.ChairsAPI;
 import com.cnaude.chairs.commands.ChairsCommand;
 import com.cnaude.chairs.commands.ChairsIgnoreList;
-import com.cnaude.chairs.core.api.ChairsAPI;
 import com.cnaude.chairs.listeners.NANLoginListener;
 import com.cnaude.chairs.listeners.TrySitEventListener;
 import com.cnaude.chairs.listeners.TryUnsitEventListener;
