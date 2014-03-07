@@ -2,7 +2,6 @@ package com.cnaude.chairs.vehiclearrow;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,14 +29,10 @@ public class NMSAccess {
 		throw new Exception("ChairsReloaded is not compatible with your server version");
 	}
 
-	public Arrow spawnArrow(Location location) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+	public Arrow spawnArrow(Location location) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		World world = location.getWorld();
-		Method getHandle = world.getClass().getDeclaredMethod("getHandle");
-		getHandle.setAccessible(true);
-		Object nmsworld = getHandle.invoke(world);
-		Constructor<?> ct = nmsArrowClass.getConstructor(nmsworld.getClass().getSuperclass());
-		ct.setAccessible(true);
-		NMSChairsArrowInterface vehiclearrow = (NMSChairsArrowInterface) ct.newInstance(nmsworld);
+		Constructor<?> ct = nmsArrowClass.getConstructor(world.getClass());
+		NMSChairsArrowInterface vehiclearrow = (NMSChairsArrowInterface) ct.newInstance(world);
 		vehiclearrow.setArrowLocation(location);
 		vehiclearrow.addToWorld();
 		vehiclearrow.setBukkitEntity(Bukkit.getServer());

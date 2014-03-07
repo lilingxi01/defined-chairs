@@ -77,7 +77,7 @@ public class PlayerSitData {
 			e.printStackTrace();
 		}
 	}
-	private Entity sitPlayerOnArrow(Player player, Location arrowloc) throws NoSuchMethodException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException {
+	private Entity sitPlayerOnArrow(Player player, Location arrowloc) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Entity arrow = plugin.getNMSAccess().spawnArrow(arrowloc);
 		arrow.setPassenger(player);
 		return arrow;
