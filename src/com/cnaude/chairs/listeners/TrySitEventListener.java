@@ -186,7 +186,7 @@ public class TrySitEventListener implements Listener {
 			stairs = (Stairs) block.getState().getData();
 		}
 
-		Location plocation = block.getLocation().clone();
+		Location plocation = block.getLocation();
 		plocation.add(0.5D, (sh - 0.5D), 0.5D);
 
 		// Rotate the player's view to the descending side of the block.
