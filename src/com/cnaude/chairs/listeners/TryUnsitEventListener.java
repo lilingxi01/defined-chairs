@@ -22,7 +22,7 @@ public class TryUnsitEventListener implements Listener {
 	public TryUnsitEventListener(Chairs plugin) {
 		this.plugin = plugin;
 	}
-	
+
 	//spigot...
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {

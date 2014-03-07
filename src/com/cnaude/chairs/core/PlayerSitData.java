@@ -52,7 +52,7 @@ public class PlayerSitData {
 
 	public void startReSitTask(final Player player) {
 		int task = Bukkit.getScheduler().scheduleSyncRepeatingTask(
-			plugin, 
+			plugin,
 			new Runnable() {
 				@Override
 				public void run() {
@@ -73,7 +73,7 @@ public class PlayerSitData {
 			arrow.setPassenger(player);
 			sit.put(player.getName(), arrow);
 			Bukkit.getScheduler().scheduleSyncDelayedTask(
-				plugin, 
+				plugin,
 				new Runnable() {
 					@Override
 					public void run() {
@@ -109,7 +109,7 @@ public class PlayerSitData {
 		final Location tploc = sitstopteleportloc.get(player.getName());
 		if (restoreposition) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(
-				plugin, 
+				plugin,
 				new Runnable() {
 					@Override
 					public void run() {

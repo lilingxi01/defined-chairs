@@ -19,7 +19,7 @@ public class PlayerChairUnsitEvent extends PlayerEvent implements Cancellable {
 	public boolean canBeCancelled() {
 		return canbecancelled;
 	}
-	
+
 	@Override
 	public HandlerList getHandlers() {
 		return handlers;

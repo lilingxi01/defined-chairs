@@ -9,7 +9,7 @@ public class PlayerChairSitEvent extends PlayerEvent implements Cancellable {
 
 	private static final HandlerList handlers = new HandlerList();
 	private boolean cancelled = false;
-	
+
 	public PlayerChairSitEvent(Player who) {
 		super(who);
 	}
