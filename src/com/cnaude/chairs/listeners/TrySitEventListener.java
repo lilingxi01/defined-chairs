@@ -192,19 +192,24 @@ public class TrySitEventListener implements Listener {
 		// Rotate the player's view to the descending side of the block.
 		if (plugin.autoRotate && stairs != null) {
 			switch (stairs.getDescendingDirection()) {
-			case NORTH:
-				plocation.setYaw(180);
-				break;
-			case EAST:
-				plocation.setYaw(-90);
-				break;
-			case SOUTH:
-				plocation.setYaw(0);
-				break;
-			case WEST:
-				plocation.setYaw(90);
-			default:
-				;
+				case NORTH: {
+					plocation.setYaw(180);
+					break;
+				}
+				case EAST: {
+					plocation.setYaw(-90);
+					break;
+				}
+				case SOUTH: {
+					plocation.setYaw(0);
+					break;
+				}
+				case WEST: {
+					plocation.setYaw(90);
+					break;
+				}
+				default: {
+				}
 			}
 		} else {
 			plocation.setYaw(playerYaw);
