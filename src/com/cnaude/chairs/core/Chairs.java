@@ -61,7 +61,7 @@ public class Chairs extends JavaPlugin {
 	public void onEnable() {
 		log = this.getLogger();
 		try {
-			nmsaccess.setupVehicleArrow();
+			nmsaccess.setupChairsArrow();
 		} catch (Exception e) {
 			e.printStackTrace();
 			getServer().getPluginManager().disablePlugin(this);

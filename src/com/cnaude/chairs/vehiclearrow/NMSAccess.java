@@ -12,7 +12,7 @@ public class NMSAccess {
 
 	private Class<?> nmsArrowClass;
 
-	public void setupVehicleArrow() throws NMSAccessException, ClassNotFoundException {
+	public void setupChairsArrow() throws NMSAccessException, ClassNotFoundException {
 		String pkgname = getClass().getPackage().getName();
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
 		String nmspackageversion = packageName.substring(packageName.lastIndexOf('.') + 1);
