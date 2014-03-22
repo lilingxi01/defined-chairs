@@ -12,7 +12,7 @@ public class NMSAccess {
 
 	private Class<?> nmsArrowClass;
 
-	public void setupVehicleArrow() throws Exception {
+	public void setupVehicleArrow() throws NMSAccessException, ClassNotFoundException {
 		String pkgname = getClass().getPackage().getName();
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
 		String nmspackageversion = packageName.substring(packageName.lastIndexOf('.') + 1);
@@ -26,7 +26,7 @@ public class NMSAccess {
 				return;
 			}
 		}
-		throw new Exception("ChairsReloaded is not compatible with your server version");
+		throw new NMSAccessException("ChairsReloaded is not compatible with your server version");
 	}
 
 	public Arrow spawnArrow(Location location) throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {

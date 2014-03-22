@@ -64,7 +64,6 @@ public class Chairs extends JavaPlugin {
 			nmsaccess.setupVehicleArrow();
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.severe("Failed to generate VehicleArrow class, exiting");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
@@ -91,11 +90,13 @@ public class Chairs extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		for (Player player : getServer().getOnlinePlayers()) {
-			if (psitdata.isSitting(player)) {
-				PlayerChairUnsitEvent playerunsitevent = new PlayerChairUnsitEvent(player, false);
-				Bukkit.getPluginManager().callEvent(playerunsitevent);
-				psitdata.unsitPlayerNow(player);
+		if (psitdata != null) {
+			for (Player player : getServer().getOnlinePlayers()) {
+				if (psitdata.isSitting(player)) {
+					PlayerChairUnsitEvent playerunsitevent = new PlayerChairUnsitEvent(player, false);
+					Bukkit.getPluginManager().callEvent(playerunsitevent);
+					psitdata.unsitPlayerNow(player);
+				}
 			}
 		}
 		if (ignoreList != null) {
