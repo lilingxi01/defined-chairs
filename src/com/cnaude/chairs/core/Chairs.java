@@ -83,7 +83,7 @@ public class Chairs extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
 		getServer().getPluginManager().registerEvents(new CommandRestrict(this), this);
 		getCommand("chairs").setExecutor(new ChairsCommand(this, ignoreList));
-		new ChairsAPI(getPlayerSitData());
+		ChairsAPI.init(getPlayerSitData());
 	}
 
 	@Override

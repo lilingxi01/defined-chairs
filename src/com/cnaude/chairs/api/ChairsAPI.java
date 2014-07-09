@@ -7,7 +7,7 @@ import com.cnaude.chairs.core.PlayerSitData;
 public class ChairsAPI {
 
 	private static PlayerSitData pdata;
-	public ChairsAPI(PlayerSitData pdata) {
+	public static void init(PlayerSitData pdata) {
 		ChairsAPI.pdata = pdata;
 	}
 
