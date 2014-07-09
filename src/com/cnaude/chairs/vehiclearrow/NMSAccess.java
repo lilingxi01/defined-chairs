@@ -18,7 +18,7 @@ public class NMSAccess {
 		String nmspackageversion = packageName.substring(packageName.lastIndexOf('.') + 1);
 		switch (nmspackageversion) {
 			case "v1_7_R3": {
-				nmsArrowClass = Class.forName(pkgname+"."+"nms178"+".NMSChairsArrow");
+				nmsArrowClass = Class.forName(pkgname+"."+"nms179"+".NMSChairsArrow");
 				return;
 			}
 			case "v1_7_R2": {
