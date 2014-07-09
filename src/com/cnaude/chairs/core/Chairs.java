@@ -66,8 +66,7 @@ public class Chairs extends JavaPlugin {
 			return;
 		}
 		chairEffects = new ChairEffects(this);
-		ignoreList = new ChairsIgnoreList(this);
-		ignoreList.load();
+		ignoreList = new ChairsIgnoreList();
 		psitdata = new PlayerSitData(this);
 		getConfig().options().copyDefaults(true);
 		saveConfig();
@@ -94,9 +93,6 @@ public class Chairs extends JavaPlugin {
 					psitdata.unsitPlayerNow(player);
 				}
 			}
-		}
-		if (ignoreList != null) {
-			ignoreList.save();
 		}
 		if (chairEffects != null) {
 			chairEffects.cancelHealing();
