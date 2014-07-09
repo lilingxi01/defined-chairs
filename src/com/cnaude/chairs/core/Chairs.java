@@ -14,7 +14,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.cnaude.chairs.api.ChairsAPI;
+import com.cnaude.chairs.api.APIInit;
 import com.cnaude.chairs.commands.ChairsCommand;
 import com.cnaude.chairs.commands.ChairsIgnoreList;
 import com.cnaude.chairs.listeners.NANLoginListener;
@@ -83,7 +83,7 @@ public class Chairs extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
 		getServer().getPluginManager().registerEvents(new CommandRestrict(this), this);
 		getCommand("chairs").setExecutor(new ChairsCommand(this, ignoreList));
-		ChairsAPI.init(getPlayerSitData());
+		new APIInit().initAPI(getPlayerSitData());
 	}
 
 	@Override
