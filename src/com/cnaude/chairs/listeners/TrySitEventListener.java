@@ -1,6 +1,5 @@
 package com.cnaude.chairs.listeners;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,7 +16,6 @@ import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
 
-import com.cnaude.chairs.api.PlayerChairSitEvent;
 import com.cnaude.chairs.commands.ChairsIgnoreList;
 import com.cnaude.chairs.core.ChairBlock;
 import com.cnaude.chairs.core.Chairs;
@@ -39,12 +37,9 @@ public class TrySitEventListener implements Listener {
 			Player player = event.getPlayer();
 			Block block = event.getClickedBlock();
 			if (sitAllowed(player, block)) {
-				PlayerChairSitEvent playersitevent = new PlayerChairSitEvent(player);
-				Bukkit.getPluginManager().callEvent(playersitevent);
-				if (!playersitevent.isCancelled()) {
+				Location sitLocation = getSitLocation(block, player.getLocation().getYaw());
+				if (plugin.getPlayerSitData().sitPlayer(player, block, sitLocation)) {
 					event.setCancelled(true);
-					Location sitLocation = getSitLocation(block, player.getLocation().getYaw());
-					plugin.getPlayerSitData().sitPlayer(player, block, sitLocation);
 				}
 			}
 		}

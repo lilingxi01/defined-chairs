@@ -1,5 +1,6 @@
 package com.cnaude.chairs.api;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
@@ -10,8 +11,19 @@ public class PlayerChairSitEvent extends PlayerEvent implements Cancellable {
 	private static final HandlerList handlers = new HandlerList();
 	private boolean cancelled = false;
 
-	public PlayerChairSitEvent(Player who) {
+	private Location sitLocation;
+
+	public PlayerChairSitEvent(Player who, Location sitLocation) {
 		super(who);
+		this.sitLocation = sitLocation;
+	}
+
+	public Location getSitLocation() {
+		return sitLocation.clone();
+	}
+
+	public void setSitLocation(Location location) {
+		sitLocation = location;
 	}
 
 	@Override

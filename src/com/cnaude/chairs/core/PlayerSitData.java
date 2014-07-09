@@ -8,6 +8,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import com.cnaude.chairs.api.PlayerChairSitEvent;
+import com.cnaude.chairs.api.PlayerChairUnsitEvent;
+
 public class PlayerSitData {
 
 	private Chairs plugin;
@@ -32,7 +35,13 @@ public class PlayerSitData {
 		return Bukkit.getPlayerExact(sitblock.get(chair));
 	}
 
-	public void sitPlayer(Player player,  Block blocktooccupy, Location sitlocation) {
+	public boolean sitPlayer(Player player,  Block blocktooccupy, Location sitlocation) {
+		PlayerChairSitEvent playersitevent = new PlayerChairSitEvent(player, sitlocation);
+		Bukkit.getPluginManager().callEvent(playersitevent);
+		if (playersitevent.isCancelled()) {
+			return false;
+		}
+		sitlocation = playersitevent.getSitLocation();
 		try {
 			if (plugin.notifyplayer) {
 				player.sendMessage(plugin.msgSitting);
@@ -48,6 +57,7 @@ public class PlayerSitData {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return true;
 	}
 
 	public void startReSitTask(final Player player) {
@@ -87,40 +97,47 @@ public class PlayerSitData {
 		}
 	}
 
-	public void unsitPlayerNormal(Player player) {
-		unsitPlayer(player, false, true, false);
+	public boolean unsitPlayerNormal(Player player) {
+		UnsitParams params = new UnsitParams(false, true, false);
+		return unsitPlayer(player, true, params);
 	}
 
 	public void unsitPlayerForce(Player player) {
-		unsitPlayer(player, true, true, false);
+		UnsitParams params = new UnsitParams(true, true, false);
+		unsitPlayer(player, false, params);
 	}
 
 	public void unsitPlayerNow(Player player) {
-		unsitPlayer(player, true, false, true);
+		UnsitParams params = new UnsitParams(true, false, true);
+		unsitPlayer(player, false, params);
 	}
 
-	private void unsitPlayer(final Player player, boolean eject,  boolean restoreposition, boolean correctleaveposition) {
+	private boolean unsitPlayer(final Player player, boolean canCancel, UnsitParams params) {
+		final PlayerChairUnsitEvent playerunsitevent = new PlayerChairUnsitEvent(player, sitstopteleportloc.get(player.getName()), canCancel);
+		Bukkit.getPluginManager().callEvent(playerunsitevent);
+		if (playerunsitevent.isCancelled() && playerunsitevent.canBeCancelled()) {
+			return false;
+		}
 		final Entity arrow = sit.get(player.getName());
 		sit.remove(player.getName());
-		if (eject) {
+		if (params.eject()) {
 			player.eject();
 		}
 		arrow.remove();
-		final Location tploc = sitstopteleportloc.get(player.getName());
-		if (restoreposition) {
+		if (params.restorePostion()) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(
 				plugin,
 				new Runnable() {
 					@Override
 					public void run() {
-						player.teleport(tploc);
+						player.teleport(playerunsitevent.getTeleportLocation());
 						player.setSneaking(false);
 					}
 				},
 				1
 			);
-		} else if (correctleaveposition) {
-			player.teleport(tploc);
+		} else if (params.correctLeavePosition()) {
+			player.teleport(playerunsitevent.getTeleportLocation());
 		}
 		sitblock.values().remove(player.getName());
 		sitstopteleportloc.remove(player.getName());
@@ -129,6 +146,33 @@ public class PlayerSitData {
 		if (plugin.notifyplayer) {
 			player.sendMessage(plugin.msgStanding);
 		}
+		return true;
+	}
+
+	private class UnsitParams {
+
+		private boolean eject;
+		private boolean restoreposition;
+		private boolean correctleaveposition;
+
+		public UnsitParams(boolean eject, boolean restoreposition, boolean correctleaveposition) {
+			this.eject = eject;
+			this.restoreposition = restoreposition;
+			this.correctleaveposition = correctleaveposition;
+		}
+
+		public boolean eject() {
+			return eject;
+		}
+
+		public boolean restorePostion() {
+			return restoreposition;
+		}
+
+		public boolean correctLeavePosition() {
+			return correctleaveposition;
+		}
+
 	}
 
 }

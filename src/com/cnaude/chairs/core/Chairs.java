@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.cnaude.chairs.api.ChairsAPI;
-import com.cnaude.chairs.api.PlayerChairUnsitEvent;
 import com.cnaude.chairs.commands.ChairsCommand;
 import com.cnaude.chairs.commands.ChairsIgnoreList;
 import com.cnaude.chairs.listeners.NANLoginListener;
@@ -93,8 +91,6 @@ public class Chairs extends JavaPlugin {
 		if (psitdata != null) {
 			for (Player player : getServer().getOnlinePlayers()) {
 				if (psitdata.isSitting(player)) {
-					PlayerChairUnsitEvent playerunsitevent = new PlayerChairUnsitEvent(player, false);
-					Bukkit.getPluginManager().callEvent(playerunsitevent);
 					psitdata.unsitPlayerNow(player);
 				}
 			}
