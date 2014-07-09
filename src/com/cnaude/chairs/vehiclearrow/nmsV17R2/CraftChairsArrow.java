@@ -1,9 +1,9 @@
-package com.cnaude.chairs.vehiclearrow.nms164;
+package com.cnaude.chairs.vehiclearrow.nmsV17R2;
 
-import net.minecraft.server.v1_6_R3.EntityArrow;
+import net.minecraft.server.v1_7_R2.EntityArrow;
 
-import org.bukkit.craftbukkit.v1_6_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_6_R3.entity.CraftArrow;
+import org.bukkit.craftbukkit.v1_7_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R2.entity.CraftArrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;

@@ -1,11 +1,11 @@
-package com.cnaude.chairs.vehiclearrow.nms172;
+package com.cnaude.chairs.vehiclearrow.nmsV17R3;
 
-import net.minecraft.server.v1_7_R1.EntityArrow;
+import net.minecraft.server.v1_7_R3.EntityArrow;
 
 import org.bukkit.Location;
 import org.bukkit.Server;
-import org.bukkit.craftbukkit.v1_7_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_7_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R3.CraftWorld;
 import org.bukkit.entity.Arrow;
 
 import com.cnaude.chairs.vehiclearrow.NMSChairsArrowInterface;

@@ -1,11 +1,11 @@
-package com.cnaude.chairs.vehiclearrow.nms175;
+package com.cnaude.chairs.vehiclearrow.nmsV16R3;
 
-import net.minecraft.server.v1_7_R2.EntityArrow;
+import net.minecraft.server.v1_6_R3.EntityArrow;
 
 import org.bukkit.Location;
 import org.bukkit.Server;
-import org.bukkit.craftbukkit.v1_7_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_7_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_6_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_6_R3.CraftWorld;
 import org.bukkit.entity.Arrow;
 
 import com.cnaude.chairs.vehiclearrow.NMSChairsArrowInterface;
@@ -17,7 +17,7 @@ public class NMSChairsArrow extends EntityArrow implements NMSChairsArrowInterfa
 	}
 
 	@Override
-	public void h() {
+	public void l_() {
 	}
 
 	@Override

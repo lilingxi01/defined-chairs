@@ -18,19 +18,19 @@ public class NMSAccess {
 		String nmspackageversion = packageName.substring(packageName.lastIndexOf('.') + 1);
 		switch (nmspackageversion) {
 			case "v1_7_R3": {
-				nmsArrowClass = Class.forName(pkgname+"."+"nms179"+".NMSChairsArrow");
+				nmsArrowClass = Class.forName(pkgname+"."+"nmsV17R3"+".NMSChairsArrow");
 				return;
 			}
 			case "v1_7_R2": {
-				nmsArrowClass = Class.forName(pkgname+"."+"nms175"+".NMSChairsArrow");
+				nmsArrowClass = Class.forName(pkgname+"."+"nmsV17R2"+".NMSChairsArrow");
 				return;
 			}
 			case "v1_7_R1": {
-				nmsArrowClass = Class.forName(pkgname+"."+"nms172"+".NMSChairsArrow");
+				nmsArrowClass = Class.forName(pkgname+"."+"nmsV17R1"+".NMSChairsArrow");
 				return;
 			}
 			case "v1_6_R3": {
-				nmsArrowClass = Class.forName(pkgname+"."+"nms164"+".NMSChairsArrow");
+				nmsArrowClass = Class.forName(pkgname+"."+"nmsV16R3"+".NMSChairsArrow");
 				return;
 			}
 		}
