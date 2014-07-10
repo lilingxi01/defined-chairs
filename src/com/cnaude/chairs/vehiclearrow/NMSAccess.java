@@ -17,6 +17,10 @@ public class NMSAccess {
 		String packageName = Bukkit.getServer().getClass().getPackage().getName();
 		String nmspackageversion = packageName.substring(packageName.lastIndexOf('.') + 1);
 		switch (nmspackageversion) {
+			case "v1_7_R4": {
+				nmsArrowClass = Class.forName(pkgname+"."+"nmsV17R4"+".NMSChairsArrow");
+				return;
+			}
 			case "v1_7_R3": {
 				nmsArrowClass = Class.forName(pkgname+"."+"nmsV17R3"+".NMSChairsArrow");
 				return;
