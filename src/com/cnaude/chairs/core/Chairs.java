@@ -88,7 +88,7 @@ public class Chairs extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		if (psitdata != null) {
-			for (Player player : getServer().getOnlinePlayers()) {
+			for (Player player : Utils.getOnlinePlayers()) {
 				if (psitdata.isSitting(player)) {
 					psitdata.unsitPlayerNow(player);
 				}
