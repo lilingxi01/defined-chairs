@@ -23,7 +23,7 @@ public class PlayerChairSitEvent extends PlayerEvent implements Cancellable {
 	}
 
 	public void setSitLocation(Location location) {
-		sitLocation = location;
+		sitLocation = location.clone();
 	}
 
 	@Override
