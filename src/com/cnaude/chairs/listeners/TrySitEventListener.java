@@ -19,7 +19,6 @@ import org.bukkit.material.WoodenStep;
 import com.cnaude.chairs.commands.ChairsIgnoreList;
 import com.cnaude.chairs.core.ChairBlock;
 import com.cnaude.chairs.core.Chairs;
-import com.cnaude.chairs.pluginhooks.WGHook;
 
 public class TrySitEventListener implements Listener {
 
@@ -74,11 +73,6 @@ public class TrySitEventListener implements Listener {
 		// Sit occupied check
 		if (plugin.getPlayerSitData().isBlockOccupied(block)) {
 			player.sendMessage(plugin.msgOccupied.replace("%PLAYER%", plugin.getPlayerSitData().getPlayerOnChair(block).getName()));
-			return false;
-		}
-
-		// Region allowance check
-		if (!WGHook.isAllowedInRegion(plugin.disabledRegions, block.getLocation())) {
 			return false;
 		}
 

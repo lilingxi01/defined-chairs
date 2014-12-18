@@ -35,8 +35,6 @@ max-chair-width: 3
 sign-check: false
 distance: 2
 ignore-if-item-in-hand: false
-disabledWGRegions:
-- exampleregionname
 sit-effects:
   healing:
     enabled: false
