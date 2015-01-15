@@ -16,18 +16,15 @@ import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
 
-import com.cnaude.chairs.commands.ChairsIgnoreList;
 import com.cnaude.chairs.core.ChairBlock;
 import com.cnaude.chairs.core.Chairs;
 
 public class TrySitEventListener implements Listener {
 
 	public Chairs plugin;
-	public ChairsIgnoreList ignoreList;
 
-	public TrySitEventListener(Chairs plugin, ChairsIgnoreList ignoreList) {
+	public TrySitEventListener(Chairs plugin) {
 		this.plugin = plugin;
-		this.ignoreList = ignoreList;
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -62,11 +59,6 @@ public class TrySitEventListener implements Listener {
 
 		// Check for sneaking
 		if (player.isSneaking()) {
-			return false;
-		}
-
-		// Check for /chairs off
-		if (ignoreList.isIgnored(player.getName())) {
 			return false;
 		}
 

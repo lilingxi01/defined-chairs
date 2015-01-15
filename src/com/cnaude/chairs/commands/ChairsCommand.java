@@ -10,11 +10,9 @@ import com.cnaude.chairs.core.Chairs;
 public class ChairsCommand implements CommandExecutor {
 
 	private final Chairs plugin;
-	public ChairsIgnoreList ignoreList;
 
-	public ChairsCommand(Chairs instance, ChairsIgnoreList ignoreList) {
+	public ChairsCommand(Chairs instance) {
 		this.plugin = instance;
-		this.ignoreList = ignoreList;
 	}
 
 	@Override
@@ -38,25 +36,6 @@ public class ChairsCommand implements CommandExecutor {
 				sender.sendMessage(plugin.msgReloaded);
 			} else {
 				sender.sendMessage(plugin.msgNoPerm);
-			}
-		}
-		if (sender instanceof Player) {
-			Player p = (Player) sender;
-			if (args[0].equalsIgnoreCase("on")) {
-				if (p.hasPermission("chairs.self")) {
-					ignoreList.removePlayer(p.getName());
-					p.sendMessage(plugin.msgEnabled);
-				} else {
-					p.sendMessage(plugin.msgNoPerm);
-				}
-			}
-			if (args[0].equalsIgnoreCase("off")) {
-				if (p.hasPermission("chairs.self")) {
-					ignoreList.addPlayer(p.getName());
-					p.sendMessage(plugin.msgDisabled);
-				} else {
-					p.sendMessage(plugin.msgNoPerm);
-				}
 			}
 		}
 		return true;

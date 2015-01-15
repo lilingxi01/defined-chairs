@@ -16,7 +16,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.cnaude.chairs.api.APIInit;
 import com.cnaude.chairs.commands.ChairsCommand;
-import com.cnaude.chairs.commands.ChairsIgnoreList;
 import com.cnaude.chairs.listeners.NANLoginListener;
 import com.cnaude.chairs.listeners.TrySitEventListener;
 import com.cnaude.chairs.listeners.TryUnsitEventListener;
@@ -32,7 +31,6 @@ public class Chairs extends JavaPlugin {
 	public boolean autoRotate, signCheck, notifyplayer;
 	public boolean ignoreIfBlockInHand;
 	public double distance;
-	public HashSet<String> disabledRegions = new HashSet<String>();
 	public int maxChairWidth;
 	public boolean sitHealEnabled;
 	public int sitMaxHealth;
@@ -42,7 +40,6 @@ public class Chairs extends JavaPlugin {
 	public boolean sitDisableAllCommands = false;
 	public HashSet<String> sitDisabledCommands = new HashSet<String>();
 	private Logger log;
-	public ChairsIgnoreList ignoreList;
 	public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled, msgCommandRestricted;
 
 
@@ -66,7 +63,6 @@ public class Chairs extends JavaPlugin {
 			return;
 		}
 		chairEffects = new ChairEffects(this);
-		ignoreList = new ChairsIgnoreList();
 		psitdata = new PlayerSitData(this);
 		getConfig().options().copyDefaults(true);
 		saveConfig();
@@ -78,10 +74,10 @@ public class Chairs extends JavaPlugin {
 			chairEffects.startPickup();
 		}
 		getServer().getPluginManager().registerEvents(new NANLoginListener(), this);
-		getServer().getPluginManager().registerEvents(new TrySitEventListener(this, ignoreList), this);
+		getServer().getPluginManager().registerEvents(new TrySitEventListener(this), this);
 		getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
 		getServer().getPluginManager().registerEvents(new CommandRestrict(this), this);
-		getCommand("chairs").setExecutor(new ChairsCommand(this, ignoreList));
+		getCommand("chairs").setExecutor(new ChairsCommand(this));
 		new APIInit().initAPI(getPlayerSitData());
 	}
 
@@ -112,8 +108,6 @@ public class Chairs extends JavaPlugin {
 		maxChairWidth = config.getInt("max-chair-width");
 		notifyplayer = config.getBoolean("notify-player");
 		ignoreIfBlockInHand = config.getBoolean("ignore-if-item-in-hand");
-
-		disabledRegions = new HashSet<String>(config.getStringList("disabledWGRegions"));
 
 		sitHealEnabled = config.getBoolean("sit-effects.healing.enabled", false);
 		sitHealInterval = config.getInt("sit-effects.healing.interval",20);
