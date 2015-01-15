@@ -15,4 +15,8 @@ public class ChairsAPI {
 		return pdata.isSitting(player);
 	}
 
+	public static void leaveSit(Player player) {
+		pdata.unsitPlayerForce(player);
+	}
+
 }
