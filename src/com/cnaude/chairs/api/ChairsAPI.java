@@ -1,5 +1,7 @@
 package com.cnaude.chairs.api;
 
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import com.cnaude.chairs.core.PlayerSitData;
@@ -13,6 +15,18 @@ public class ChairsAPI {
 
 	public static boolean isSitting(Player player) {
 		return pdata.isSitting(player);
+	}
+
+	public static boolean isBlockOccupied(Block block) {
+		return pdata.isBlockOccupied(block);
+	}
+
+	public static Player getBlockOccupiedBy(Block block) {
+		return pdata.getPlayerOnChair(block);
+	}
+
+	public static boolean sit(Player player, Block blocktouccupy, Location sitlocation) {
+		return pdata.sitPlayer(player, blocktouccupy, sitlocation);
 	}
 
 	public static void leaveSit(Player player) {
