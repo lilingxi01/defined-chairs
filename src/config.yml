@@ -25,6 +25,7 @@ sit-blocks:
   - QUARTZ_STAIRS:0.7
   - ACACIA_STAIRS:0.7
   - DARK_OAK_STAIRS:0.7
+  - RED_SANDSTONE_STAIRS:0.7
 valid-signs:
   - SIGN
   - WALL_SIGN
