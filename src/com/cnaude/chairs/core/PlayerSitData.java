@@ -61,9 +61,9 @@ public class PlayerSitData {
 		sitdata.resittask = task;
 		player.teleport(sitlocation);
 		arrow.setPassenger(player);
-		sitdata.sitting = true;
 		sit.put(player, sitdata);
 		sitblock.put(blocktooccupy, player);
+		sitdata.sitting = true;
 		return true;
 	}
 
@@ -74,17 +74,8 @@ public class PlayerSitData {
 		Entity arrow = plugin.getNMSAccess().spawnArrow(prevarrow.getLocation());
 		arrow.setPassenger(player);
 		sitdata.arrow = arrow;
+		prevarrow.remove();
 		sitdata.sitting = true;
-		Bukkit.getScheduler().scheduleSyncDelayedTask(
-			plugin,
-			new Runnable() {
-				@Override
-				public void run() {
-					prevarrow.remove();
-				}
-			},
-			100
-		);
 	}
 
 	public boolean unsitPlayer(Player player) {
