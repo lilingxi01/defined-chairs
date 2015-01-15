@@ -21,12 +21,11 @@ public class TryUnsitEventListener implements Listener {
 		this.plugin = plugin;
 	}
 
-	//spigot...
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		final Player player = event.getPlayer();
 		if (plugin.getPlayerSitData().isSitting(player)) {
-			event.setCancelled(true);
+			plugin.getPlayerSitData().unsitPlayerForce(player);
 		}
 	}
 
@@ -34,7 +33,7 @@ public class TryUnsitEventListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if (plugin.getPlayerSitData().isSitting(player)) {
-			plugin.getPlayerSitData().unsitPlayerNow(player);
+			plugin.getPlayerSitData().unsitPlayerForce(player);
 		}
 	}
 
@@ -42,7 +41,7 @@ public class TryUnsitEventListener implements Listener {
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		if (plugin.getPlayerSitData().isSitting(player)) {
-			plugin.getPlayerSitData().unsitPlayerNow(player);
+			plugin.getPlayerSitData().unsitPlayerForce(player);
 		}
 	}
 
@@ -51,7 +50,7 @@ public class TryUnsitEventListener implements Listener {
 		if (e.getVehicle().getPassenger() instanceof Player) {
 			final Player player = (Player) e.getVehicle().getPassenger();
 			if (plugin.getPlayerSitData().isSitting(player)) {
-				if (!plugin.getPlayerSitData().unsitPlayerNormal(player)) {
+				if (!plugin.getPlayerSitData().unsitPlayer(player)) {
 					e.setCancelled(true);
 				}
 			}

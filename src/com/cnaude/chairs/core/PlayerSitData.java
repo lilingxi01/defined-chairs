@@ -71,7 +71,6 @@ public class PlayerSitData {
 		SitData sitdata = sit.get(player);
 		sitdata.sitting = false;
 		final Entity prevarrow = sit.get(player).arrow;
-		player.eject();
 		Entity arrow = plugin.getNMSAccess().spawnArrow(prevarrow.getLocation());
 		arrow.setPassenger(player);
 		sitdata.arrow = arrow;
@@ -88,22 +87,15 @@ public class PlayerSitData {
 		);
 	}
 
-	public boolean unsitPlayerNormal(Player player) {
-		UnsitParams params = new UnsitParams(false, true, false);
-		return unsitPlayer(player, true, params);
+	public boolean unsitPlayer(Player player) {
+		return unsitPlayer(player, true);
 	}
 
 	public void unsitPlayerForce(Player player) {
-		UnsitParams params = new UnsitParams(true, true, false);
-		unsitPlayer(player, false, params);
+		unsitPlayer(player, false);
 	}
 
-	public void unsitPlayerNow(Player player) {
-		UnsitParams params = new UnsitParams(true, false, true);
-		unsitPlayer(player, false, params);
-	}
-
-	private boolean unsitPlayer(final Player player, boolean canCancel, UnsitParams params) {
+	private boolean unsitPlayer(final Player player, boolean canCancel) {
 		SitData sitdata = sit.get(player);
 		final PlayerChairUnsitEvent playerunsitevent = new PlayerChairUnsitEvent(player, sitdata.teleportloc.clone(), canCancel);
 		Bukkit.getPluginManager().callEvent(playerunsitevent);
@@ -111,25 +103,10 @@ public class PlayerSitData {
 			return false;
 		}
 		sitdata.sitting = false;
-		if (params.eject()) {
-			player.eject();
-		}
+		player.leaveVehicle();
 		sitdata.arrow.remove();
-		if (params.restorePostion()) {
-			Bukkit.getScheduler().scheduleSyncDelayedTask(
-				plugin,
-				new Runnable() {
-					@Override
-					public void run() {
-						player.teleport(playerunsitevent.getTeleportLocation().clone());
-						player.setSneaking(false);
-					}
-				},
-				1
-			);
-		} else if (params.correctLeavePosition()) {
-			player.teleport(playerunsitevent.getTeleportLocation());
-		}
+		player.teleport(playerunsitevent.getTeleportLocation().clone());
+		player.setSneaking(false);
 		sitblock.values().remove(player);
 		Bukkit.getScheduler().cancelTask(sitdata.resittask);
 		sit.remove(player);
@@ -137,32 +114,6 @@ public class PlayerSitData {
 			player.sendMessage(plugin.msgStanding);
 		}
 		return true;
-	}
-
-	private class UnsitParams {
-
-		private boolean eject;
-		private boolean restoreposition;
-		private boolean correctleaveposition;
-
-		public UnsitParams(boolean eject, boolean restoreposition, boolean correctleaveposition) {
-			this.eject = eject;
-			this.restoreposition = restoreposition;
-			this.correctleaveposition = correctleaveposition;
-		}
-
-		public boolean eject() {
-			return eject;
-		}
-
-		public boolean restorePostion() {
-			return restoreposition;
-		}
-
-		public boolean correctLeavePosition() {
-			return correctleaveposition;
-		}
-
 	}
 
 	private class SitData {

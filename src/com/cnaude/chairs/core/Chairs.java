@@ -90,7 +90,7 @@ public class Chairs extends JavaPlugin {
 		if (psitdata != null) {
 			for (Player player : Utils.getOnlinePlayers()) {
 				if (psitdata.isSitting(player)) {
-					psitdata.unsitPlayerNow(player);
+					psitdata.unsitPlayerForce(player);
 				}
 			}
 		}
