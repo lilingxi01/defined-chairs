@@ -29,7 +29,7 @@ public class ChairsAPI {
 		return pdata.sitPlayer(player, blocktouccupy, sitlocation);
 	}
 
-	public static void leaveSit(Player player) {
+	public static void unsit(Player player) {
 		pdata.unsitPlayerForce(player);
 	}
 
