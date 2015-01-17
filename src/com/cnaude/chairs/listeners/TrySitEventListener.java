@@ -232,7 +232,7 @@ public class TrySitEventListener implements Listener {
 
 	private boolean checkSign(Block block, BlockFace face) {
 		// Go through the blocks next to the clicked block and check if are signs on the end.
-		for (int i = 1; i <= plugin.maxChairWidth + 1; i++) {
+		for (int i = 1; i <= plugin.maxChairWidth + 2; i++) {
 			Block relative = block.getRelative(face, i);
 			if (checkDirection(block, relative)) {
 				continue;
@@ -258,7 +258,7 @@ public class TrySitEventListener implements Listener {
 	private boolean checkFrame(Block block, BlockFace face, Player player) {
 		// Go through the blocks next to the clicked block and check if are signs on the end.
 
-		for (int i = 1; i <= 100; i++) {
+		for (int i = 1; i <= plugin.maxChairWidth + 2; i++) {
 			Block relative = block.getRelative(face, i);
 			if (checkDirection(block, relative)) {
 				continue;
