@@ -44,9 +44,9 @@ public class PlayerSitData {
 			player.sendMessage(plugin.msgSitting);
 		}
 		SitData sitdata = new SitData();
-		Location arrowloc = sitlocation.getBlock().getLocation().add(0.5, 0 , 0.5);
-		Entity arrow = plugin.getNMSAccess().spawnArrow(arrowloc);
+		Entity arrow = plugin.getNMSAccess().spawnArrow(sitlocation.getBlock().getLocation().add(0.5, 0 , 0.5));
 		sitdata.arrow = arrow;
+		sitdata.block = blocktooccupy;
 		sitdata.teleportloc = player.getLocation();
 		int task = Bukkit.getScheduler().scheduleSyncRepeatingTask(
 			plugin,
@@ -70,7 +70,7 @@ public class PlayerSitData {
 	public void reSitPlayer(final Player player) {
 		SitData sitdata = sit.get(player);
 		sitdata.sitting = false;
-		final Entity prevarrow = sit.get(player).arrow;
+		Entity prevarrow = sit.get(player).arrow;
 		Entity arrow = plugin.getNMSAccess().spawnArrow(prevarrow.getLocation());
 		arrow.setPassenger(player);
 		sitdata.arrow = arrow;
@@ -98,7 +98,7 @@ public class PlayerSitData {
 		sitdata.arrow.remove();
 		player.teleport(playerunsitevent.getTeleportLocation().clone());
 		player.setSneaking(false);
-		sitblock.values().remove(player);
+		sitblock.remove(sitdata.block);
 		Bukkit.getScheduler().cancelTask(sitdata.resittask);
 		sit.remove(player);
 		if (plugin.notifyplayer) {
@@ -113,6 +113,7 @@ public class PlayerSitData {
 		private Entity arrow;
 		private Location teleportloc;
 		private int resittask;
+		private Block block;
 
 	}
 
