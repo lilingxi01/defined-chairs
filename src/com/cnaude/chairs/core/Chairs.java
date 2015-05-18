@@ -25,6 +25,7 @@ import com.cnaude.chairs.vehiclearrow.NMSAccess;
 
 public class Chairs extends JavaPlugin {
 
+	public HashSet<String> sitDisabled = new HashSet<String>();
 	public ChairEffects chairEffects;
 	public List<ChairBlock> allowedBlocks;
 	public List<Material> validSigns;

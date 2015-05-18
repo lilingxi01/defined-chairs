@@ -42,6 +42,12 @@ public class TrySitEventListener implements Listener {
 	}
 
 	private boolean sitAllowed(Player player, Block block) {
+
+		// Check for sitting disabled
+		if (plugin.sitDisabled.contains(player.getName())) {
+			return false;
+		}
+
 		// Check for permissions
 		if (!player.hasPermission("chairs.sit")) {
 			return false;
