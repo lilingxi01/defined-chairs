@@ -45,7 +45,7 @@ public class ChairsCommand implements CommandExecutor {
 				player.sendMessage(plugin.msgDisabled);
 			} else if (args[0].equalsIgnoreCase("on")) {
 				plugin.sitDisabled.remove(player.getName());
-				player.sendMessage(plugin.msgDisabled);
+				player.sendMessage(plugin.msgEnabled);
 			}
 		}
 		return true;
