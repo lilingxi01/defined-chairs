@@ -1,4 +1,4 @@
-package com.cnaude.chairs.vehiclearrow.v_1_9_R2;
+package com.cnaude.chairs.vehiclearrow.v1_9_R2;
 
 import net.minecraft.server.v1_9_R2.EntityTippedArrow;
 
