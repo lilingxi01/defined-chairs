@@ -42,6 +42,12 @@ public class TrySitEventListener implements Listener {
 	}
 
 	private boolean sitAllowed(Player player, Block block) {
+
+		// Check for sitting disabled
+		if (plugin.sitDisabled.contains(player.getName())) {
+			return false;
+		}
+
 		// Check for permissions
 		if (!player.hasPermission("chairs.sit")) {
 			return false;
@@ -53,7 +59,7 @@ public class TrySitEventListener implements Listener {
 		}
 
 		// Check for item in hand
-		if (plugin.ignoreIfBlockInHand && player.getItemInHand().getType() != Material.AIR) {
+		if (plugin.ignoreIfBlockInHand && player.getInventory().getItemInMainHand().getType() != Material.AIR) {
 			return false;
 		}
 
@@ -90,9 +96,6 @@ public class TrySitEventListener implements Listener {
 				return false;
 			}
 			if (block.getRelative(BlockFace.DOWN).isEmpty()) {
-				return false;
-			}
-			if (!block.getRelative(BlockFace.DOWN).getType().isSolid()) {
 				return false;
 			}
 

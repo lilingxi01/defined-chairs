@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -25,6 +26,7 @@ import com.cnaude.chairs.vehiclearrow.NMSAccess;
 
 public class Chairs extends JavaPlugin {
 
+	public HashSet<String> sitDisabled = new HashSet<String>();
 	public ChairEffects chairEffects;
 	public List<ChairBlock> allowedBlocks;
 	public List<Material> validSigns;
@@ -84,7 +86,7 @@ public class Chairs extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		if (psitdata != null) {
-			for (Player player : Utils.getOnlinePlayers()) {
+			for (Player player : Bukkit.getOnlinePlayers()) {
 				if (psitdata.isSitting(player)) {
 					psitdata.unsitPlayerForce(player);
 				}
