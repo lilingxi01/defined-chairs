@@ -1,9 +1,14 @@
 package com.cnaude.chairs.core;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +31,7 @@ import com.cnaude.chairs.vehiclearrow.NMSAccess;
 
 public class Chairs extends JavaPlugin {
 
-	public HashSet<String> sitDisabled = new HashSet<String>();
+	public HashSet<UUID> sitDisabled = new HashSet<UUID>();
 	public ChairEffects chairEffects;
 	public List<ChairBlock> allowedBlocks;
 	public List<Material> validSigns;
@@ -100,6 +105,7 @@ public class Chairs extends JavaPlugin {
 		log = null;
 		nmsaccess = null;
 		psitdata = null;
+		saveSitDisabled();
 	}
 
 	public void loadConfig() {
@@ -156,6 +162,40 @@ public class Chairs extends JavaPlugin {
 			catch (Exception e) {
 				logError(e.getMessage());
 			}
+		}
+
+		try {
+			File sitDisabledFile = new File(getDataFolder(), "sit-disabled.txt");
+			if (sitDisabledFile.exists()) {
+				String line = null;
+				sitDisabled.clear();
+				BufferedReader br = new BufferedReader(new FileReader(sitDisabledFile));
+				while ((line = br.readLine()) != null) {
+					try {
+						sitDisabled.add(UUID.fromString(line));
+					} catch (IllegalArgumentException e) {
+						/* Not a UUID */
+					}
+				}
+				br.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void saveSitDisabled() {
+		try {
+			File sitDisabledFile = new File(getDataFolder(), "sit-disabled.txt");
+			if (!sitDisabledFile.exists())
+				sitDisabledFile.createNewFile();
+			PrintWriter writer = new PrintWriter(sitDisabledFile, "UTF-8");
+			writer.println("# The following players disabled Chairs for themselves");
+			for (UUID uuid : sitDisabled)
+				writer.println(uuid.toString());
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
