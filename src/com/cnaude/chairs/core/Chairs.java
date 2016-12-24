@@ -36,6 +36,7 @@ public class Chairs extends JavaPlugin {
 	public final HashMap<Material, Double> validChairs = new HashMap<>();
 	public final List<Material> validSigns = new ArrayList<Material>();
 	public final HashSet<String> sitDisabledCommands = new HashSet<>();
+	public final HashSet<String> disabledWorlds = new HashSet<>();
 	public boolean autoRotate, signCheck, notifyplayer;
 	public boolean ignoreIfBlockInHand;
 	public double distance;
@@ -129,6 +130,9 @@ public class Chairs extends JavaPlugin {
 		sitDisableAllCommands = config.getBoolean("sit-restrictions.commands.all");
 		sitDisabledCommands.clear();
 		sitDisabledCommands.addAll(config.getStringList("sit-restrictions.commands.list"));
+
+		disabledWorlds.clear();
+		disabledWorlds.addAll(config.getStringList("disabled-worlds"));
 
 		msgSitting = ChatColor.translateAlternateColorCodes('&',config.getString("messages.sitting"));
 		msgStanding = ChatColor.translateAlternateColorCodes('&',config.getString("messages.standing"));

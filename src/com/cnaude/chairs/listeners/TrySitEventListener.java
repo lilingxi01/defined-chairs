@@ -48,6 +48,9 @@ public class TrySitEventListener implements Listener {
 		if (plugin.sitDisabled.contains(player.getUniqueId())) {
 			return false;
 		}
+		if (plugin.disabledWorlds.contains(player.getWorld().getName())) {
+			return false;
+		}
 
 		// Check for permissions
 		if (!player.hasPermission("chairs.sit")) {

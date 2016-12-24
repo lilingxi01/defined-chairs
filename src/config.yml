@@ -21,7 +21,7 @@
 #   commands:
 #     all: If set to true, restricts using all commands while sitting
 #     list: List of commands which player can't use while sitting
-# notify-player: If set to true, messages are sent to players to notify about sit/leave/occupied/...
+# disabled-worlds: List of worlds in which sitting is disabled
 # ------
 sit-blocks:
   - WOOD_STAIRS:0.7
@@ -61,7 +61,7 @@ sit-restrictions:
     all: false
     list:
     - /examplecommand
-notify-player: true
+disabled-worlds: []
 messages:
   sitting: '&7You are now sitting.'
   standing: '&7You are no longer sitting.'
