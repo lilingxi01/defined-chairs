@@ -1,6 +1,6 @@
 # Configuration of the Chairs plugin for Craftbukkit
 # ------
-# A list of all compatible block and item names: http://bit.ly/AmJgMb.
+# A list of all compatible block and item names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html.
 # ------
 # sit-blocks: Set the blocks you want to be able to sit down on and sitting height. Use material_name:sitting_height
 # valid-signs: Valid sign materials for sign check
@@ -8,9 +8,20 @@
 # max-chair-width: Define how many blocks a chair can be long (set to number <= 0 for unlimited width).
 # sign-check: If set to true, you will only be able to sit down when there are signs on both of the ends of the chair.
 # distance: The maximum distance between the chair (the center of the block) and the player to be able to sit down (to prevent glitching through walls, etc.).
-# seat-occupied-check: Check if seat is already occupied.
 # ignore-if-item-in-hand: Set this true to disable sititng if player is holding an item in hand.
-# disabledWGRegions: Player won't be able to sit in those regions
+# sit-effects:
+#   healing:
+#     enabled: If set to truem heals player while sitting
+#     interval: Healing interval in ticks
+#     amount: Amount of health recovered
+#     max-percent: Max percent to which health can be recovered
+#   itempickup:
+#     enabled: If set to true, items will be picked up while sitting
+# sit-restrictions:
+#   commands:
+#     all: If set to true, restricts using all commands while sitting
+#     list: List of commands which player can't use while sitting
+# notify-player: If set to true, messages are sent to players to notify about sit/leave/occupied/...
 # ------
 sit-blocks:
   - WOOD_STAIRS:0.7
