@@ -156,13 +156,10 @@ public class TrySitEventListener implements Listener {
 	}
 
 	private Location getSitLocation(Block block, Float playerYaw) {
-		double sh = 0.7;
 
-		for (ChairBlock cb : plugin.allowedBlocks) {
-			if (cb.getMat().equals(block.getType())) {
-				sh = cb.getSitHeight();
-				break;
-			}
+		Double sh = plugin.validChairs.get(block.getType());
+		if (sh == null) {
+			sh = 0.7;
 		}
 
 		Stairs stairs = null;
@@ -204,12 +201,7 @@ public class TrySitEventListener implements Listener {
 
 
 	private boolean isValidChair(Block block) {
-		for (ChairBlock cb : plugin.allowedBlocks) {
-			if (cb.getMat().equals(block.getType())) {
-				return true;
-			}
-		}
-		return false;
+		return plugin.validChairs.containsKey(block.getType());
 	}
 
 	private boolean isSitting(Player player) {

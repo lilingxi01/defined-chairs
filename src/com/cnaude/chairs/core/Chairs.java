@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -31,10 +32,10 @@ import com.cnaude.chairs.vehiclearrow.NMSAccess;
 
 public class Chairs extends JavaPlugin {
 
-	public HashSet<UUID> sitDisabled = new HashSet<UUID>();
-	public ChairEffects chairEffects;
-	public List<ChairBlock> allowedBlocks;
-	public List<Material> validSigns;
+	public final HashSet<UUID> sitDisabled = new HashSet<>();
+	public final HashMap<Material, Double> validChairs = new HashMap<>();
+	public final List<Material> validSigns = new ArrayList<Material>();
+	public final HashSet<String> sitDisabledCommands = new HashSet<>();
 	public boolean autoRotate, signCheck, notifyplayer;
 	public boolean ignoreIfBlockInHand;
 	public double distance;
@@ -45,8 +46,6 @@ public class Chairs extends JavaPlugin {
 	public int sitHealInterval;
 	public boolean sitPickupEnabled;
 	public boolean sitDisableAllCommands = false;
-	public HashSet<String> sitDisabledCommands = new HashSet<String>();
-	private Logger log;
 	public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled, msgCommandRestricted;
 
 
@@ -58,6 +57,9 @@ public class Chairs extends JavaPlugin {
 	protected NMSAccess getNMSAccess() {
 		return nmsaccess;
 	}
+
+
+	public ChairEffects chairEffects;
 
 	@Override
 	public void onEnable() {
@@ -125,7 +127,8 @@ public class Chairs extends JavaPlugin {
 		sitPickupEnabled = config.getBoolean("sit-effects.itempickup.enabled", false);
 
 		sitDisableAllCommands = config.getBoolean("sit-restrictions.commands.all");
-		sitDisabledCommands = new HashSet<String>(config.getStringList("sit-restrictions.commands.list"));
+		sitDisabledCommands.clear();
+		sitDisabledCommands.addAll(config.getStringList("sit-restrictions.commands.list"));
 
 		msgSitting = ChatColor.translateAlternateColorCodes('&',config.getString("messages.sitting"));
 		msgStanding = ChatColor.translateAlternateColorCodes('&',config.getString("messages.standing"));
@@ -136,7 +139,7 @@ public class Chairs extends JavaPlugin {
 		msgReloaded = ChatColor.translateAlternateColorCodes('&',config.getString("messages.reloaded"));
 		msgCommandRestricted = ChatColor.translateAlternateColorCodes('&',config.getString("messages.command-restricted"));
 
-		allowedBlocks = new ArrayList<ChairBlock>();
+		validChairs.clear();
 		for (String s : config.getStringList("sit-blocks")) {
 			String type;
 			double sh = 0.7;
@@ -148,18 +151,17 @@ public class Chairs extends JavaPlugin {
 			Material mat = Material.matchMaterial(type);
 			if (mat != null) {
 				logInfo("Allowed block: " + mat.toString() + " => " + sh);
-				allowedBlocks.add(new ChairBlock(mat,sh));
+				validChairs.put(mat, sh);
 			} else {
 				logError("Invalid block: " + type);
 			}
 		}
 
-		validSigns = new ArrayList<Material>();
+		validSigns.clear();
 		for (String type : config.getStringList("valid-signs")) {
 			try {
 				validSigns.add(Material.matchMaterial(type));
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				logError(e.getMessage());
 			}
 		}
@@ -198,6 +200,8 @@ public class Chairs extends JavaPlugin {
 			e.printStackTrace();
 		}
 	}
+
+	private Logger log;
 
 	public void logInfo(String _message) {
 		log.log(Level.INFO, _message);
