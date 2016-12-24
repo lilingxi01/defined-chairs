@@ -17,7 +17,6 @@ import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
 import org.bukkit.material.WoodenStep;
 
-import com.cnaude.chairs.core.ChairBlock;
 import com.cnaude.chairs.core.Chairs;
 
 public class TrySitEventListener implements Listener {
