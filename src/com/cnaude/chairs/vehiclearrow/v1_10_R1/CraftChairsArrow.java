@@ -2,6 +2,9 @@ package com.cnaude.chairs.vehiclearrow.v1_10_R1;
 
 import net.minecraft.server.v1_10_R1.EntityArrow;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.bukkit.craftbukkit.v1_10_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_10_R1.entity.CraftArrow;
 import org.bukkit.entity.Entity;
@@ -25,6 +28,30 @@ public class CraftChairsArrow extends CraftArrow implements Vehicle {
 			}
 		}
 		super.remove();
+	}
+
+	@Override
+	public int getPortalCooldown() {
+		return 0;
+	}
+
+	@Override
+	public void setPortalCooldown(int val) {
+	}
+
+	@Override
+	public Set<String> getScoreboardTags() {
+		return Collections.emptySet();
+	}
+
+	@Override
+	public boolean addScoreboardTag(String tag) {
+		return false;
+	}
+
+	@Override
+	public boolean removeScoreboardTag(String tag) {
+		return false;
 	}
 
 }
