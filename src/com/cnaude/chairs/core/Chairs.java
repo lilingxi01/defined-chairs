@@ -1,17 +1,14 @@
 package com.cnaude.chairs.core;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,38 +47,36 @@ public class Chairs extends JavaPlugin {
 	public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled, msgCommandRestricted;
 
 
-	private PlayerSitData psitdata;
+	private final PlayerSitData psitdata = new PlayerSitData(this);
 	public PlayerSitData getPlayerSitData() {
 		return psitdata;
 	}
-	private NMSAccess nmsaccess = new NMSAccess();
+	private final NMSAccess nmsaccess = new NMSAccess();
 	protected NMSAccess getNMSAccess() {
 		return nmsaccess;
 	}
 
 
-	public ChairEffects chairEffects;
+	public final ChairEffects chairEffects = new ChairEffects(this);
 
 	@Override
 	public void onEnable() {
-		log = this.getLogger();
+		getConfig().options().copyDefaults(true);
+		saveConfig();
+		loadConfig();
+		loadSitDisabled();
+		if (sitHealEnabled) {
+			chairEffects.startHealing();
+		}
+		if (sitPickupEnabled) {
+			chairEffects.startPickup();
+		}
 		try {
 			nmsaccess.setupChairsArrow();
 		} catch (Exception e) {
 			e.printStackTrace();
 			getServer().getPluginManager().disablePlugin(this);
 			return;
-		}
-		chairEffects = new ChairEffects(this);
-		psitdata = new PlayerSitData(this);
-		getConfig().options().copyDefaults(true);
-		saveConfig();
-		loadConfig();
-		if (sitHealEnabled) {
-			chairEffects.startHealing();
-		}
-		if (sitPickupEnabled) {
-			chairEffects.startPickup();
 		}
 		getServer().getPluginManager().registerEvents(new NANLoginListener(), this);
 		getServer().getPluginManager().registerEvents(new TrySitEventListener(this), this);
@@ -93,21 +88,13 @@ public class Chairs extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		if (psitdata != null) {
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				if (psitdata.isSitting(player)) {
-					psitdata.unsitPlayerForce(player);
-				}
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			if (psitdata.isSitting(player)) {
+				psitdata.unsitPlayerForce(player);
 			}
 		}
-		if (chairEffects != null) {
-			chairEffects.cancelHealing();
-			chairEffects.cancelPickup();
-			chairEffects = null;
-		}
-		log = null;
-		nmsaccess = null;
-		psitdata = null;
+		chairEffects.cancelHealing();
+		chairEffects.cancelPickup();
 		saveSitDisabled();
 	}
 
@@ -145,48 +132,37 @@ public class Chairs extends JavaPlugin {
 
 		validChairs.clear();
 		for (String s : config.getStringList("sit-blocks")) {
-			String type;
-			double sh = 0.7;
 			String tmp[] = s.split("[:]");
-			type = tmp[0];
-			if (tmp.length == 2) {
-				sh = Double.parseDouble(tmp[1]);
-			}
-			Material mat = Material.matchMaterial(type);
+			Material mat = Material.matchMaterial(tmp[0]);
 			if (mat != null) {
-				logInfo("Allowed block: " + mat.toString() + " => " + sh);
+				double sh = 0.7;
+				if (tmp.length == 2) {
+					sh = Double.parseDouble(tmp[1]);
+				}
 				validChairs.put(mat, sh);
-			} else {
-				logError("Invalid block: " + type);
 			}
 		}
 
 		validSigns.clear();
 		for (String type : config.getStringList("valid-signs")) {
-			try {
-				validSigns.add(Material.matchMaterial(type));
-			} catch (Exception e) {
-				logError(e.getMessage());
+			Material mat = Material.matchMaterial(type);
+			if (mat != null) {
+				validSigns.add(mat);
 			}
 		}
 
+	}
+
+	public void loadSitDisabled() {
 		try {
-			File sitDisabledFile = new File(getDataFolder(), "sit-disabled.txt");
-			if (sitDisabledFile.exists()) {
-				String line = null;
-				sitDisabled.clear();
-				BufferedReader br = new BufferedReader(new FileReader(sitDisabledFile));
-				while ((line = br.readLine()) != null) {
-					try {
-						sitDisabled.add(UUID.fromString(line));
-					} catch (IllegalArgumentException e) {
-						/* Not a UUID */
-					}
+			sitDisabled.clear();
+			for (String line: Files.readAllLines(new File(getDataFolder(), "sit-disabled.txt").toPath())) {
+				try {
+					sitDisabled.add(UUID.fromString(line));
+				} catch (IllegalArgumentException e) {
 				}
-				br.close();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -195,24 +171,14 @@ public class Chairs extends JavaPlugin {
 			File sitDisabledFile = new File(getDataFolder(), "sit-disabled.txt");
 			if (!sitDisabledFile.exists())
 				sitDisabledFile.createNewFile();
-			PrintWriter writer = new PrintWriter(sitDisabledFile, "UTF-8");
-			writer.println("# The following players disabled Chairs for themselves");
-			for (UUID uuid : sitDisabled)
-				writer.println(uuid.toString());
-			writer.close();
+			try (PrintWriter writer = new PrintWriter(sitDisabledFile, "UTF-8")) {
+				writer.println("# The following players disabled Chairs for themselves");
+				for (UUID uuid : sitDisabled) {
+					writer.println(uuid.toString());
+				}
+			}
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
-	}
-
-	private Logger log;
-
-	public void logInfo(String _message) {
-		log.log(Level.INFO, _message);
-	}
-
-	public void logError(String _message) {
-		log.log(Level.SEVERE, _message);
 	}
 
 }
