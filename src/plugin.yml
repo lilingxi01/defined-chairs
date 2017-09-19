@@ -21,12 +21,13 @@ permissions:
     description: Gives access to all Chairs commands
     children:
       chairs.sit: true
+      chairs.sit.command: true
       chairs.reload: true
   chairs.sit:
-    description: Allows you to sit on chair
+    description: Allows you to sit on a chair
     default: true
   chairs.sit.command:
-    description: Allows you to sit on chair
+    description: Allows you to sit on a chair via the command
     default: true
   chairs.reload:
     description: Allows you to reload Chairs Configuration
