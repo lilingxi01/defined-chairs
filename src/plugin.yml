@@ -1,11 +1,12 @@
 name: Chairs
-version: 4.11
+version: 4.2
 description: Let players sit on blocks.
 website: http://dev.bukkit.org/bukkit-plugins/chairsreloaded/
 authors: 
  - spoothie
  - cnaude
  - _Shevchik_
+ - Pugabyte
 main: com.cnaude.chairs.core.Chairs
 commands:
     chairs:
@@ -14,6 +15,7 @@ commands:
           /<command> reload - reloads the configuration
           /<command> off  - disable chairs for self
           /<command> on - enable chairs for self
+          /<command> sit - Sit on a chair, bypassing the sign check
 permissions:
   chairs.*:
     description: Gives access to all Chairs commands
@@ -21,6 +23,9 @@ permissions:
       chairs.sit: true
       chairs.reload: true
   chairs.sit:
+    description: Allows you to sit on chair
+    default: true
+  chairs.sit.command:
     description: Allows you to sit on chair
     default: true
   chairs.reload:

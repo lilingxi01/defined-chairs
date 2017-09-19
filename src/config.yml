@@ -65,6 +65,7 @@ disabled-worlds: []
 messages:
   sitting: '&7You are now sitting.'
   standing: '&7You are no longer sitting.'
+  cantsitthere: '&7You can''t sit there.'
   occupied: '&7This seat is occupied by &6%PLAYER%&7!'
   reloaded: 'Chairs configuration reloaded.'
   no-permission: '&cYou do not have permission to do this!'
