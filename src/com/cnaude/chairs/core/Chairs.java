@@ -44,7 +44,7 @@ public class Chairs extends JavaPlugin {
 	public int sitHealInterval;
 	public boolean sitPickupEnabled;
 	public boolean sitDisableAllCommands = false;
-	public String msgSitting, msgStanding, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled, msgCommandRestricted;
+	public String msgSitting, msgStanding, msgCantSitThere, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled, msgCommandRestricted;
 
 
 	private final PlayerSitData psitdata = new PlayerSitData(this);
@@ -58,6 +58,7 @@ public class Chairs extends JavaPlugin {
 
 
 	public final ChairEffects chairEffects = new ChairEffects(this);
+	public final Utils utils = new Utils(this);
 
 	@Override
 	public void onEnable() {
@@ -123,6 +124,7 @@ public class Chairs extends JavaPlugin {
 
 		msgSitting = ChatColor.translateAlternateColorCodes('&',config.getString("messages.sitting"));
 		msgStanding = ChatColor.translateAlternateColorCodes('&',config.getString("messages.standing"));
+		msgCantSitThere = ChatColor.translateAlternateColorCodes('&',config.getString("messages.cantsitthere"));
 		msgOccupied = ChatColor.translateAlternateColorCodes('&',config.getString("messages.occupied"));
 		msgNoPerm = ChatColor.translateAlternateColorCodes('&',config.getString("messages.no-permission"));
 		msgEnabled = ChatColor.translateAlternateColorCodes('&',config.getString("messages.enabled"));

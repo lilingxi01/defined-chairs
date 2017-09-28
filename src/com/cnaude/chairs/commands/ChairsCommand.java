@@ -1,11 +1,18 @@
 package com.cnaude.chairs.commands;
 
+import java.util.Set;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 import com.cnaude.chairs.core.Chairs;
+import com.cnaude.chairs.core.Utils;
 
 public class ChairsCommand implements CommandExecutor {
 
@@ -46,6 +53,18 @@ public class ChairsCommand implements CommandExecutor {
 			} else if (args[0].equalsIgnoreCase("on")) {
 				plugin.sitDisabled.remove(player.getUniqueId());
 				player.sendMessage(plugin.msgEnabled);
+			} else if (args[0].equalsIgnoreCase("sit")) {
+				if (sender.hasPermission("chairs.sit.command")) {
+					Block block = player.getTargetBlock((Set<Material>)null, (int) plugin.distance);
+					if (plugin.utils.sitAllowed(player, block, false)) {
+						Location sitLocation = plugin.utils.getSitLocation(block, player.getLocation().getYaw());
+						plugin.getPlayerSitData().sitPlayer(player, block, sitLocation);
+					} else {
+						player.sendMessage(plugin.msgCantSitThere);
+					}
+				} else {
+					sender.sendMessage(plugin.msgNoPerm);
+				}
 			}
 		}
 		return true;
