@@ -47,8 +47,8 @@ public class TryUnsitEventListener implements Listener {
 
 	@EventHandler(priority=EventPriority.LOWEST)
 	public void onExitVehicle(VehicleExitEvent e) {
-		if (e.getVehicle().getPassenger() instanceof Player) {
-			final Player player = (Player) e.getVehicle().getPassenger();
+		if (e.getExited() instanceof Player) {
+			final Player player = (Player) e.getExited();
 			if (plugin.getPlayerSitData().isSitting(player)) {
 				if (!plugin.getPlayerSitData().unsitPlayer(player)) {
 					e.setCancelled(true);
