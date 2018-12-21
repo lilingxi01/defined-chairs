@@ -15,8 +15,7 @@ import com.cnaude.chairs.core.Chairs;
 
 public class TryUnsitEventListener implements Listener {
 
-	public Chairs plugin;
-
+	protected final Chairs plugin;
 	public TryUnsitEventListener(Chairs plugin) {
 		this.plugin = plugin;
 	}

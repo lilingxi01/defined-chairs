@@ -4,21 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.cnaude.chairs.api.APIInit;
 import com.cnaude.chairs.commands.ChairsCommand;
 import com.cnaude.chairs.listeners.NANLoginListener;
 import com.cnaude.chairs.listeners.TrySitEventListener;
@@ -29,24 +20,20 @@ import com.cnaude.chairs.vehiclearrow.NMSAccess;
 
 public class Chairs extends JavaPlugin {
 
-	public final HashSet<UUID> sitDisabled = new HashSet<>();
-	public final HashMap<Material, Double> validChairs = new HashMap<>();
-	public final List<Material> validSigns = new ArrayList<Material>();
-	public final HashSet<String> sitDisabledCommands = new HashSet<>();
-	public final HashSet<String> disabledWorlds = new HashSet<>();
-	public boolean autoRotate, signCheck, notifyplayer;
-	public boolean ignoreIfBlockInHand;
-	public double distance;
-	public int maxChairWidth;
-	public boolean sitHealEnabled;
-	public int sitMaxHealth;
-	public int sitHealthPerInterval;
-	public int sitHealInterval;
-	public boolean sitPickupEnabled;
-	public boolean sitDisableAllCommands = false;
-	public String msgSitting, msgStanding, msgCantSitThere, msgOccupied, msgNoPerm, msgReloaded, msgDisabled, msgEnabled, msgCommandRestricted;
+	private static Chairs instance;
 
+	public static Chairs getInstance() {
+		return instance;
+	}
 
+	public Chairs() {
+		instance = this;
+	}
+
+	private final ChairsConfig config = new ChairsConfig(this);
+	public ChairsConfig getChairsConfig() {
+		return config;
+	}
 	private final PlayerSitData psitdata = new PlayerSitData(this);
 	public PlayerSitData getPlayerSitData() {
 		return psitdata;
@@ -58,20 +45,11 @@ public class Chairs extends JavaPlugin {
 
 
 	public final ChairEffects chairEffects = new ChairEffects(this);
-	public final Utils utils = new Utils(this);
+	public final SitUtils utils = new SitUtils(this);
 
 	@Override
 	public void onEnable() {
-		getConfig().options().copyDefaults(true);
-		saveConfig();
-		loadConfig();
 		loadSitDisabled();
-		if (sitHealEnabled) {
-			chairEffects.startHealing();
-		}
-		if (sitPickupEnabled) {
-			chairEffects.startPickup();
-		}
 		try {
 			nmsaccess.setupChairsArrow();
 		} catch (Exception e) {
@@ -79,12 +57,12 @@ public class Chairs extends JavaPlugin {
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
+		reloadConfig();
 		getServer().getPluginManager().registerEvents(new NANLoginListener(), this);
 		getServer().getPluginManager().registerEvents(new TrySitEventListener(this), this);
 		getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
 		getServer().getPluginManager().registerEvents(new CommandRestrict(this), this);
 		getCommand("chairs").setExecutor(new ChairsCommand(this));
-		new APIInit().initAPI(getPlayerSitData());
 	}
 
 	@Override
@@ -99,68 +77,26 @@ public class Chairs extends JavaPlugin {
 		saveSitDisabled();
 	}
 
-	public void loadConfig() {
-		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(),"config.yml"));
-		autoRotate = config.getBoolean("auto-rotate");
-		signCheck = config.getBoolean("sign-check");
-		distance = config.getDouble("distance");
-		maxChairWidth = config.getInt("max-chair-width");
-		notifyplayer = config.getBoolean("notify-player");
-		ignoreIfBlockInHand = config.getBoolean("ignore-if-item-in-hand");
-
-		sitHealEnabled = config.getBoolean("sit-effects.healing.enabled", false);
-		sitHealInterval = config.getInt("sit-effects.healing.interval",20);
-		sitMaxHealth = config.getInt("sit-effects.healing.max-percent",100);
-		sitHealthPerInterval = config.getInt("sit-effects.healing.amount",1);
-
-		sitPickupEnabled = config.getBoolean("sit-effects.itempickup.enabled", false);
-
-		sitDisableAllCommands = config.getBoolean("sit-restrictions.commands.all");
-		sitDisabledCommands.clear();
-		sitDisabledCommands.addAll(config.getStringList("sit-restrictions.commands.list"));
-
-		disabledWorlds.clear();
-		disabledWorlds.addAll(config.getStringList("disabled-worlds"));
-
-		msgSitting = ChatColor.translateAlternateColorCodes('&',config.getString("messages.sitting"));
-		msgStanding = ChatColor.translateAlternateColorCodes('&',config.getString("messages.standing"));
-		msgCantSitThere = ChatColor.translateAlternateColorCodes('&',config.getString("messages.cantsitthere"));
-		msgOccupied = ChatColor.translateAlternateColorCodes('&',config.getString("messages.occupied"));
-		msgNoPerm = ChatColor.translateAlternateColorCodes('&',config.getString("messages.no-permission"));
-		msgEnabled = ChatColor.translateAlternateColorCodes('&',config.getString("messages.enabled"));
-		msgDisabled = ChatColor.translateAlternateColorCodes('&',config.getString("messages.disabled"));
-		msgReloaded = ChatColor.translateAlternateColorCodes('&',config.getString("messages.reloaded"));
-		msgCommandRestricted = ChatColor.translateAlternateColorCodes('&',config.getString("messages.command-restricted"));
-
-		validChairs.clear();
-		for (String s : config.getStringList("sit-blocks")) {
-			String tmp[] = s.split("[:]");
-			Material mat = Material.matchMaterial(tmp[0]);
-			if (mat != null) {
-				double sh = 0.7;
-				if (tmp.length == 2) {
-					sh = Double.parseDouble(tmp[1]);
-				}
-				validChairs.put(mat, sh);
-			}
+	@Override
+	public void reloadConfig() {
+		config.reloadConfig();
+		if (config.effectsHealEnabled) {
+			chairEffects.restartHealing();
+		} else {
+			chairEffects.cancelHealing();
 		}
-
-		validSigns.clear();
-		for (String type : config.getStringList("valid-signs")) {
-			Material mat = Material.matchMaterial(type);
-			if (mat != null) {
-				validSigns.add(mat);
-			}
+		if (config.effectsItemPickupEnabled) {
+			chairEffects.restartPickup();
+		} else {
+			chairEffects.cancelPickup();
 		}
-
 	}
 
-	public void loadSitDisabled() {
+	protected void loadSitDisabled() {
 		try {
-			sitDisabled.clear();
 			for (String line: Files.readAllLines(new File(getDataFolder(), "sit-disabled.txt").toPath())) {
 				try {
-					sitDisabled.add(UUID.fromString(line));
+					getPlayerSitData().disableSitting(UUID.fromString(line));
 				} catch (IllegalArgumentException e) {
 				}
 			}
@@ -168,14 +104,15 @@ public class Chairs extends JavaPlugin {
 		}
 	}
 
-	public void saveSitDisabled() {
+	protected void saveSitDisabled() {
 		try {
 			File sitDisabledFile = new File(getDataFolder(), "sit-disabled.txt");
-			if (!sitDisabledFile.exists())
+			if (!sitDisabledFile.exists()) {
 				sitDisabledFile.createNewFile();
+			}
 			try (PrintWriter writer = new PrintWriter(sitDisabledFile, "UTF-8")) {
 				writer.println("# The following players disabled Chairs for themselves");
-				for (UUID uuid : sitDisabled) {
+				for (UUID uuid : getPlayerSitData().sitDisabled) {
 					writer.println(uuid.toString());
 				}
 			}

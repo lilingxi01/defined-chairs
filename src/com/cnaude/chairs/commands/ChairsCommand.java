@@ -1,25 +1,24 @@
 package com.cnaude.chairs.commands;
 
-import java.util.Set;
-
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 import com.cnaude.chairs.core.Chairs;
-import com.cnaude.chairs.core.Utils;
+import com.cnaude.chairs.core.ChairsConfig;
+import com.cnaude.chairs.core.PlayerSitData;
 
 public class ChairsCommand implements CommandExecutor {
 
-	private final Chairs plugin;
-
-	public ChairsCommand(Chairs instance) {
-		this.plugin = instance;
+	protected final Chairs plugin;
+	protected final ChairsConfig config;
+	protected final PlayerSitData sitdata;
+	public ChairsCommand(Chairs plugin) {
+		this.plugin = plugin;
+		this.config = plugin.getChairsConfig();
+		this.sitdata = plugin.getPlayerSitData();
 	}
 
 	@Override
@@ -28,43 +27,21 @@ public class ChairsCommand implements CommandExecutor {
 			return false;
 		}
 		if (args[0].equalsIgnoreCase("reload")) {
-			if (sender.hasPermission("chairs.reload") || !(sender instanceof Player)) {
-				plugin.loadConfig();
-				if (plugin.sitHealEnabled) {
-					plugin.chairEffects.restartHealing();
-				} else {
-					plugin.chairEffects.cancelHealing();
-				}
-				if (plugin.sitPickupEnabled) {
-					plugin.chairEffects.restartPickup();
-				} else {
-					plugin.chairEffects.cancelPickup();
-				}
-				sender.sendMessage(plugin.msgReloaded);
+			if (sender.hasPermission("chairs.reload")) {
+				plugin.reloadConfig();
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgReloaded));
 			} else {
-				sender.sendMessage(plugin.msgNoPerm);
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgNoPerm));
 			}
 		}
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
 			if (args[0].equalsIgnoreCase("off")) {
-				plugin.sitDisabled.add(player.getUniqueId());
-				player.sendMessage(plugin.msgDisabled);
+				sitdata.disableSitting(player.getUniqueId());
+				player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgDisabled));
 			} else if (args[0].equalsIgnoreCase("on")) {
-				plugin.sitDisabled.remove(player.getUniqueId());
-				player.sendMessage(plugin.msgEnabled);
-			} else if (args[0].equalsIgnoreCase("sit")) {
-				if (sender.hasPermission("chairs.sit.command")) {
-					Block block = player.getTargetBlock((Set<Material>)null, (int) plugin.distance);
-					if (plugin.utils.sitAllowed(player, block, false)) {
-						Location sitLocation = plugin.utils.getSitLocation(block, player.getLocation().getYaw());
-						plugin.getPlayerSitData().sitPlayer(player, block, sitLocation);
-					} else {
-						player.sendMessage(plugin.msgCantSitThere);
-					}
-				} else {
-					sender.sendMessage(plugin.msgNoPerm);
-				}
+				sitdata.enableSitting(player.getUniqueId());
+				player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgEnabled));
 			}
 		}
 		return true;
