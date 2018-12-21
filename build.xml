@@ -8,6 +8,7 @@
         <mkdir dir="build/classes" />
         <javac source="1.8" target="1.8" encoding="UTF-8" srcdir="src" destdir="build/classes" classpathref="libs" debug="on" />
 		<copy todir="build/classes">
+			<fileset file="src/config_help.txt" />
      		<fileset file="src/plugin.yml" />
 			<fileset file="src/LICENSE" />
 		</copy>

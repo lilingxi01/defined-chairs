@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -56,6 +57,10 @@ public class Chairs extends JavaPlugin {
 			e.printStackTrace();
 			getServer().getPluginManager().disablePlugin(this);
 			return;
+		}
+		try {
+			Files.copy(Chairs.class.getClassLoader().getResourceAsStream("config_help.txt"), new File(getDataFolder(), "config_help.txt").toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
 		}
 		reloadConfig();
 		getServer().getPluginManager().registerEvents(new NANLoginListener(), this);
