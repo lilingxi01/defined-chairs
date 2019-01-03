@@ -29,7 +29,7 @@ public class CommandRestrict implements Listener {
 		if (plugin.getPlayerSitData().isSitting(player)) {
 			if (config.restrictionsDisableAllCommands) {
 				event.setCancelled(true);
-				player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgCommandRestricted));
+				player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgSitCommandRestricted));
 				return;
 			}
 			for (String disabledCommand : config.restrictionsDisabledCommands) {
@@ -37,7 +37,7 @@ public class CommandRestrict implements Listener {
 					String therest = playercommand.replace(disabledCommand, "");
 					if (therest.isEmpty() || therest.startsWith(" ")) {
 						event.setCancelled(true);
-						player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgCommandRestricted));
+						player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgSitCommandRestricted));
 						return;
 					}
 				}

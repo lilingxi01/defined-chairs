@@ -26,3 +26,12 @@
 #   commands:
 #     all: If set to true, restricts using all commands while sitting
 #     list: List of commands which player can't use while sitting
+#
+# messages:
+#  enabled: true #enables user messages
+#  sit:
+#    enter: "&7You are now sitting."
+#    leave: "&7You are no longer sitting."
+#    enabled: "&7You have enabled chairs for yourself!"
+#    disabled: "&7You have disabled chairs for yourself!"
+#    commandrestricted: "&7You can''t issue this command while sitting"

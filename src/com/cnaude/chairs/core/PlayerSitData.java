@@ -58,8 +58,8 @@ public class PlayerSitData {
 			return false;
 		}
 		sitlocation = playersitevent.getSitLocation().clone();
-		if (plugin.getChairsConfig().msgsEnabled) {
-			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgSitting));
+		if (plugin.getChairsConfig().msgEnabled) {
+			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgSitEnter));
 		}
 		Entity arrow = plugin.getNMSAccess().spawnArrow(sitlocation.getBlock().getLocation().add(0.5, 0 , 0.5));
 		SitData sitdata = new SitData(
@@ -108,8 +108,8 @@ public class PlayerSitData {
 		occupiedBlocks.remove(sitdata.occupiedBlock);
 		Bukkit.getScheduler().cancelTask(sitdata.resitTaskId);
 		sittingPlayers.remove(player);
-		if (plugin.getChairsConfig().msgsEnabled) {
-			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgStanding));
+		if (plugin.getChairsConfig().msgEnabled) {
+			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgSitLeave));
 		}
 		return true;
 	}

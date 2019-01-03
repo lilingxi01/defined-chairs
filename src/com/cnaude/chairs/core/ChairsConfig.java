@@ -52,6 +52,15 @@ public class ChairsConfig {
 	protected static final String sitRestrictionsCommandsBlockAllPath = "all";
 	protected static final String sitRestrictionsCommandsBlockListPath = "list";
 
+	protected static final String msgSectionPath = "messages";
+	protected static final String msgEnabledPath = "enabled";
+	protected static final String msgSitSectionPath = "sit";
+	protected static final String msgSitEnterPath = "enter";
+	protected static final String msgSitLeavePath = "leave";
+	protected static final String msgSitEnabledPath = "enabled";
+	protected static final String msgSitDisabledPath = "disabled";
+	protected static final String msgSitCommandRestrictedPath = "commandrestricted";
+
 
 	public final Set<String> sitDisabledWorlds = new HashSet<>();
 	public boolean sitRequireEmptyHand = false;
@@ -75,14 +84,12 @@ public class ChairsConfig {
 	public boolean restrictionsDisableAllCommands = false;
 	public final Set<String> restrictionsDisabledCommands = new HashSet<>();
 
-	public boolean msgsEnabled = true;
-	public String msgSitting = "&7You are now sitting.";
-	public String msgStanding = "&7You are no longer sitting.";
-	public String msgNoPerm = "&cYou do not have permission to do this!";
-	public String msgReloaded = "Chairs configuration reloaded.";
-	public String msgDisabled = "&7You have disabled chairs for yourself!";
-	public String msgEnabled = "&7You have enabled chairs for yourself!";
-	public String msgCommandRestricted = "&7You can''t issue this command while sitting";
+	public boolean msgEnabled = true;
+	public String msgSitEnter = "&7You are now sitting.";
+	public String msgSitLeave = "&7You are no longer sitting.";
+	public String msgSitDisabled = "&7You have disabled chairs for yourself!";
+	public String msgSitEnabled = "&7You have enabled chairs for yourself!";
+	public String msgSitCommandRestricted = "&7You can't issue this command while sitting";
 
 	public void reloadConfig() {
 		File file = new File(plugin.getDataFolder(), "config.yml");
@@ -145,6 +152,19 @@ public class ChairsConfig {
 					restrictionsDisabledCommands.addAll(sitRestrictionsCommandsSection.getStringList(sitRestrictionsCommandsBlockListPath));
 				}
 			}
+
+			ConfigurationSection msgSection = config.getConfigurationSection(msgSectionPath);
+			if (msgSection != null) {
+				msgEnabled = msgSection.getBoolean(msgEnabledPath, msgEnabled);
+				ConfigurationSection msgSitSection = msgSection.getConfigurationSection(msgSitSectionPath);
+				if (msgSitSection != null) {
+					msgSitEnter = msgSitSection.getString(msgSitEnterPath, msgSitEnter);
+					msgSitLeave = msgSitSection.getString(msgSitLeavePath, msgSitLeave);
+					msgSitEnabled = msgSitSection.getString(msgSitEnabledPath, msgSitEnabled);
+					msgSitDisabled = msgSitSection.getString(msgSitDisabledPath, msgSitDisabled);
+					msgSitCommandRestricted = msgSitSection.getString(msgSitCommandRestrictedPath, msgSitCommandRestricted);
+				}
+			}
 		}
 
 		{
@@ -197,6 +217,19 @@ public class ChairsConfig {
 				{
 					sitRestrictionsCommandsSection.set(sitRestrictionsCommandsBlockAllPath, restrictionsDisableAllCommands);
 					sitRestrictionsCommandsSection.set(sitRestrictionsCommandsBlockListPath, new ArrayList<>(restrictionsDisabledCommands));
+				}
+			}
+
+			ConfigurationSection msgSection = config.createSection(msgSectionPath);
+			{
+				msgSection.set(msgEnabledPath, msgEnabled);
+				ConfigurationSection msgSitSection = msgSection.createSection(msgSitSectionPath);
+				{
+					msgSitSection.set(msgSitEnterPath, msgSitEnter);
+					msgSitSection.set(msgSitLeavePath, msgSitLeave);
+					msgSitSection.set(msgSitEnabledPath, msgSitEnabled);
+					msgSitSection.set(msgSitDisabledPath, msgSitDisabled);
+					msgSitSection.set(msgSitCommandRestrictedPath, msgSitCommandRestricted);
 				}
 			}
 

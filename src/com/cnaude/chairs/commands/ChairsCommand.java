@@ -29,19 +29,19 @@ public class ChairsCommand implements CommandExecutor {
 		if (args[0].equalsIgnoreCase("reload")) {
 			if (sender.hasPermission("chairs.reload")) {
 				plugin.reloadConfig();
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgReloaded));
+				sender.sendMessage(ChatColor.GREEN + "Chairs configuration reloaded.");
 			} else {
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgNoPerm));
+				sender.sendMessage(ChatColor.RED + "You do not have permission to do this!");
 			}
 		}
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
 			if (args[0].equalsIgnoreCase("off")) {
 				sitdata.disableSitting(player.getUniqueId());
-				player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgDisabled));
+				player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgSitDisabled));
 			} else if (args[0].equalsIgnoreCase("on")) {
 				sitdata.enableSitting(player.getUniqueId());
-				player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgEnabled));
+				player.sendMessage(ChatColor.translateAlternateColorCodes('&', config.msgSitEnabled));
 			}
 		}
 		return true;
