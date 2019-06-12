@@ -74,7 +74,7 @@ public class Chairs extends JavaPlugin {
 	public void onDisable() {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			if (psitdata.isSitting(player)) {
-				psitdata.unsitPlayerForce(player);
+				psitdata.unsitPlayerForce(player, true);
 			}
 		}
 		chairEffects.cancelHealing();

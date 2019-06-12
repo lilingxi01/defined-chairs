@@ -86,14 +86,14 @@ public class PlayerSitData {
 	}
 
 	public boolean unsitPlayer(Player player) {
-		return unsitPlayer(player, true);
+		return unsitPlayer(player, true, true);
 	}
 
-	public void unsitPlayerForce(Player player) {
-		unsitPlayer(player, false);
+	public void unsitPlayerForce(Player player, boolean teleport) {
+		unsitPlayer(player, false, teleport);
 	}
 
-	private boolean unsitPlayer(final Player player, boolean canCancel) {
+	private boolean unsitPlayer(final Player player, boolean canCancel, boolean teleport) {
 		SitData sitdata = sittingPlayers.get(player);
 		final PlayerChairUnsitEvent playerunsitevent = new PlayerChairUnsitEvent(player, sitdata.teleportBackLocation.clone(), canCancel);
 		Bukkit.getPluginManager().callEvent(playerunsitevent);
@@ -103,11 +103,13 @@ public class PlayerSitData {
 		sitdata.sitting = false;
 		player.leaveVehicle();
 		sitdata.arrow.remove();
-		player.teleport(playerunsitevent.getTeleportLocation().clone());
 		player.setSneaking(false);
 		occupiedBlocks.remove(sitdata.occupiedBlock);
 		Bukkit.getScheduler().cancelTask(sitdata.resitTaskId);
 		sittingPlayers.remove(player);
+		if (teleport) {
+			player.teleport(playerunsitevent.getTeleportLocation().clone());
+		}
 		if (plugin.getChairsConfig().msgEnabled) {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgSitLeave));
 		}

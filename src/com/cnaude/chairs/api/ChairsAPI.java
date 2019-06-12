@@ -30,7 +30,7 @@ public class ChairsAPI {
 	}
 
 	public static void unsit(Player player) {
-		getPlayerSitData().unsitPlayerForce(player);
+		getPlayerSitData().unsitPlayerForce(player, true);
 	}
 
 }
