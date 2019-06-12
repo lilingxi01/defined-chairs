@@ -1,5 +1,5 @@
 name: Chairs
-api-version: 1.13
+api-version: 1.14
 version: 5.0
 description: Let players sit on blocks.
 website: http://dev.bukkit.org/bukkit-plugins/chairsreloaded/
