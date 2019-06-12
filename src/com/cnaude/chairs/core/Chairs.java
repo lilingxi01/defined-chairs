@@ -8,8 +8,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.AbstractArrow.PickupStatus;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
 
 import com.cnaude.chairs.commands.ChairsCommand;
 import com.cnaude.chairs.listeners.NANLoginListener;
@@ -17,7 +22,6 @@ import com.cnaude.chairs.listeners.TrySitEventListener;
 import com.cnaude.chairs.listeners.TryUnsitEventListener;
 import com.cnaude.chairs.sitaddons.ChairEffects;
 import com.cnaude.chairs.sitaddons.CommandRestrict;
-import com.cnaude.chairs.vehiclearrow.NMSAccess;
 
 public class Chairs extends JavaPlugin {
 
@@ -31,6 +35,14 @@ public class Chairs extends JavaPlugin {
 		instance = this;
 	}
 
+	public static Entity spawnChairsArrow(Location location) {
+		Arrow arrow = location.getWorld().spawnArrow(location, new Vector(), 0, 0);
+		arrow.setGravity(false);
+		arrow.setInvulnerable(true);
+		arrow.setPickupStatus(PickupStatus.DISALLOWED);
+		return arrow;
+	}
+
 	private final ChairsConfig config = new ChairsConfig(this);
 	public ChairsConfig getChairsConfig() {
 		return config;
@@ -39,10 +51,6 @@ public class Chairs extends JavaPlugin {
 	public PlayerSitData getPlayerSitData() {
 		return psitdata;
 	}
-	private final NMSAccess nmsaccess = new NMSAccess();
-	protected NMSAccess getNMSAccess() {
-		return nmsaccess;
-	}
 
 
 	public final ChairEffects chairEffects = new ChairEffects(this);
@@ -50,14 +58,6 @@ public class Chairs extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		loadSitDisabled();
-		try {
-			nmsaccess.setupChairsArrow();
-		} catch (Exception e) {
-			e.printStackTrace();
-			getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
 		try {
 			Files.copy(Chairs.class.getClassLoader().getResourceAsStream("config_help.txt"), new File(getDataFolder(), "config_help.txt").toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {

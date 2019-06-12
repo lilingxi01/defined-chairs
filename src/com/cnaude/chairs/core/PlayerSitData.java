@@ -61,7 +61,7 @@ public class PlayerSitData {
 		if (plugin.getChairsConfig().msgEnabled) {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgSitEnter));
 		}
-		Entity arrow = plugin.getNMSAccess().spawnArrow(sitlocation.getBlock().getLocation().add(0.5, 0 , 0.5));
+		Entity arrow = Chairs.spawnChairsArrow(sitlocation);
 		SitData sitdata = new SitData(
 			arrow, player.getLocation(), blocktooccupy,
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> resitPlayer(player), 1000, 1000)
@@ -78,7 +78,7 @@ public class PlayerSitData {
 		SitData sitdata = sittingPlayers.get(player);
 		sitdata.sitting = false;
 		Entity prevArrow = sitdata.arrow;
-		Entity newArrow = plugin.getNMSAccess().spawnArrow(prevArrow.getLocation());
+		Entity newArrow = Chairs.spawnChairsArrow(prevArrow.getLocation());
 		newArrow.addPassenger(player);
 		sitdata.arrow = newArrow;
 		prevArrow.remove();

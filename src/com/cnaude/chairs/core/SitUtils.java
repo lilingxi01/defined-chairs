@@ -67,7 +67,7 @@ public class SitUtils {
 		Double sitHeight = null;
 
 		if ((blockdata instanceof Stairs) && config.stairsEnabled) {
-			sitHeight = 0.7;
+			sitHeight = 0.4;
 			Stairs stairs = (Stairs) blockdata;
 			if (!isStairsSittable(stairs)) {
 				return null;
