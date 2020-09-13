@@ -64,7 +64,7 @@ public class PlayerSitData {
 		if (plugin.getChairsConfig().msgEnabled) {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgSitEnter));
 		}
-		Entity arrow = spawnSitEntity(sitlocation);
+		Entity arrow = spawnChairsArrow(sitlocation);
 		SitData sitdata = new SitData(
 			arrow, player.getLocation(), blocktooccupy,
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> resitPlayer(player), 1000, 1000)
@@ -81,7 +81,7 @@ public class PlayerSitData {
 		SitData sitdata = sittingPlayers.get(player);
 		sitdata.sitting = false;
 		Entity prevArrow = sitdata.arrow;
-		Entity newArrow = spawnSitEntity(prevArrow.getLocation());
+		Entity newArrow = spawnChairsArrow(prevArrow.getLocation());
 		newArrow.addPassenger(player);
 		sitdata.arrow = newArrow;
 		prevArrow.remove();
@@ -137,7 +137,7 @@ public class PlayerSitData {
 
 	}
 
-	protected static Entity spawnSitEntity(Location location) {
+	protected static Entity spawnChairsArrow(Location location) {
 		Arrow arrow = location.getWorld().spawnArrow(location, new Vector(), 0, 0);
 		arrow.setGravity(false);
 		arrow.setInvulnerable(true);
