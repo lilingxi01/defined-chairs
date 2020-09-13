@@ -9,8 +9,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.AbstractArrow.PickupStatus;
+import org.bukkit.util.Vector;
 
 import com.cnaude.chairs.api.PlayerChairSitEvent;
 import com.cnaude.chairs.api.PlayerChairUnsitEvent;
@@ -61,7 +64,7 @@ public class PlayerSitData {
 		if (plugin.getChairsConfig().msgEnabled) {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgSitEnter));
 		}
-		Entity arrow = Chairs.spawnChairsArrow(sitlocation);
+		Entity arrow = spawnSitEntity(sitlocation);
 		SitData sitdata = new SitData(
 			arrow, player.getLocation(), blocktooccupy,
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> resitPlayer(player), 1000, 1000)
@@ -78,7 +81,7 @@ public class PlayerSitData {
 		SitData sitdata = sittingPlayers.get(player);
 		sitdata.sitting = false;
 		Entity prevArrow = sitdata.arrow;
-		Entity newArrow = Chairs.spawnChairsArrow(prevArrow.getLocation());
+		Entity newArrow = spawnSitEntity(prevArrow.getLocation());
 		newArrow.addPassenger(player);
 		sitdata.arrow = newArrow;
 		prevArrow.remove();
@@ -132,6 +135,14 @@ public class PlayerSitData {
 			this.resitTaskId = resitTaskId;
 		}
 
+	}
+
+	protected static Entity spawnSitEntity(Location location) {
+		Arrow arrow = location.getWorld().spawnArrow(location, new Vector(), 0, 0);
+		arrow.setGravity(false);
+		arrow.setInvulnerable(true);
+		arrow.setPickupStatus(PickupStatus.DISALLOWED);
+		return arrow;
 	}
 
 }

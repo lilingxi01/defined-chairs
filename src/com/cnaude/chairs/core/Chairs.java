@@ -8,13 +8,8 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.AbstractArrow.PickupStatus;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.Vector;
 
 import com.cnaude.chairs.commands.ChairsCommand;
 import com.cnaude.chairs.listeners.NANLoginListener;
@@ -33,14 +28,6 @@ public class Chairs extends JavaPlugin {
 
 	public Chairs() {
 		instance = this;
-	}
-
-	public static Entity spawnChairsArrow(Location location) {
-		Arrow arrow = location.getWorld().spawnArrow(location, new Vector(), 0, 0);
-		arrow.setGravity(false);
-		arrow.setInvulnerable(true);
-		arrow.setPickupStatus(PickupStatus.DISALLOWED);
-		return arrow;
 	}
 
 	private final ChairsConfig config = new ChairsConfig(this);
