@@ -78,7 +78,7 @@ public class TryUnsitEventListener implements Listener {
 				} else {
 					UUID playerUUID = player.getUniqueId();
 					dismountTeleport.put(playerUUID, preDismountLocation);
-					Bukkit.getScheduler().scheduleSyncDelayedTask(Chairs.getInstance(), () -> dismountTeleport.remove(playerUUID));
+					Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> dismountTeleport.remove(playerUUID));
 				}
 			}
 		}
