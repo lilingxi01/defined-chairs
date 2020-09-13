@@ -11,7 +11,12 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Stairs;
 import org.bukkit.block.data.type.Stairs.Shape;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.entity.AbstractArrow.PickupStatus;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class SitUtils {
 
@@ -23,6 +28,32 @@ public class SitUtils {
 		this.plugin = plugin;
 		this.config = plugin.getChairsConfig();
 		this.sitdata = plugin.getPlayerSitData();
+	}
+
+	public Entity spawnChairEntity(Location location) {
+		switch (config.sitChairEntityType) {
+			case ARROW: {
+				Arrow arrow = location.getWorld().spawnArrow(location, new Vector(0, 1, 0), 0, 0);
+				arrow.setGravity(false);
+				arrow.setInvulnerable(true);
+				arrow.setPickupStatus(PickupStatus.DISALLOWED);
+				return arrow;
+			}
+			case ARMOR_STAND: {
+				location = location.clone().add(0, 0.4, 0);
+				return location.getWorld().spawn(
+					location, ArmorStand.class, armorstand -> {
+						armorstand.setGravity(false);
+						armorstand.setInvulnerable(true);
+						armorstand.setMarker(true);
+						armorstand.setVisible(false);
+					}
+				);
+			}
+			default: {
+				throw new IllegalArgumentException("Unknown sit chair entity type " + config.sitChairEntityType);
+			}
+		}
 	}
 
 	protected boolean canSitGeneric(Player player, Block block) {

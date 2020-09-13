@@ -5,6 +5,7 @@
 #   disabled-worlds: List of worlds in which sitting is disabled
 #   distance: The maximum distance between the chair (the center of the block) and the player to be able to sit down (to prevent glitching through walls, etc.)
 #   require-empty-hand: Set this true to disable sitting if player is holding an item in hand.
+#   chair-entity-type: Entity type used as chair, allowed values are ARROW, ARMOR_STAND
 #   stairs:
 #     enabled: enables all stairs as sit on blocks with special handling
 #     rotate: set to true to auto rotate player to face the descending side of the stairs

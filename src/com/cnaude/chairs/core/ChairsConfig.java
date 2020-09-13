@@ -26,6 +26,7 @@ public class ChairsConfig {
 	protected static final String sitConfigDisabledWorldsPath = "disabled-worlds";
 	protected static final String sitConfigDistancePath = "distance";
 	protected static final String sitConfigRequireEmptyHandPath = "require-empty-hand";
+	protected static final String sitConfigChairEntityType = "chair-entity-type";
 
 	protected static final String sitConfigStairsSectionPath = "stairs";
 	protected static final String sitConfigStairsEnabledPath = "enabled";
@@ -66,6 +67,7 @@ public class ChairsConfig {
 	public final Set<String> sitDisabledWorlds = new HashSet<>();
 	public boolean sitRequireEmptyHand = false;
 	public double sitMaxDistance = 2;
+	public ChairEntityType sitChairEntityType = ChairEntityType.ARROW;
 
 	public boolean stairsEnabled = true;
 	public boolean stairsAutoRotate = true;
@@ -103,6 +105,7 @@ public class ChairsConfig {
 				sitDisabledWorlds.clear();
 				sitDisabledWorlds.addAll(sitConfigSection.getStringList(sitConfigDisabledWorldsPath));
 				sitRequireEmptyHand = sitConfigSection.getBoolean(sitConfigRequireEmptyHandPath, sitRequireEmptyHand);
+				sitChairEntityType = ChairEntityType.fromString(sitConfigSection.getString(sitConfigChairEntityType, sitChairEntityType.name()));
 
 				ConfigurationSection sitConfigStairsSection = sitConfigSection.getConfigurationSection(sitConfigStairsSectionPath);
 				if (sitConfigStairsSection != null) {
@@ -175,6 +178,7 @@ public class ChairsConfig {
 			{
 				sitConfigSection.set(sitConfigDisabledWorldsPath, new ArrayList<>(sitDisabledWorlds));
 				sitConfigSection.set(sitConfigRequireEmptyHandPath, sitRequireEmptyHand);
+				sitConfigSection.set(sitConfigChairEntityType, sitChairEntityType.name());
 
 				ConfigurationSection sitConfigStairsSection = sitConfigSection.createSection(sitConfigStairsSectionPath);
 				{
@@ -235,6 +239,18 @@ public class ChairsConfig {
 			}
 
 			try {config.save(file);} catch (IOException e) {}
+		}
+	}
+
+	public static enum ChairEntityType {
+		ARROW, ARMOR_STAND;
+
+		public static ChairEntityType fromString(String string) {
+			try {
+				return ChairEntityType.valueOf(string);
+			} catch (IllegalArgumentException e) {
+				return ChairEntityType.ARMOR_STAND;
+			}
 		}
 	}
 
