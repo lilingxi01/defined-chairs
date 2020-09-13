@@ -6,10 +6,12 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.cnaude.chairs.commands.ChairsCommand;
 import com.cnaude.chairs.listeners.NANLoginListener;
@@ -46,7 +48,14 @@ public class Chairs extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		try {
-			Files.copy(Chairs.class.getClassLoader().getResourceAsStream("config_help.txt"), new File(getDataFolder(), "config_help.txt").toPath(), StandardCopyOption.REPLACE_EXISTING);
+			getClass().getClassLoader().loadClass(EntityDismountEvent.class.getName());
+		} catch (Throwable t) {
+			getLogger().log(Level.SEVERE, "Missing EntityDismountEvent", t);
+			setEnabled(false);
+			return;
+		}
+		try {
+			Files.copy(getClass().getClassLoader().getResourceAsStream("config_help.txt"), new File(getDataFolder(), "config_help.txt").toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
 		}
 		reloadConfig();
