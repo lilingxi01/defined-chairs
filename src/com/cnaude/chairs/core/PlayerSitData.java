@@ -1,18 +1,17 @@
 package com.cnaude.chairs.core;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.entity.AbstractArrow.PickupStatus;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.AbstractArrow.PickupStatus;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 import com.cnaude.chairs.api.PlayerChairSitEvent;
@@ -22,24 +21,26 @@ public class PlayerSitData {
 
 	protected final Chairs plugin;
 
-	protected final Set<UUID> sitDisabled = new HashSet<>();
+	protected final NamespacedKey sitDisabledKey;
+
 	protected final HashMap<Player, SitData> sittingPlayers = new HashMap<>();
 	protected final HashMap<Block, Player> occupiedBlocks = new HashMap<>();
 
 	public PlayerSitData(Chairs plugin) {
 		this.plugin = plugin;
+		this.sitDisabledKey = new NamespacedKey(plugin, "SitDisabled");
 	}
 
-	public void disableSitting(UUID playerUUID) {
-		sitDisabled.add(playerUUID);
+	public void disableSitting(Player player) {
+		player.getPersistentDataContainer().set(sitDisabledKey, PersistentDataType.BYTE, Byte.valueOf((byte) 1));
 	}
 
-	public void enableSitting(UUID playerUUID) {
-		sitDisabled.remove(playerUUID);
+	public void enableSitting(Player player) {
+		player.getPersistentDataContainer().remove(sitDisabledKey);
 	}
 
-	public boolean isSittingDisabled(UUID playerUUID) {
-		return sitDisabled.contains(playerUUID);
+	public boolean isSittingDisabled(Player player) {
+		return player.getPersistentDataContainer().getOrDefault(sitDisabledKey, PersistentDataType.BYTE, Byte.valueOf((byte) 0)).byteValue() != 0;
 	}
 
 	public boolean isSitting(Player player) {

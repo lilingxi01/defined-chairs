@@ -2,10 +2,8 @@ package com.cnaude.chairs.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -75,7 +73,6 @@ public class Chairs extends JavaPlugin {
 		}
 		chairEffects.cancelHealing();
 		chairEffects.cancelPickup();
-		saveSitDisabled();
 	}
 
 	@Override
@@ -90,34 +87,6 @@ public class Chairs extends JavaPlugin {
 			chairEffects.restartPickup();
 		} else {
 			chairEffects.cancelPickup();
-		}
-	}
-
-	protected void loadSitDisabled() {
-		try {
-			for (String line: Files.readAllLines(new File(getDataFolder(), "sit-disabled.txt").toPath())) {
-				try {
-					getPlayerSitData().disableSitting(UUID.fromString(line));
-				} catch (IllegalArgumentException e) {
-				}
-			}
-		} catch (IOException e) {
-		}
-	}
-
-	protected void saveSitDisabled() {
-		try {
-			File sitDisabledFile = new File(getDataFolder(), "sit-disabled.txt");
-			if (!sitDisabledFile.exists()) {
-				sitDisabledFile.createNewFile();
-			}
-			try (PrintWriter writer = new PrintWriter(sitDisabledFile, "UTF-8")) {
-				writer.println("# The following players disabled Chairs for themselves");
-				for (UUID uuid : getPlayerSitData().sitDisabled) {
-					writer.println(uuid.toString());
-				}
-			}
-		} catch (IOException e) {
 		}
 	}
 

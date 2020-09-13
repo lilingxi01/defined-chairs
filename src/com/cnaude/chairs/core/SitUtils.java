@@ -43,7 +43,7 @@ public class SitUtils {
 			return false;
 		}
 
-		if (sitdata.isSittingDisabled(player.getUniqueId())) {
+		if (sitdata.isSittingDisabled(player)) {
 			return false;
 		}
 		if (sitdata.isSitting(player)) {
