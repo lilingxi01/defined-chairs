@@ -15,6 +15,7 @@ import com.cnaude.chairs.core.Chairs;
 public class TrySitEventListener implements Listener {
 
 	protected final Chairs plugin;
+
 	public TrySitEventListener(Chairs plugin) {
 		this.plugin = plugin;
 	}
@@ -24,7 +25,7 @@ public class TrySitEventListener implements Listener {
 		if ((event.getAction() == Action.RIGHT_CLICK_BLOCK) && (event.getHand() == EquipmentSlot.HAND)) {
 			Player player = event.getPlayer();
 			Block block = event.getClickedBlock();
-			Location sitLocation = plugin.utils.calculateSitLocation(player, block);
+			Location sitLocation = plugin.getSitUtils().calculateSitLocation(player, block);
 			if ((sitLocation != null) && plugin.getPlayerSitData().sitPlayer(player, block, sitLocation)) {
 				event.setCancelled(true);
 			}

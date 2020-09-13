@@ -31,17 +31,28 @@ public class Chairs extends JavaPlugin {
 	}
 
 	private final ChairsConfig config = new ChairsConfig(this);
+
 	public ChairsConfig getChairsConfig() {
 		return config;
 	}
+
 	private final PlayerSitData psitdata = new PlayerSitData(this);
+
 	public PlayerSitData getPlayerSitData() {
 		return psitdata;
 	}
 
+	private final ChairEffects chairEffects = new ChairEffects(this);
 
-	public final ChairEffects chairEffects = new ChairEffects(this);
-	public final SitUtils utils = new SitUtils(this);
+	public ChairEffects getChairEffects() {
+		return chairEffects;
+	}
+
+	private final SitUtils utils = new SitUtils(this);
+
+	public SitUtils getSitUtils() {
+		return utils;
+	}
 
 	@Override
 	public void onEnable() {

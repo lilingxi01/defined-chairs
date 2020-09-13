@@ -1,6 +1,7 @@
 package com.cnaude.chairs.core;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,8 +24,8 @@ public class PlayerSitData {
 
 	protected final NamespacedKey sitDisabledKey;
 
-	protected final HashMap<Player, SitData> sittingPlayers = new HashMap<>();
-	protected final HashMap<Block, Player> occupiedBlocks = new HashMap<>();
+	protected final Map<Player, SitData> sittingPlayers = new HashMap<>();
+	protected final Map<Block, Player> occupiedBlocks = new HashMap<>();
 
 	public PlayerSitData(Chairs plugin) {
 		this.plugin = plugin;
@@ -44,7 +45,8 @@ public class PlayerSitData {
 	}
 
 	public boolean isSitting(Player player) {
-		return sittingPlayers.containsKey(player) && sittingPlayers.get(player).sitting;
+		SitData sitdata = sittingPlayers.get(player);
+		return (sitdata != null) && sitdata.sitting;
 	}
 
 	public boolean isBlockOccupied(Block block) {

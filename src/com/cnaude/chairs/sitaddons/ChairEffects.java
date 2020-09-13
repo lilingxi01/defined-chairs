@@ -20,6 +20,7 @@ public class ChairEffects {
 	protected final PlayerSitData sitdata;
 	protected int healTaskID = -1;
 	protected int pickupTaskID = -1;
+
 	public ChairEffects(Chairs plugin) {
 		this.plugin = plugin;
 		this.config = plugin.getChairsConfig();

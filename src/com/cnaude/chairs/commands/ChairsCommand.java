@@ -15,6 +15,7 @@ public class ChairsCommand implements CommandExecutor {
 	protected final Chairs plugin;
 	protected final ChairsConfig config;
 	protected final PlayerSitData sitdata;
+
 	public ChairsCommand(Chairs plugin) {
 		this.plugin = plugin;
 		this.config = plugin.getChairsConfig();

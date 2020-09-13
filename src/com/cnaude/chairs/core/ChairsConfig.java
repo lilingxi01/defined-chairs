@@ -17,6 +17,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class ChairsConfig {
 
 	protected final Chairs plugin;
+
 	protected ChairsConfig(Chairs plugin) {
 		this.plugin = plugin;
 	}

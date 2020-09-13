@@ -18,6 +18,7 @@ public class SitUtils {
 	protected final Chairs plugin;
 	protected final ChairsConfig config;
 	protected final PlayerSitData sitdata;
+
 	public SitUtils(Chairs plugin) {
 		this.plugin = plugin;
 		this.config = plugin.getChairsConfig();
