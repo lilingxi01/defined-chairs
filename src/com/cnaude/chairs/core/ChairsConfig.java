@@ -24,7 +24,7 @@ public class ChairsConfig {
 
 	protected static final String sitConfigSectionPath = "sit-config";
 	protected static final String sitConfigDisabledWorldsPath = "disabled-worlds";
-	protected static final String sitConfigDistancePath = "distance";
+	protected static final String sitConfigMaxDistancePath = "max-distance";
 	protected static final String sitConfigRequireEmptyHandPath = "require-empty-hand";
 	protected static final String sitConfigChairEntityType = "chair-entity-type";
 
@@ -105,6 +105,7 @@ public class ChairsConfig {
 				sitDisabledWorlds.clear();
 				sitDisabledWorlds.addAll(sitConfigSection.getStringList(sitConfigDisabledWorldsPath));
 				sitRequireEmptyHand = sitConfigSection.getBoolean(sitConfigRequireEmptyHandPath, sitRequireEmptyHand);
+				sitMaxDistance = sitConfigSection.getDouble(sitConfigMaxDistancePath, sitMaxDistance);
 				sitChairEntityType = ChairEntityType.fromString(sitConfigSection.getString(sitConfigChairEntityType, sitChairEntityType.name()));
 
 				ConfigurationSection sitConfigStairsSection = sitConfigSection.getConfigurationSection(sitConfigStairsSectionPath);
@@ -178,6 +179,7 @@ public class ChairsConfig {
 			{
 				sitConfigSection.set(sitConfigDisabledWorldsPath, new ArrayList<>(sitDisabledWorlds));
 				sitConfigSection.set(sitConfigRequireEmptyHandPath, sitRequireEmptyHand);
+				sitConfigSection.set(sitConfigMaxDistancePath, sitMaxDistance);
 				sitConfigSection.set(sitConfigChairEntityType, sitChairEntityType.name());
 
 				ConfigurationSection sitConfigStairsSection = sitConfigSection.createSection(sitConfigStairsSectionPath);
