@@ -65,9 +65,10 @@ public class PlayerSitData {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgSitEnter));
 		}
 		Entity chairentity = plugin.getSitUtils().spawnChairEntity(sitlocation);
+		int resit = plugin.getChairsConfig().sitResitInterval;
 		SitData sitdata = new SitData(
 			chairentity, player.getLocation(), blocktooccupy,
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> resitPlayer(player), 1000, 1000)
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> resitPlayer(player), resit, resit)
 		);
 		player.teleport(sitlocation);
 		chairentity.addPassenger(player);

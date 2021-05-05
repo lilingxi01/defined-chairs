@@ -15,6 +15,7 @@
 #       corner-stairs: require corner stairs
 #   additional-blocks: Set additional blocks you want to be able to sit down on and sitting height.
 #     COBBLESTONE_SLAB: 0.7
+#   resit-interval: How often plugin will resit player. Recommended set less than arrow despawn time
 # sit-effects:
 #   healing:
 #     enabled: If set to true heals player while sitting
@@ -27,6 +28,7 @@
 #   commands:
 #     all: If set to true, restricts using all commands while sitting
 #     list: List of commands which player can't use while sitting
+#     allow: List of allowed commands while sitting
 #
 # messages:
 #  enabled: true #enables user messages
