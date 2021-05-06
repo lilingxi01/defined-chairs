@@ -35,6 +35,7 @@ public class ChairsConfig {
 	protected static final String sitConfigStairsSpecialEndPath = "special-end";
 	protected static final String sitConfigStairsSpecialEndSignPath = "sign";
 	protected static final String sitConfigStairsSpecialEndCornerStairsPath = "corner-stairs";
+	protected static final String sitConfigStairsHeight = "height";
 
 	protected static final String sitConfigAdditionalChairsPath = "additional-blocks";
 
@@ -75,6 +76,7 @@ public class ChairsConfig {
 	public boolean stairsSpecialEndEnabled = false;
 	public boolean stairsSpecialEndSign = true;
 	public boolean stairsSpecialEndCornerStairs = true;
+	public double stairsHeight = 0.5D;
 
 	public final Map<Material, Double> additionalChairs = new EnumMap<>(Material.class);
 
@@ -119,6 +121,7 @@ public class ChairsConfig {
 						stairsSpecialEndCornerStairs = sitConfigStairsSpecialEndSection.getBoolean(sitConfigStairsSpecialEndCornerStairsPath, stairsSpecialEndCornerStairs);
 						stairsSpecialEndEnabled = stairsSpecialEndSign || stairsSpecialEndCornerStairs;
 					}
+					stairsHeight = sitConfigStairsSection.getDouble(sitConfigStairsHeight, stairsHeight);
 				}
 
 				ConfigurationSection sitConfigAdditionalBlocksSection = sitConfigSection.getConfigurationSection(sitConfigAdditionalChairsPath);
@@ -192,6 +195,7 @@ public class ChairsConfig {
 						sitConfigStairsSpecialEndSection.set(sitConfigStairsSpecialEndSignPath, stairsSpecialEndSign);
 						sitConfigStairsSpecialEndSection.set(sitConfigStairsSpecialEndCornerStairsPath, stairsSpecialEndCornerStairs);
 					}
+					sitConfigStairsSection.set(sitConfigStairsHeight, stairsHeight);
 				}
 
 				ConfigurationSection sitConfigAdditionalBlocksSection = sitConfigSection.createSection(sitConfigAdditionalChairsPath);
