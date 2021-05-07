@@ -27,7 +27,7 @@ public class ChairsConfig {
 	protected static final String sitConfigMaxDistancePath = "max-distance";
 	protected static final String sitConfigRequireEmptyHandPath = "require-empty-hand";
 	protected static final String sitConfigChairEntityType = "chair-entity-type";
-	protected static final String sitConfigResitInterval = "resit-interval";
+	protected static final String sitConfigArrowResitInterval = "arrow-resit-interval";
 
 	protected static final String sitConfigStairsSectionPath = "stairs";
 	protected static final String sitConfigStairsEnabledPath = "enabled";
@@ -69,7 +69,7 @@ public class ChairsConfig {
 	public boolean sitRequireEmptyHand = false;
 	public double sitMaxDistance = 2;
 	public ChairEntityType sitChairEntityType = ChairEntityType.ARROW;
-	public int sitResitInterval = 1000;
+	public int sitArrowResitInterval = 1000;
 
 	public boolean stairsEnabled = true;
 	public boolean stairsAutoRotate = true;
@@ -109,7 +109,10 @@ public class ChairsConfig {
 				sitRequireEmptyHand = sitConfigSection.getBoolean(sitConfigRequireEmptyHandPath, sitRequireEmptyHand);
 				sitMaxDistance = sitConfigSection.getDouble(sitConfigMaxDistancePath, sitMaxDistance);
 				sitChairEntityType = ChairEntityType.fromString(sitConfigSection.getString(sitConfigChairEntityType, sitChairEntityType.name()));
-				sitResitInterval = sitConfigSection.getInt(sitConfigResitInterval, sitResitInterval);
+				sitArrowResitInterval = sitConfigSection.getInt(sitConfigArrowResitInterval, sitArrowResitInterval);
+				if (sitArrowResitInterval > 1000) {
+					sitArrowResitInterval = 1000;
+				}
 
 				ConfigurationSection sitConfigStairsSection = sitConfigSection.getConfigurationSection(sitConfigStairsSectionPath);
 				if (sitConfigStairsSection != null) {
@@ -184,7 +187,7 @@ public class ChairsConfig {
 				sitConfigSection.set(sitConfigRequireEmptyHandPath, sitRequireEmptyHand);
 				sitConfigSection.set(sitConfigMaxDistancePath, sitMaxDistance);
 				sitConfigSection.set(sitConfigChairEntityType, sitChairEntityType.name());
-				sitConfigSection.set(sitConfigResitInterval, sitResitInterval);
+				sitConfigSection.set(sitConfigArrowResitInterval, sitArrowResitInterval);
 
 				ConfigurationSection sitConfigStairsSection = sitConfigSection.createSection(sitConfigStairsSectionPath);
 				{
