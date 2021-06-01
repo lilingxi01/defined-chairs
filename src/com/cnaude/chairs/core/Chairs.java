@@ -73,6 +73,11 @@ public class Chairs extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new TryUnsitEventListener(this), this);
 		getServer().getPluginManager().registerEvents(new CommandRestrict(this), this);
 		getCommand("chairs").setExecutor(new ChairsCommand(this));
+		getLogger().info(".");
+		getLogger().info(".     |         DefinedChairs - Enabled successfully!");
+		getLogger().info(".     |___      > - <   Hurrah!");
+		getLogger().info(".     |   |     All players are now able to sit down on your server.");
+		getLogger().info(".");
 	}
 
 	@Override

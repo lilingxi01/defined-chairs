@@ -1,0 +1,35 @@
+name: DefinedChairs
+main: com.cnaude.chairs.core.Chairs
+api-version: 1.16
+version: 0.1
+description: Allow your players sit on blocks (chairs).
+website: https://dev.bukkit.org/projects/defined-chairs
+authors: 
+ - spoothie
+ - cnaude
+ - _Shevchik_
+ - Pugabyte
+ - Xixi_Biu
+commands:
+    chairs:
+        description: Various commands for Chairs.
+        usage: |
+          /<command> reload - reloads the configuration
+          /<command> off  - disable chairs for self
+          /<command> on - enable chairs for self
+permissions:
+  chairs.*:
+    description: Gives access to all Chairs commands
+    children:
+      chairs.sit: true
+      chairs.reload: true
+      chairs.sit.health: true
+  chairs.reload:
+    description: Allows you to reload Chairs Configuration
+    default: op
+  chairs.sit:
+    description: Allows you to sit on a chair
+    default: true
+  chairs.sit.health:
+    description: Allows regenerating health while sitting (if enabled)
+    default: true

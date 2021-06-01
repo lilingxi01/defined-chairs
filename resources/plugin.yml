@@ -1,14 +1,15 @@
-name: Chairs
+name: DefinedChairs
 main: com.cnaude.chairs.core.Chairs
-api-version: 1.14
-version: 7.0
-description: Let players sit on blocks.
-website: http://dev.bukkit.org/bukkit-plugins/chairsreloaded/
+api-version: 1.16
+version: 0.1
+description: Allow your players sit on blocks (chairs).
+website: https://dev.bukkit.org/projects/defined-chairs
 authors: 
  - spoothie
  - cnaude
  - _Shevchik_
  - Pugabyte
+ - Xixi_Biu
 commands:
     chairs:
         description: Various commands for Chairs.

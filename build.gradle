@@ -3,21 +3,16 @@ plugins {
 	id 'java'
 }
 
-
 defaultTasks 'build'
 
-
-group 'io.github.Shevchik'
-version '7.0'
-
+group 'com.lingxi'
+version '0.1'
 
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.Files
 
-
 Path projectDirectoryPath = projectDir.toPath().toAbsolutePath()
-
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 
@@ -47,7 +42,7 @@ repositories {
 }
 
 dependencies {
-	compileOnly group: 'org.spigotmc', name: 'spigot-api', version: '1.14-R0.1-SNAPSHOT'
+	compileOnly group: 'org.spigotmc', name: 'spigot-api', version: '1.16.5-R0.1-SNAPSHOT'
 }
 
 compileJava {
