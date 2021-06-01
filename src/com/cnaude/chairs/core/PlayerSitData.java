@@ -61,7 +61,7 @@ public class PlayerSitData {
 			return false;
 		}
 		sitlocation = playersitevent.getSitLocation().clone();
-		if (plugin.getChairsConfig().msgEnabled) {
+		if (plugin.getChairsConfig().msgOfSitInteractionEnabled) {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgSitEnter));
 		}
 		Entity chairentity = plugin.getSitUtils().spawnChairEntity(sitlocation);
@@ -126,7 +126,7 @@ public class PlayerSitData {
 		if (teleport) {
 			player.teleport(playerunsitevent.getTeleportLocation().clone());
 		}
-		if (plugin.getChairsConfig().msgEnabled) {
+		if (plugin.getChairsConfig().msgOfSitInteractionEnabled) {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getChairsConfig().msgSitLeave));
 		}
 		return true;
