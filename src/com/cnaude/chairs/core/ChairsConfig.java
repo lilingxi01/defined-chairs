@@ -58,6 +58,7 @@ public class ChairsConfig {
 
 	protected static final String msgSectionPath = "messages";
 	protected static final String msgEnabledPath = "enabled";
+	protected static final String msgOfSitInteractionEnabledPath = "sit-interaction-message-enabled";
 	protected static final String msgSitSectionPath = "sit";
 	protected static final String msgSitEnterPath = "enter";
 	protected static final String msgSitLeavePath = "leave";
@@ -68,7 +69,7 @@ public class ChairsConfig {
 
 	public final Set<String> sitDisabledWorlds = new HashSet<>();
 	public boolean sitRequireEmptyHand = false;
-	public double sitMaxDistance = 2;
+	public double sitMaxDistance = 2.7;
 	public ChairEntityType sitChairEntityType = ChairEntityType.ARROW;
 	public int sitArrowResitInterval = 1000;
 
@@ -76,8 +77,8 @@ public class ChairsConfig {
 	public boolean stairsAutoRotate = true;
 	public int stairsMaxWidth = 16;
 	public boolean stairsSpecialEndEnabled = false;
-	public boolean stairsSpecialEndSign = true;
-	public boolean stairsSpecialEndCornerStairs = true;
+	public boolean stairsSpecialEndSign = false;
+	public boolean stairsSpecialEndCornerStairs = false;
 	public double stairsHeight = 0.5D;
 
 	public final Map<Material, Double> additionalChairs = new EnumMap<>(Material.class);
@@ -92,11 +93,12 @@ public class ChairsConfig {
 	public final Set<String> restrictionsDisabledCommands = new HashSet<>();
 
 	public boolean msgEnabled = true;
+	public boolean msgOfSitInteractionEnabled = false;
 	public String msgSitEnter = "&7You are now sitting.";
 	public String msgSitLeave = "&7You are no longer sitting.";
-	public String msgSitDisabled = "&7You have disabled chairs for yourself!";
-	public String msgSitEnabled = "&7You have enabled chairs for yourself!";
-	public String msgSitCommandRestricted = "&7You can't issue this command while sitting";
+	public String msgSitDisabled = "&7You are not able to sit right now!";
+	public String msgSitEnabled = "&7You are able to sit right now!";
+	public String msgSitCommandRestricted = "&7You can't issue this command while sitting.";
 
 	public void reloadConfig() {
 		File file = new File(plugin.getDataFolder(), "config.yml");
@@ -121,6 +123,11 @@ public class ChairsConfig {
 					stairsEnabled = sitConfigStairsSection.getBoolean(sitConfigStairsEnabledPath, stairsEnabled);
 					stairsAutoRotate = sitConfigStairsSection.getBoolean(sitConfigStairsRotatePath, stairsAutoRotate);
 					stairsMaxWidth = sitConfigStairsSection.getInt(sitConfigStairsMaxWidthPath, stairsMaxWidth);
+
+					// There was a bug that when we first run the program, the `stairsSpecialEndEnabled` will be `false` by default.
+					// However, after we restart the server, we will have the config file, which means that stairs `stairsSpecialEndEnabled` will be `true`
+					// based on the default setting (`stairsSpecialEndSign` is true and `stairsSpecialEndCornerStairs` is true).
+					// And then after checking both ends, the plugin will not allow player to sit on a normal stair.
 					ConfigurationSection sitConfigStairsSpecialEndSection = sitConfigStairsSection.getConfigurationSection(sitConfigStairsSpecialEndPath);
 					if (sitConfigStairsSpecialEndSection != null) {
 						stairsSpecialEndSign = sitConfigStairsSpecialEndSection.getBoolean(sitConfigStairsSpecialEndSignPath, stairsSpecialEndSign);
@@ -170,6 +177,7 @@ public class ChairsConfig {
 			ConfigurationSection msgSection = config.getConfigurationSection(msgSectionPath);
 			if (msgSection != null) {
 				msgEnabled = msgSection.getBoolean(msgEnabledPath, msgEnabled);
+				msgOfSitInteractionEnabled = msgSection.getBoolean(msgOfSitInteractionEnabledPath, msgOfSitInteractionEnabled);
 				ConfigurationSection msgSitSection = msgSection.getConfigurationSection(msgSitSectionPath);
 				if (msgSitSection != null) {
 					msgSitEnter = msgSitSection.getString(msgSitEnterPath, msgSitEnter);
@@ -241,6 +249,7 @@ public class ChairsConfig {
 			ConfigurationSection msgSection = config.createSection(msgSectionPath);
 			{
 				msgSection.set(msgEnabledPath, msgEnabled);
+				msgSection.set(msgOfSitInteractionEnabledPath, msgOfSitInteractionEnabled);
 				ConfigurationSection msgSitSection = msgSection.createSection(msgSitSectionPath);
 				{
 					msgSitSection.set(msgSitEnterPath, msgSitEnter);
